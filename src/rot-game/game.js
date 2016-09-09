@@ -24,6 +24,7 @@ var cfg = {
 
   mapHeight:     40,
   mapWidth:      80,
+  fontSize:      20,
 
   floorChar:     "\u22C5",
   floorFg:       "#999",
@@ -104,13 +105,15 @@ export var Game = {
 
     entities: {},
 
-    init: function() {
+    init: function(electronRemote) {
+        this.app = electronRemote;
+        var win = this._gameWindow();
         this.display = new ROT.Display({
-          width:            cfg.mapWidth,
-          height:           cfg.mapHeight,
+          width:            win.width,
+          height:           win.height,
           spacing:          1,
           forceSquareRatio: true,
-          fontSize:         20,
+          fontSize:         cfg.fontSize,
           fg:               cfg.floorFg
         });
         document.body.appendChild(this.display.getContainer());
@@ -125,12 +128,23 @@ export var Game = {
         this.engine.start();
     },
 
+    _gameWindow: function() {
+        var gameWindow = this.app.getCurrentWindow().getBounds();
+        return {
+            width: Math.floor(gameWindow.width / cfg.fontSize),
+            height: Math.floor(gameWindow.height / cfg.fontSize),
+            pixelWidth: gameWindow.width,
+            pixelHeight: gameWindow.height
+        };
+    },
+
     _drawTile: function(x, y, tile) {
         this.display.draw(x, y, tile.char, tile.fg, tile.bg);
     },
 
     _generateMap: function() {
-        var digger = new ROT.Map.Digger(cfg.mapWidth, cfg.mapHeight);
+        var win = this._gameWindow();
+        var digger = new ROT.Map.Digger(win.width, win.height);
         var freeCells = [];
 
         var digCallback = function(x, y, value) {
