@@ -1,23 +1,29 @@
 import { ROT } from './rot'
 
 var cfg = {
-  floorChar:  "\u22C5",
-  floorFg:    "#999",
-  floorBg:    "#111",
 
-  playerChar: "@",
-  playerFg:   "#ff0",
-  playerBg:   "#111",
+  mapHeight:     40,
+  mapWidth:      80,
 
-  boxChar:    "\u2187",
-  boxFg:      "#B84",
-  boxBg:      "#111",
+  floorChar:     "\u22C5",
+  floorFg:       "#999",
+  floorBg:       "#111",
 
-  pedroChar:  "\u229A",
-  pedroFg:    "red",
-  pedroBg:    "#111",
+  playerChar:    "@",
+  playerFg:      "#ff0",
+  playerBg:      "#111",
 
-  numOfBoxes: 1
+  boxChar:       "\u2187",
+  boxFg:         "#B84",
+  boxBg:         "#111",
+  numOfBoxes:    10,
+
+  pedroChar:     "\u229A",
+  pedroFg:       "red",
+  pedroBg:       "#111",
+  pedroTopology: 4,
+  pedroPathAlg:  ROT.Path.Dijkstra
+
 };
 
 var tiles = {
@@ -53,8 +59,8 @@ export var Game = {
 
     init: function() {
         this.display = new ROT.Display({
-          width:            80,
-          height:           40,
+          width:            cfg.mapWidth,
+          height:           cfg.mapHeight,
           spacing:          1,
           forceSquareRatio: true,
           fontSize:         20,
@@ -77,7 +83,7 @@ export var Game = {
     },
 
     _generateMap: function() {
-        var digger = new ROT.Map.Digger();
+        var digger = new ROT.Map.Digger(cfg.mapWidth, cfg.mapHeight);
         var freeCells = [];
 
         var digCallback = function(x, y, value) {
@@ -92,11 +98,11 @@ export var Game = {
         this._generateBoxes(freeCells);
         this._drawWholeMap();
 
-        this.player = this._createBeing(Player, freeCells);
-        this.pedro = this._createBeing(Pedro, freeCells);
+        this.player = this._createActor(Player, freeCells);
+        this.pedro = this._createActor(Pedro, freeCells);
     },
 
-    _createBeing: function(what, freeCells) {
+    _createActor: function(what, freeCells) {
         var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
         var key = freeCells.splice(index, 1)[0];
         var parts = key.split(",");
@@ -222,16 +228,17 @@ Pedro.prototype.act = function() {
     var passableCallback = function(x, y) {
         return (x+","+y in Game.map);
     }
-    var dijkstra = new ROT.Path.Dijkstra(x, y, passableCallback, {topology:4});
+    var pather = new cfg.pedroPathAlg(x, y, passableCallback, {topology:cfg.pedroTopology});
 
     var path = [];
     var pathCallback = function(x, y) {
         path.push([x, y]);
     }
-    dijkstra.compute(this._x, this._y, pathCallback);
+    pather.compute(this._x, this._y, pathCallback);
 
     path.shift();
-    if (path.length == 1) {
+    if (path.length <= 1) {
+        this._draw();
         Game.engine.lock();
         alert("Game over - you were captured by Pedro!");
     } else {
@@ -255,6 +262,5 @@ Pedro.prototype.act = function() {
 }
 
 Pedro.prototype._draw = function() {
-    //Game.display.draw(this._x, this._y, cfg.pedroChar, cfg.pedroFg, cfg.pedroBg);
     Game._drawTile(this._x, this._y, tiles.pedro);
 }
