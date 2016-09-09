@@ -46,6 +46,31 @@ var cfg = {
 
 };
 
+
+
+var cmp = {
+  giveName: function(ent, name='') {
+    ent[name] = name;
+  },
+  giveType: function(ent, type='') {
+    ent[type] = type;
+  },
+  giveForm: function(ent, char='', fg=null, bg=null) {
+    ent[char] = char;
+    ent[fg] = fg;
+    ent[bg] = bg;
+  },
+  giveControls: function(ent, controlMap) {
+    ent[ctrl] = controlMap;
+  },
+  givePathing: function(ent, pathAlg, pathTopology) {
+    ent[pathAlg] = pathAlg;
+    ent[pathTopology] = pathTopology;
+  }
+};
+
+
+
 var tiles = {
   floor: {
     char: cfg.floorChar,
@@ -76,6 +101,8 @@ export var Game = {
     player: null,
     pedro: null,
     ananas: null,
+
+    entities: {},
 
     init: function() {
         this.display = new ROT.Display({
