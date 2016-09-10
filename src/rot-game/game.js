@@ -50,23 +50,23 @@ var cfg = {
 
 
 var cmp = {
-  giveName: function(ent, name='') {
-    ent[name] = name;
+  giveName: function(ent, _name='') {
+    ent[name] = _name;
   },
-  giveType: function(ent, type='') {
-    ent[type] = type;
+  giveType: function(ent, _type='') {
+    ent[type] = _type;
   },
-  giveForm: function(ent, char='', fg=null, bg=null) {
-    ent[char] = char;
-    ent[fg] = fg;
-    ent[bg] = bg;
+  giveForm: function(ent, _char='', _fg=null, _bg=null) {
+    ent[char] = _char;
+    ent[fg] = _fg;
+    ent[bg] = _bg;
   },
-  giveControls: function(ent, controlMap) {
-    ent[ctrl] = controlMap;
+  giveControls: function(ent, _controlMap) {
+    ent[ctrl] = _controlMap;
   },
-  givePathing: function(ent, pathAlg, pathTopology) {
-    ent[pathAlg] = pathAlg;
-    ent[pathTopology] = pathTopology;
+  givePathing: function(ent, _pathAlg, _pathTopology) {
+    ent[pathAlg] = _pathAlg;
+    ent[pathTopology] = _pathTopology;
   }
 };
 
