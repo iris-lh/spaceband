@@ -69,7 +69,7 @@ var cmp = {
   }
 };
 
-createPlayer = function() {
+function createPlayer() {
   ent = newUUID();
   entities[ent] = {};
   giveName(entities[ent], 'Player');
@@ -78,7 +78,7 @@ createPlayer = function() {
   giveControls(entities[ent], controlMap);
 };
 
-createPedro = function() {
+function createPedro() {
   ent = newUUID();
   entities[ent] = {};
   giveName(entities[ent], 'Pedro');
