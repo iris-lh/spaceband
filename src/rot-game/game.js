@@ -5,64 +5,6 @@ import { Player } from './player'
 import { Pedro } from './pedro'
 
 
-function newUUID(){
-  var d = new Date().getTime();
-  if(window.performance && typeof window.performance.now === 'function'){
-    d += performance.now(); //use high-precision timer if available
-  }
-  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = (d + Math.random()*16)%16 | 0;
-    d = Math.floor(d/16);
-    return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-  });
-  return uuid;
-}
-
-var testID = newUUID();
-console.log(testID);
-
-
-
-var cmp = {
-  giveName: function(ent, _name='') {
-    ent[name] = _name;
-  },
-  giveType: function(ent, _type='') {
-    ent[type] = _type;
-  },
-  giveForm: function(ent, _char='', _fg=null, _bg=null) {
-    ent[char] = _char;
-    ent[fg] = _fg;
-    ent[bg] = _bg;
-  },
-  giveControls: function(ent, _controlMap) {
-    ent[ctrl] = _controlMap;
-  },
-  givePathing: function(ent, _pathAlg, _pathTopology) {
-    ent[pathAlg] = _pathAlg;
-    ent[pathTopology] = _pathTopology;
-  }
-};
-
-function createPlayer() {
-  ent = newUUID();
-  entities[ent] = {};
-  giveName(entities[ent], 'Player');
-  giveType(entities[ent], 'actor');
-  giveForm(entities[ent], '@', playerFg, playerFg);
-  giveControls(entities[ent], controlMap);
-};
-
-function createPedro() {
-  ent = newUUID();
-  entities[ent] = {};
-  giveName(entities[ent], 'Pedro');
-  giveType(entities[ent], 'actor');
-  giveForm(entities[ent], pedroChar, pedroFg, pedroFg);
-  givePathing(entities[ent], pedroPathAlg, pedroTopology);
-};
-
-
 export var Game = {
   display: null,
   map: {},
