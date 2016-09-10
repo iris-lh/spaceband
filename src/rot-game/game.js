@@ -48,7 +48,6 @@ var cfg = {
 };
 
 
-
 var cmp = {
   giveName: function(ent, _name='') {
     ent[name] = _name;
@@ -70,6 +69,23 @@ var cmp = {
   }
 };
 
+createPlayer = function() {
+  ent = newUUID();
+  entities[ent] = {};
+  giveName(entities[ent], "Player");
+  giveType(entities[ent], "actor");
+  giveForm(entities[ent], "@", playerFg, playerFg);
+  giveControls(entities[ent], controlMap);
+};
+
+createPedro = function() {
+  ent = newUUID();
+  entities[ent] = {};
+  giveName(entities[ent], "Pedro");
+  giveType(entities[ent], "actor");
+  giveForm(entities[ent], pedroChar, pedroFg, pedroFg);
+  givePathing(entities[ent], pedroPathAlg, pedroTopology);
+};
 
 
 var tiles = {
