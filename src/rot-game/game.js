@@ -4,7 +4,7 @@ import { ROT } from './rot'
 
 function newUUID(){
   var d = new Date().getTime();
-  if(window.performance && typeof window.performance.now === "function"){
+  if(window.performance && typeof window.performance.now === 'function'){
     d += performance.now(); //use high-precision timer if available
   }
   var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -26,22 +26,22 @@ var cfg = {
   mapWidth:      80,
   fontSize:      20,
 
-  floorChar:     "\u22C5",
-  floorFg:       "#999",
-  floorBg:       "#111",
+  floorChar:     '\u22C5',
+  floorFg:       '#999',
+  floorBg:       '#111',
 
-  playerChar:    "@",
-  playerFg:      "#ff0",
-  playerBg:      "#111",
+  playerChar:    '@',
+  playerFg:      '#ff0',
+  playerBg:      '#111',
 
-  boxChar:       "\u2187",
-  boxFg:         "#B84",
-  boxBg:         "#111",
+  boxChar:       '\u2187',
+  boxFg:         '#B84',
+  boxBg:         '#111',
   numOfBoxes:    10,
 
-  pedroChar:     "\u229A",
-  pedroFg:       "red",
-  pedroBg:       "#111",
+  pedroChar:     '\u229A',
+  pedroFg:       'red',
+  pedroBg:       '#111',
   pedroTopology: 4,
   pedroPathAlg:  ROT.Path.Dijkstra
 
@@ -72,17 +72,17 @@ var cmp = {
 createPlayer = function() {
   ent = newUUID();
   entities[ent] = {};
-  giveName(entities[ent], "Player");
-  giveType(entities[ent], "actor");
-  giveForm(entities[ent], "@", playerFg, playerFg);
+  giveName(entities[ent], 'Player');
+  giveType(entities[ent], 'actor');
+  giveForm(entities[ent], '@', playerFg, playerFg);
   giveControls(entities[ent], controlMap);
 };
 
 createPedro = function() {
   ent = newUUID();
   entities[ent] = {};
-  giveName(entities[ent], "Pedro");
-  giveType(entities[ent], "actor");
+  giveName(entities[ent], 'Pedro');
+  giveType(entities[ent], 'actor');
   giveForm(entities[ent], pedroChar, pedroFg, pedroFg);
   givePathing(entities[ent], pedroPathAlg, pedroTopology);
 };
@@ -155,6 +155,7 @@ export var Game = {
   },
 
   _drawTile: function(x, y, tile) {
+    console.log('_drawTile activated')
     this.display.draw(x, y, tile.char, tile.fg, tile.bg);
   },
 
@@ -166,7 +167,7 @@ export var Game = {
     var digCallback = function(x, y, value) {
         if (value) { return; }
 
-      var key = x+","+y;
+      var key = x+','+y;
       this.map[key] = tiles.floor;
       freeCells.push(key);
     }
@@ -182,7 +183,7 @@ export var Game = {
   _createActor: function(what, freeCells) {
     var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
     var key = freeCells.splice(index, 1)[0];
-    var parts = key.split(",");
+    var parts = key.split(',');
     var x = parseInt(parts[0]);
     var y = parseInt(parts[1]);
     return new what(x, y);
@@ -199,7 +200,7 @@ export var Game = {
 
   _drawWholeMap: function() {
     for (var key in this.map) {
-      var parts = key.split(",");
+      var parts = key.split(',');
       var x = parseInt(parts[0]);
       var y = parseInt(parts[1]);
       if (this.map[key].char == tiles.box.char) {
@@ -225,7 +226,7 @@ Player.prototype.getY = function() { return this._y; }
 
 Player.prototype.act = function() {
   Game.engine.lock();
-  window.addEventListener("keydown", this);
+  window.addEventListener('keydown', this);
 }
 
 Player.prototype.handleEvent = function(e) {
@@ -252,23 +253,23 @@ Player.prototype.handleEvent = function(e) {
   var dir = ROT.DIRS[8][keyMap[code]];
   var newX = this._x + dir[0];
   var newY = this._y + dir[1];
-  var newKey = newX + "," + newY;
+  var newKey = newX + ',' + newY;
   if (!(newKey in Game.map)) { return; }
 
   //put the floor back where it was
-  var coordinates = this._x + "," + this._y;
+  var coordinates = this._x + ',' + this._y;
   if (Game.map[coordinates] == cfg.boxChar) {
-    //Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y], cfg.boxFg, cfg.floorBg);
+    //Game.display.draw(this._x, this._y, Game.map[this._x+','+this._y], cfg.boxFg, cfg.floorBg);
     Game._drawTile(this._x, this._y, Game.map[coordinates])
   } else {
-    //Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y], cfg.floorFg, cfg.floorBg);
+    //Game.display.draw(this._x, this._y, Game.map[this._x+','+this._y], cfg.floorFg, cfg.floorBg);
     Game._drawTile(this._x, this._y, Game.map[coordinates]);
   }
 
   this._x = newX;
   this._y = newY;
   this._draw();
-  window.removeEventListener("keydown", this);
+  window.removeEventListener('keydown', this);
   Game.engine.unlock();
 }
 
@@ -278,15 +279,15 @@ Player.prototype._draw = function() {
 }
 
 Player.prototype._checkBox = function() {
-  var key = this._x + "," + this._y;
+  var key = this._x + ',' + this._y;
   if (Game.map[key].char != tiles.box.char) {
-    alert("There is no box here!");
+    alert('There is no box here!');
   } else if (key == Game.ananas) {
-    alert("Hooray! You found an ananas and won this game.");
+    alert('Hooray! You found an ananas and won this game.');
     Game.engine.lock();
-    window.removeEventListener("keydown", this);
+    window.removeEventListener('keydown', this);
   } else {
-    alert("This box is empty :-(");
+    alert('This box is empty :-(');
   }
 }
 
@@ -303,7 +304,7 @@ Pedro.prototype.act = function() {
   var y = Game.player.getY();
 
   var passableCallback = function(x, y) {
-      return (x+","+y in Game.map);
+      return (x+','+y in Game.map);
   }
   var pather = new cfg.pedroPathAlg(x, y, passableCallback, {topology:cfg.pedroTopology});
 
@@ -317,18 +318,18 @@ Pedro.prototype.act = function() {
   if (path.length <= 1) {
     this._draw();
     Game.engine.lock();
-    alert("Game over - you were captured by Pedro!");
+    alert('Game over - you were captured by Pedro!');
   } else {
     x = path[0][0];
     y = path[0][1];
 
     //put the floor back where it was
-    var coordinates = this._x + "," + this._y;
+    var coordinates = this._x + ',' + this._y;
     if (Game.map[coordinates].char == tiles.box.char) {
-      //Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y], cfg.boxFg, cfg.floorBg);
+      //Game.display.draw(this._x, this._y, Game.map[this._x+','+this._y], cfg.boxFg, cfg.floorBg);
       Game._drawTile(this._x, this._y, Game.map[coordinates]);
     } else {
-      //Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y], cfg.floorFg, cfg.floorBg);
+      //Game.display.draw(this._x, this._y, Game.map[this._x+','+this._y], cfg.floorFg, cfg.floorBg);
       Game._drawTile(this._x, this._y, Game.map[coordinates]);
     }
 
