@@ -1,25 +1,22 @@
-import { cfg } from './config'
-
 export var tiles = {
   floor: {
-    char: cfg.floorChar,
-    fg:   cfg.floorFg,
-    bg:   cfg.floorBg
+    char:  '\u22C5',
+    fg:    '#999',
+    bg:    '#111',
   },
   box: {
-    char: cfg.boxChar,
-    fg:   cfg.boxFg,
-    bg:   cfg.boxBg
-  },
-  pedro: {
-    char: cfg.pedroChar,
-    fg:   cfg.pedroFg,
-    bg:   cfg.pedroBg
+    char:  '\u2187',
+    fg:    '#B84',
+    bg:    '#111',
   },
   player: {
-    char: cfg.playerChar,
-    fg:   cfg.playerFg,
-    bg:   cfg.playerBg
+    char:  '@',
+    fg:    '#ff0',
+    bg:    '#111',
+  },
+  pedro: {
+    char:  '\u229A',
+    fg:    'red',
+    bg:    '#111',
   }
-};
-
+}
