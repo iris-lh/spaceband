@@ -105,5 +105,3 @@ export var Game = {
     }
   }
 }
-
-

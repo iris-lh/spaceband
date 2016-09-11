@@ -8,8 +8,6 @@ export var Pedro = function(game, x, y) {
   this._draw()
 }
 
-Pedro.prototype.getSpeed = function() { return 100 }
-
 Pedro.prototype.act = function() {
   var game = this._game
   var path = this._computePathToPlayer(game, cfg.pedroPathAlg, cfg.pedroTopology);
@@ -34,13 +32,13 @@ Pedro.prototype.act = function() {
 Pedro.prototype._computePathToPlayer = function(game, algorithm, topology) {
   var playerX = game.player.getX()
   var playerY = game.player.getY()
+  var path = []
 
   var passableCallback = function(targetX, targetY) {
       return (targetX+','+targetY in game.map)
   }
   var pathingAlgorithm = new algorithm(playerX, playerY, passableCallback, { topology: topology })
 
-  var path = []
   pathingAlgorithm.compute(this._x, this._y, function(x, y) {
       path.push([x, y])
   })

@@ -6,10 +6,20 @@ export var Player = function(game, x, y) {
   this._game = game
   this._x = x
   this._y = y
+  this._keyMap = {
+    38: 0,
+    33: 1,
+    39: 2,
+    34: 3,
+    40: 4,
+    35: 5,
+    37: 6,
+    36: 7
+  }
+
   this._draw()
 }
 
-Player.prototype.getSpeed = function() { return 100 }
 Player.prototype.getX = function() { return this._x }
 Player.prototype.getY = function() { return this._y }
 
@@ -25,33 +35,18 @@ Player.prototype.handleEvent = function(e) {
       return
   }
 
-  var keyMap = {}
-  keyMap[38] = 0
-  keyMap[33] = 1
-  keyMap[39] = 2
-  keyMap[34] = 3
-  keyMap[40] = 4
-  keyMap[35] = 5
-  keyMap[37] = 6
-  keyMap[36] = 7
-
   /* one of numpad directions? */
-  if (!(code in keyMap)) { return }
+  if (!(code in this._keyMap)) { return }
 
   /* is there a free space? */
-  var dir = ROT.DIRS[8][keyMap[code]]
+  var dir = ROT.DIRS[8][this._keyMap[code]]
   var newX = this._x + dir[0]
   var newY = this._y + dir[1]
   var newKey = newX + ',' + newY
   if (!(newKey in this._game.map)) { return }
 
   //put the floor back where it was
-  var coordinates = this._x + ',' + this._y
-  if (this._game.map[coordinates] == cfg.boxChar) {
-    this._game._drawTile(this._x, this._y, this._game.map[coordinates])
-  } else {
-    this._game._drawTile(this._x, this._y, this._game.map[coordinates])
-  }
+  this._game._drawTile(this._x, this._y, this._game.map[this._x + ',' + this._y])
 
   this._x = newX
   this._y = newY
