@@ -12,41 +12,42 @@ Pedro.prototype.getSpeed = function() { return 100 }
 
 Pedro.prototype.act = function() {
   var game = this._game
-  var x = game.player.getX()
-  var y = game.player.getY()
+  var path = this._computePathToPlayer(game, cfg.pedroPathAlg, cfg.pedroTopology);
 
-  var passableCallback = function(x, y) {
-      return (x+','+y in game.map)
+  if (path.length > 2) {
+    // redraw floor
+    game._drawTile(this._x, this._y, game.map[this._x + ',' + this._y])
+
+    // move!
+    this._x = path[0][0]
+    this._y = path[0][1]
   }
-  var pather = new cfg.pedroPathAlg(x, y, passableCallback, {topology:cfg.pedroTopology})
 
-  var path = []
-  var pathCallback = function(x, y) {
-      path.push([x, y])
-  }
-  pather.compute(this._x, this._y, pathCallback)
+  this._draw()
 
-  path.shift()
   if (path.length <= 1) {
-    this._draw()
     game.engine.lock()
     alert('Game over - you were captured by Pedro!')
-  } else {
-    x = path[0][0]
-    y = path[0][1]
-
-    //put the floor back where it was
-    var coordinates = this._x + ',' + this._y
-    if (game.map[coordinates].char == tiles.box.char) {
-      game._drawTile(this._x, this._y, game.map[coordinates])
-    } else {
-      game._drawTile(this._x, this._y, game.map[coordinates])
-    }
-
-    this._x = x
-    this._y = y
-    this._draw()
   }
+}
+
+Pedro.prototype._computePathToPlayer = function(game, algorithm, topology) {
+  var playerX = game.player.getX()
+  var playerY = game.player.getY()
+
+  var passableCallback = function(targetX, targetY) {
+      return (targetX+','+targetY in game.map)
+  }
+  var pathingAlgorithm = new algorithm(playerX, playerY, passableCallback, { topology: topology })
+
+  var path = []
+  pathingAlgorithm.compute(this._x, this._y, function(x, y) {
+      path.push([x, y])
+  })
+
+  path.shift()
+
+  return path
 }
 
 Pedro.prototype._draw = function() {
