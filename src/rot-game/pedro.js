@@ -5,13 +5,14 @@ export var Pedro = function(game, tile, x, y) {
   this._tile = tile
   this._x = x
   this._y = y
+  this._target = game.player
 
   this._draw()
 }
 
-Pedro.prototype.act = function() { 
+Pedro.prototype.act = function() {
   var game = this._game
-  var path = this._computePathTo(game.map, game.player, cfg.pedroPathAlg, cfg.pedroTopology);
+  var path = this._computePathTo(game.map, this._target, cfg.pedroPathAlg, cfg.pedroTopology);
   var nextStep = path[0]
 
   if (path.length >= 2) {
