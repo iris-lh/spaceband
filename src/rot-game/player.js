@@ -9,14 +9,20 @@ export var Player = function(game, tile, x, y) {
   this._x = x
   this._y = y
   this._keyMap = {
-           [ROT.VK_UP]: 0,
-      [ROT.VK_PAGE_UP]: 1,
-        [ROT.VK_RIGHT]: 2,
-    [ROT.VK_PAGE_DOWN]: 3,
-         [ROT.VK_DOWN]: 4,
-          [ROT.VK_END]: 5,
-         [ROT.VK_LEFT]: 6,
-         [ROT.VK_HOME]: 7
+    dirs: {
+             [ROT.VK_UP]: 0,
+        [ROT.VK_PAGE_UP]: 1,
+          [ROT.VK_RIGHT]: 2,
+      [ROT.VK_PAGE_DOWN]: 3,
+           [ROT.VK_DOWN]: 4,
+            [ROT.VK_END]: 5,
+           [ROT.VK_LEFT]: 6,
+           [ROT.VK_HOME]: 7
+    },
+    checkBox: [
+      ROT.VK_RETURN,
+      ROT.VK_SPACE
+    ]
   }
 
   this._draw()
@@ -29,16 +35,17 @@ Player.prototype.act = function() {
 
 Player.prototype.handleEvent = function(e) {
   var code = e.keyCode
-  if (code == ROT.VK_RETURN || code == ROT.VK_SPACE) {
-      this._checkBox()
-      return
+  //if (code == ROT.VK_RETURN || code == ROT.VK_SPACE) {
+  if (_.includes(this._keyMap.checkBox, code)) {
+    this._checkBox(tiles.box.char)
+    return
   }
 
   /* one of numpad directions? */
-  if (!(code in this._keyMap)) { return }
+  if (!(code in this._keyMap.dirs)) { return }
 
   /* is there a free space? */
-  var dir = ROT.DIRS[8][this._keyMap[code]]
+  var dir = ROT.DIRS[8][this._keyMap.dirs[code]]
   var nextStep = [ this._x + dir[0], this._y + dir[1] ]
   var newKey = nextStep[0] + ',' + nextStep[1]
   if (newKey in this._game.map) {
