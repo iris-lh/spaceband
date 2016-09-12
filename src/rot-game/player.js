@@ -69,9 +69,9 @@ Player.prototype._draw = function() {
   this._game.drawTile(this._x, this._y, this._tile)
 }
 
-Player.prototype._checkBox = function() {
+Player.prototype._checkBox = function(box) {
   var key = this._x + ',' + this._y
-  if (this._game.map[key].char != tiles.box.char) {
+  if (this._game.map[key].char != box) {
     alert('There is no box here!')
   } else if (key == this._game.ananas) {
     alert('Hooray! You found an ananas and won this game.')
