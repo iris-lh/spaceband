@@ -1,54 +1,52 @@
 import { cfg } from './config'
+import { Actor } from './actor'
 
-export var Pedro = function(game, tile, x, y) {
-  this._game = game
-  this._tile = tile
-  this._x = x
-  this._y = y
-  this._target = game.player
+export class Pedro extends Actor {
 
-  this._draw()
-}
-
-Pedro.prototype.act = function() {
-  var game = this._game
-  var path = this._computePathTo(game.map, this._target, cfg.pedroPathAlg, cfg.pedroTopology);
-  var nextStep = path[0]
-
-  if (path.length >= 2) {
-    // redraw floor
-    game.drawTile(this._x, this._y, game.map[this._x + ',' + this._y])
-
-    // move!
-    this._x = nextStep[0]
-    this._y = nextStep[1]
-
-    this._draw()
-
-    // post move cleanup (non needed)
-  } else {
-    game.engine.lock()
-    alert('Game over - you were captured by Pedro!')
+  constructor(game, tile, x, y) {
+    super(game, tile, x, y)
+    this._target = game.player
   }
-}
 
-Pedro.prototype._computePathTo = function(map, target, algorithm, topology) {
-  var path = []
+  _processTurn() {
+    var game = this._game
+    var path = this._computePathTo(game.map, this._target, cfg.pedroPathAlg, cfg.pedroTopology);
+    var nextStep = path[0]
 
-  var passableCallback = function(targetX, targetY) {
-      return (targetX+','+targetY in map)
+    if (path.length >= 2) {
+      // redraw floor
+      game.drawTile(this._x, this._y, game.map[this._x + ',' + this._y])
+
+      // move!
+      this._x = nextStep[0]
+      this._y = nextStep[1]
+
+      this._draw()
+
+      // post move cleanup (non needed)
+    } else {
+      game.engine.lock()
+      alert('Game over - you were captured by Pedro!')
+    }
   }
-  var pathingAlgorithm = new algorithm(target._x, target._y, passableCallback, { topology: topology })
 
-  pathingAlgorithm.compute(this._x, this._y, function(x, y) {
-      path.push([x, y])
-  })
+  _computePathTo(map, target, algorithm, topology) {
+    var path = []
 
-  path.shift()
+    var passableCallback = function(targetX, targetY) {
+        return (targetX+','+targetY in map)
+    }
+    var pathingAlgorithm = new algorithm(
+      target._x, target._y,
+      passableCallback,
+      { topology: topology })
 
-  return path
-}
+    pathingAlgorithm.compute(this._x, this._y, function(x, y) {
+        path.push([x, y])
+    })
 
-Pedro.prototype._draw = function() {
-  this._game.drawTile(this._x, this._y, this._tile)
+    path.shift()
+
+    return path
+  }
 }
