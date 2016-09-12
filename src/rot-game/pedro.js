@@ -9,9 +9,9 @@ export var Pedro = function(game, tile, x, y) {
   this._draw()
 }
 
-Pedro.prototype.act = function() {
+Pedro.prototype.act = function() { 
   var game = this._game
-  var path = this._computePathToPlayer(game, cfg.pedroPathAlg, cfg.pedroTopology);
+  var path = this._computePathTo(game.map, game.player, cfg.pedroPathAlg, cfg.pedroTopology);
   var nextStep = path[0]
 
   if (path.length >= 2) {
@@ -31,15 +31,13 @@ Pedro.prototype.act = function() {
   }
 }
 
-Pedro.prototype._computePathToPlayer = function(game, algorithm, topology) {
-  var playerX = game.player.getX()
-  var playerY = game.player.getY()
+Pedro.prototype._computePathTo = function(map, target, algorithm, topology) {
   var path = []
 
   var passableCallback = function(targetX, targetY) {
-      return (targetX+','+targetY in game.map)
+      return (targetX+','+targetY in map)
   }
-  var pathingAlgorithm = new algorithm(playerX, playerY, passableCallback, { topology: topology })
+  var pathingAlgorithm = new algorithm(target._x, target._y, passableCallback, { topology: topology })
 
   pathingAlgorithm.compute(this._x, this._y, function(x, y) {
       path.push([x, y])

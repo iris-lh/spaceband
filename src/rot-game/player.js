@@ -21,9 +21,6 @@ export var Player = function(game, tile, x, y) {
   this._draw()
 }
 
-Player.prototype.getX = function() { return this._x }
-Player.prototype.getY = function() { return this._y }
-
 Player.prototype.act = function() {
   this._game.engine.lock()
   window.addEventListener('keydown', this)
