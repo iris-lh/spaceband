@@ -48,8 +48,7 @@ export var Game = {
     }
   },
 
-  _drawTile(x, y, tile) {
-    console.log('_drawTile activated')
+  drawTile(x, y, tile) {
     this.display.draw(x, y, tile.char, tile.fg, tile.bg)
   },
 
@@ -70,17 +69,17 @@ export var Game = {
     this._generateBoxes(freeCells)
     this._drawWholeMap()
 
-    this.player = this._createActor(Player, freeCells)
-    this.pedro = this._createActor(Pedro, freeCells)
+    this.player = this._createActor(Player, tiles.player, freeCells)
+    this.pedro  = this._createActor(Pedro,  tiles.pedro,  freeCells)
   },
 
-  _createActor(what, freeCells) {
+  _createActor(what, tile, freeCells) {
     var index = Math.floor(ROT.RNG.getUniform() * freeCells.length)
     var key = freeCells.splice(index, 1)[0]
     var parts = key.split(',')
     var x = parseInt(parts[0])
     var y = parseInt(parts[1])
-    return new what(this, x, y)
+    return new what(this, tile, x, y)
   },
 
   _generateBoxes(freeCells) {
@@ -98,9 +97,9 @@ export var Game = {
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
       if (this.map[key].char == tiles.box.char) {
-        this._drawTile(x, y, tiles.box)
+        this.drawTile(x, y, tiles.box)
       } else {
-        this._drawTile(x, y, this.map[key])
+        this.drawTile(x, y, this.map[key])
       }
     }
   }

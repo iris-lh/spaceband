@@ -1,29 +1,31 @@
 import { cfg } from './config'
-import { tiles } from './tiles'
 
-export var Pedro = function(game, x, y) {
+export var Pedro = function(game, tile, x, y) {
   this._game = game
+  this._tile = tile
   this._x = x
   this._y = y
+
   this._draw()
 }
 
 Pedro.prototype.act = function() {
   var game = this._game
   var path = this._computePathToPlayer(game, cfg.pedroPathAlg, cfg.pedroTopology);
+  var nextStep = path[0]
 
-  if (path.length > 2) {
+  if (path.length >= 2) {
     // redraw floor
-    game._drawTile(this._x, this._y, game.map[this._x + ',' + this._y])
+    game.drawTile(this._x, this._y, game.map[this._x + ',' + this._y])
 
     // move!
-    this._x = path[0][0]
-    this._y = path[0][1]
-  }
+    this._x = nextStep[0]
+    this._y = nextStep[1]
 
-  this._draw()
+    this._draw()
 
-  if (path.length <= 1) {
+    // post move cleanup (non needed)
+  } else {
     game.engine.lock()
     alert('Game over - you were captured by Pedro!')
   }
@@ -49,5 +51,5 @@ Pedro.prototype._computePathToPlayer = function(game, algorithm, topology) {
 }
 
 Pedro.prototype._draw = function() {
-  this._game._drawTile(this._x, this._y, tiles.pedro)
+  this._game.drawTile(this._x, this._y, this._tile)
 }

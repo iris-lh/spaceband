@@ -2,8 +2,9 @@ import { ROT } from './rot'
 import { cfg } from './config'
 import { tiles } from './tiles'
 
-export var Player = function(game, x, y) {
+export var Player = function(game, tile, x, y) {
   this._game = game
+  this._tile = tile
   this._x = x
   this._y = y
   this._keyMap = {
@@ -40,23 +41,27 @@ Player.prototype.handleEvent = function(e) {
 
   /* is there a free space? */
   var dir = ROT.DIRS[8][this._keyMap[code]]
-  var newX = this._x + dir[0]
-  var newY = this._y + dir[1]
-  var newKey = newX + ',' + newY
-  if (!(newKey in this._game.map)) { return }
+  var nextStep = [ this._x + dir[0], this._y + dir[1] ]
+  var newKey = nextStep[0] + ',' + nextStep[1]
+  if (newKey in this._game.map) {
 
-  //put the floor back where it was
-  this._game._drawTile(this._x, this._y, this._game.map[this._x + ',' + this._y])
+    // redraw floor
+    this._game.drawTile(this._x, this._y, this._game.map[this._x + ',' + this._y])
 
-  this._x = newX
-  this._y = newY
-  this._draw()
-  window.removeEventListener('keydown', this)
-  this._game.engine.unlock()
+    // move!
+    this._x = nextStep[0]
+    this._y = nextStep[1]
+
+    this._draw()
+
+    // post move cleanup
+    window.removeEventListener('keydown', this)
+    this._game.engine.unlock()
+  }
 }
 
 Player.prototype._draw = function() {
-  this._game._drawTile(this._x, this._y, tiles.player)
+  this._game.drawTile(this._x, this._y, this._tile)
 }
 
 Player.prototype._checkBox = function() {
