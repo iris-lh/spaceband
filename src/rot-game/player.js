@@ -8,14 +8,14 @@ export var Player = function(game, tile, x, y) {
   this._x = x
   this._y = y
   this._keyMap = {
-    38: 0,
-    33: 1,
-    39: 2,
-    34: 3,
-    40: 4,
-    35: 5,
-    37: 6,
-    36: 7
+           [ROT.VK_UP]: 0,
+      [ROT.VK_PAGE_UP]: 1,
+        [ROT.VK_RIGHT]: 2,
+    [ROT.VK_PAGE_DOWN]: 3,
+         [ROT.VK_DOWN]: 4,
+          [ROT.VK_END]: 5,
+         [ROT.VK_LEFT]: 6,
+         [ROT.VK_HOME]: 7
   }
 
   this._draw()
@@ -28,7 +28,7 @@ Player.prototype.act = function() {
 
 Player.prototype.handleEvent = function(e) {
   var code = e.keyCode
-  if (code == 13 || code == 32) {
+  if (code == ROT.VK_RETURN || code == ROT.VK_SPACE) {
       this._checkBox()
       return
   }
