@@ -2,7 +2,7 @@ import { ROT } from './rot'
 import { cfg } from './config'
 import { tiles } from './tiles'
 import { Player } from './player'
-import { Pedro } from './pedro'
+import { Bandito } from './bandito'
 
 
 export var Game = {
@@ -33,6 +33,7 @@ export var Game = {
     var scheduler = new ROT.Scheduler.Simple()
     scheduler.add(this.player, true)
     scheduler.add(this.pedro, true)
+    scheduler.add(this.pablo, true)
 
     this.engine = new ROT.Engine(scheduler)
     this.engine.start()
@@ -70,7 +71,8 @@ export var Game = {
     this._drawWholeMap()
 
     this.player = this._createActor(Player, tiles.player, freeCells)
-    this.pedro  = this._createActor(Pedro,  tiles.pedro,  freeCells)
+    this.pedro  = this._createActor(Bandito,  tiles.pedro,  freeCells)
+    this.pablo  = this._createActor(Bandito,  tiles.pablo,  freeCells)
   },
 
   _createActor(what, tile, freeCells) {

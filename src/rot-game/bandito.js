@@ -1,7 +1,7 @@
 import { cfg } from './config'
 import { Actor } from './actor'
 
-export class Pedro extends Actor {
+export class Bandito extends Actor {
 
   constructor(game, tile, x, y) {
     super(game, tile, x, y)
@@ -26,7 +26,7 @@ export class Pedro extends Actor {
       // post move cleanup (non needed)
     } else {
       game.engine.lock()
-      alert('Game over - you were captured by Pedro!')
+      alert('Game over - you were captured by '+this._tile.name+'!')
     }
   }
 
