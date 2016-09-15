@@ -22,6 +22,8 @@ export class Player extends Actor {
       // move!
       this._x += dx
       this._y += dy
+      this._game.camera.x -= dx
+      this._game.camera.y -= dy
 
       this._draw()
 

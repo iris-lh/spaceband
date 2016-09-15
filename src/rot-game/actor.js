@@ -5,7 +5,7 @@ export class Actor {
     this._x = x
     this._y = y
 
-    this._draw()
+    //this._draw()
   }
 
   act() {
@@ -13,7 +13,10 @@ export class Actor {
   }
 
   _draw() {
-    this._game.drawTile(this._x, this._y, this._tile)
+    this._game.drawTile(
+      this._x + this._game.camera.x,
+      this._y + this._game.camera.y,
+      this._tile
+    )
   }
 }
-

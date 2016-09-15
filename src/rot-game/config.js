@@ -6,11 +6,9 @@ export var cfg = {
   mapWidth:      80,
   fontSize:      20,
 
-  numOfBoxes:    10,
+  numOfBoxes:    5,
 
   pedroTopology: 4,
   pedroPathAlg:  ROT.Path.Dijkstra
 
 };
-
-
