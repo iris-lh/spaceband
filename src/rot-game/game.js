@@ -33,7 +33,7 @@ export var Game = {
     var scheduler = new ROT.Scheduler.Simple()
     scheduler.add(this.player, true)
     scheduler.add(this.pedro, true)
-    scheduler.add(this.pablo, true)
+    //scheduler.add(this.pablo, true)
 
     this.engine = new ROT.Engine(scheduler)
     this.engine.start()
@@ -72,7 +72,7 @@ export var Game = {
 
     this.player = this._createActor(Player, tiles.player, freeCells)
     this.pedro  = this._createActor(Bandito,  tiles.pedro,  freeCells)
-    this.pablo  = this._createActor(Bandito,  tiles.pablo,  freeCells)
+    //this.pablo  = this._createActor(Bandito,  tiles.pablo,  freeCells)
   },
 
   _createActor(what, tile, freeCells) {
