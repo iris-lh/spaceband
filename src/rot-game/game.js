@@ -16,11 +16,19 @@ export var Game = {
   entities: {},
 
   init(electronRemote) {
+    this.camera = {
+      x: 0,
+      y: 0
+    }
+
+    this.tempWidth = 30
+    this.tempHeight = 30
+
     this.app = electronRemote
     var win = this._gameWindow()
     this.display = new ROT.Display({
-      width:            win.width,
-      height:           win.height,
+      width:            this.tempWidth,
+      height:           this. tempHeight,
       spacing:          1,
       forceSquareRatio: true,
       fontSize:         cfg.fontSize,
@@ -55,7 +63,7 @@ export var Game = {
 
   _generateMap() {
     var win = this._gameWindow()
-    var digger = new ROT.Map.Digger(win.width, win.height)
+    var digger = new ROT.Map.Digger(this.tempWidth, this.tempHeight)
     var freeCells = []
 
     var digCallback = function(x, y, value) {
