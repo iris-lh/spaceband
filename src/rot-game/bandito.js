@@ -10,7 +10,7 @@ export class Bandito extends Actor {
 
   _processTurn() {
     var game = this._game
-    var path = this._computePathTo(game.map, this._target, cfg.pedroPathAlg, cfg.pedroTopology);
+    var path = this._computePathTo(game.map, this._target, cfg.pedroPathAlg, cfg.pedroTopology)
     var nextStep = path[0]
 
     if (path.length >= 2) {
