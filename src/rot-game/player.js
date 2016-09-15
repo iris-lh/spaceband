@@ -10,8 +10,9 @@ export class Player extends Actor {
     window.addEventListener('keydown', this)
   }
 
-  _processTurn(nextStep) {
-    var newCoords = nextStep[0] + ',' + nextStep[1]
+  _processTurn(dx, dy) {
+    //var newCoords = nextStep[0] + ',' + nextStep[1]
+    var newCoords = [ this._x + dx, this._y + dy ]
 
     if (newCoords in this._game.map) {
 
@@ -19,8 +20,8 @@ export class Player extends Actor {
       this._game.drawTile(this._x, this._y, this._game.map[this._x + ',' + this._y])
 
       // move!
-      this._x = nextStep[0]
-      this._y = nextStep[1]
+      this._x += dx
+      this._y += dy
 
       this._draw()
 
@@ -55,10 +56,9 @@ export class Player extends Actor {
 
     /* is there a free space? */
     var dir = ROT.DIRS[8][this._keyMap.dirs[code]]
-    var nextStep = [ this._x + dir[0], this._y + dir[1] ]
-    this._processTurn(nextStep)
-  }
 
+    this._processTurn(dir[0], dir[1])
+  }
 }
 
 Player.prototype._keyMap = {
@@ -77,4 +77,3 @@ Player.prototype._keyMap = {
     ROT.VK_SPACE
   ]
 }
-
