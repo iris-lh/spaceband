@@ -3,6 +3,8 @@ import { ROT } from './rot'
 import { tiles } from './tiles'
 import { Actor } from './actor'
 
+
+
 export class Player extends Actor {
 
   act() {
@@ -14,7 +16,6 @@ export class Player extends Actor {
     var newCoords = [ this._x + dx, this._y + dy ]
 
     if (newCoords in this._game.map) {
-
       // move!
       this._x += dx
       this._y += dy

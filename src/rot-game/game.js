@@ -5,6 +5,7 @@ import { Player } from './player'
 import { Bandito } from './bandito'
 
 
+
 export var Game = {
   display: null,
   map: {},
@@ -82,7 +83,6 @@ export var Game = {
     }
   },
 
-
   drawTile(x, y, tile) {
     this.display.draw(x, y, tile.char, tile.fg, tile.bg)
   },
@@ -125,7 +125,6 @@ export var Game = {
     this.entities.push(entity)
     return entity
   },
-
 
   _generateBoxes(freeCells) {
     for (var i=0;i<cfg.numOfBoxes;i++) {

@@ -1,6 +1,8 @@
 import { cfg } from './config'
 import { Actor } from './actor'
 
+
+
 export class Bandito extends Actor {
 
   constructor(game, tile, x, y) {
@@ -14,7 +16,6 @@ export class Bandito extends Actor {
     var nextStep = path[0]
 
     if (path.length >= 2) {
-
       // move!
       this._x = nextStep[0]
       this._y = nextStep[1]
