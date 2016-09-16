@@ -15,9 +15,6 @@ export class Player extends Actor {
 
     if (newCoords in this._game.map) {
 
-      // redraw floor
-      //this._game.drawTile(this._x, this._y, this._game.map[this._x + ',' + this._y])
-
       // move!
       this._x += dx
       this._y += dy

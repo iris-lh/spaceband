@@ -64,12 +64,13 @@ export var Game = {
   },
 
   act() {
+    //this.handleActions()
     this._drawWholeMap()
-
-    this.drawEntities(this.entities)
+    this.drawEntities()
   },
 
-  drawEntities(entities) {
+  drawEntities() {
+    var entities = this.entities
     for (var ent in entities) {
       if (entities[ent].isEntity) {
         this.drawTile(
@@ -121,8 +122,10 @@ export var Game = {
 
     var entity = new what(this, tile, x, y)
 
+    this.entities.push(entity)
     return entity
   },
+
 
   _generateBoxes(freeCells) {
     for (var i=0;i<cfg.numOfBoxes;i++) {
