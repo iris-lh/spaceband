@@ -11,7 +11,6 @@ export class Player extends Actor {
   }
 
   _processTurn(dx, dy) {
-    //var newCoords = nextStep[0] + ',' + nextStep[1]
     var newCoords = [ this._x + dx, this._y + dy ]
 
     if (newCoords in this._game.map) {
@@ -25,8 +24,6 @@ export class Player extends Actor {
       this._game.camera.x -= dx
       this._game.camera.y -= dy
 
-      this._draw()
-
       // post move cleanup
       window.removeEventListener('keydown', this)
       this._game.engine.unlock()
@@ -38,7 +35,7 @@ export class Player extends Actor {
     if (this._game.map[key].char != box) {
       alert('There is no box here!')
     } else if (key == this._game.ananas) {
-      alert('Hooray! You found an ananas and won this game.')
+      alert('Hooray! You found the ananas and won this game.')
       this._game.engine.lock()
       window.removeEventListener('keydown', this)
     } else {

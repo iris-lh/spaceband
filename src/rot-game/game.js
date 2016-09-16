@@ -14,7 +14,7 @@ export var Game = {
   pedro: null,
   ananas: null,
 
-  entities: {},
+  entities: [],
 
   init(electronRemote) {
 
@@ -43,12 +43,14 @@ export var Game = {
     var scheduler = new ROT.Scheduler.Simple()
     scheduler.add(this.player, true)
     scheduler.add(this.pedro, true)
-    //scheduler.add(this.pablo, true)
 
     scheduler.add(this, true)
 
     this.engine = new ROT.Engine(scheduler)
     this.engine.start()
+
+    this.drawEntities(this.entities)
+
   },
 
   _gameWindow() {
@@ -60,6 +62,25 @@ export var Game = {
       pixelHeight: gameWindow.height
     }
   },
+
+  act() {
+    this._drawWholeMap()
+
+    this.drawEntities(this.entities)
+  },
+
+  drawEntities(entities) {
+    for (var ent in entities) {
+      if (entities[ent].isEntity) {
+        this.drawTile(
+          entities[ent]._x + this.camera.x,
+          entities[ent]._y + this.camera.y,
+          entities[ent]._tile
+        )
+      }
+    }
+  },
+
 
   drawTile(x, y, tile) {
     this.display.draw(x, y, tile.char, tile.fg, tile.bg)
@@ -83,7 +104,8 @@ export var Game = {
 
     this.player = this._createActor(Player, tiles.player, freeCells)
     this.pedro  = this._createActor(Bandito,  tiles.pedro,  freeCells)
-    //this.pablo  = this._createActor(Bandito,  tiles.pablo,  freeCells)
+    this.entities.push(this.player)
+    this.entities.push(this.pedro)
 
     this.camera.x = -this.player._x + Math.floor(this.tempWidth/2)
     this.camera.y = -this.player._y + Math.floor(this.tempHeight/2)
@@ -96,7 +118,10 @@ export var Game = {
     var parts = coords.split(',')
     var x = parseInt(parts[0])
     var y = parseInt(parts[1])
-    return new what(this, tile, x, y)
+
+    var entity = new what(this, tile, x, y)
+
+    return entity
   },
 
   _generateBoxes(freeCells) {
@@ -104,27 +129,17 @@ export var Game = {
       var index = Math.floor(ROT.RNG.getUniform() * freeCells.length)
       var coords = freeCells.splice(index, 1)[0]
       this.map[coords] = tiles.box
-      if (!i) { this.ananas = coords } /* first box contains an ananas */
+      if (!i) { this.ananas = coords } /* first box contains the ananas */
     }
   },
 
   _drawWholeMap() {
     this.display.clear()
-    console.log('drawing map')
     for (var coords in this.map) {
       var parts = coords.split(',')
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
       this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
     }
-  },
-
-  act() {
-    this._drawWholeMap()
-
-    this.player._draw()
-
-
-    this.pedro._draw()
   }
 }

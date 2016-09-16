@@ -21,8 +21,6 @@ export class Bandito extends Actor {
       this._x = nextStep[0]
       this._y = nextStep[1]
 
-      this._draw()
-
       // post move cleanup (non needed)
     } else {
       game.engine.lock()
