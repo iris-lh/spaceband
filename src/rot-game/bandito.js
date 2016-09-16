@@ -15,7 +15,7 @@ export class Bandito extends Actor {
 
     if (path.length >= 2) {
       // redraw floor
-      game.drawTile(this._x, this._y, game.map[this._x + ',' + this._y])
+      //game.drawTile(this._x, this._y, game.map[this._x + ',' + this._y])
 
       // move!
       this._x = nextStep[0]
