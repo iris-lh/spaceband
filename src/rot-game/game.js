@@ -1,4 +1,4 @@
-import { ROT } from './rot'
+import { ROT } from './vendor/rot'
 import { cfg } from './config'
 import { tiles } from './tiles'
 import { Player } from './player'

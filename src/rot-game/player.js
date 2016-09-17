@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { ROT } from './rot'
+import { ROT } from './vendor/rot'
 import { tiles } from './tiles'
 import { Actor } from './actor'
 
