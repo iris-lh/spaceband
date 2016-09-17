@@ -39,19 +39,21 @@ export var Game = {
     })
     document.body.appendChild(this.display.getContainer())
 
+    this.scheduler = new ROT.Scheduler.Simple()
+
     this._generateMap()
 
-    var scheduler = new ROT.Scheduler.Simple()
-    scheduler.add(this.player, true)
-    scheduler.add(this.pedro, true)
+    this.scheduler.add(this, true)
 
-    scheduler.add(this, true)
-
-    this.engine = new ROT.Engine(scheduler)
+    this.engine = new ROT.Engine(this.scheduler)
     this.engine.start()
 
-    this.drawEntities(this.entities)
+    this.render()
 
+  },
+
+  act() {
+    this.render()
   },
 
   _gameWindow() {
@@ -62,12 +64,6 @@ export var Game = {
       pixelWidth: gameWindow.width,
       pixelHeight: gameWindow.height
     }
-  },
-
-  act() {
-    //this.handleActions()
-    this._drawWholeMap()
-    this.drawEntities()
   },
 
   drawEntities() {
@@ -104,13 +100,10 @@ export var Game = {
     this._generateBoxes(freeCells)
 
     this.player = this._createActor(Player, tiles.player, freeCells)
-    this.pedro  = this._createActor(Bandito,  tiles.pedro,  freeCells)
-    this.entities.push(this.player)
-    this.entities.push(this.pedro)
+    this._createActor(Bandito,  tiles.pedro,  freeCells)
 
     this.camera.x = -this.player._x + Math.floor(this.tempWidth/2)
     this.camera.y = -this.player._y + Math.floor(this.tempHeight/2)
-    this._drawWholeMap()
   },
 
   _createActor(what, tile, freeCells) {
@@ -123,6 +116,7 @@ export var Game = {
     var entity = new what(this, tile, x, y)
 
     this.entities.push(entity)
+    this.scheduler.add(entity, true)
     return entity
   },
 
@@ -135,7 +129,7 @@ export var Game = {
     }
   },
 
-  _drawWholeMap() {
+  render() {
     this.display.clear()
     for (var coords in this.map) {
       var parts = coords.split(',')
@@ -143,5 +137,6 @@ export var Game = {
       var y = parseInt(parts[1])
       this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
     }
+    this.drawEntities()
   }
 }
