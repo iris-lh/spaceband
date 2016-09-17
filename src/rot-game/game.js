@@ -9,6 +9,7 @@ import { Bandito } from './bandito'
 export var Game = {
   display: null,
   map: {},
+  freecells: [],
   engine: null,
   player: null,
   pedro: null,
@@ -17,19 +18,12 @@ export var Game = {
   entities: [],
 
   init(electronRemote) {
+    this.app = electronRemote
 
     this.tempWidth = 50
     this.tempHeight = 30
 
-    this.camera = {
-      init(x, y) {
-        this.x = x
-        this.y = y
-      }
-    }
 
-    this.app = electronRemote
-    var win = this._gameWindow()
     this.display = new ROT.Display({
       width:            this.tempWidth,
       height:           this.tempHeight,
@@ -42,7 +36,16 @@ export var Game = {
 
     this.scheduler = new ROT.Scheduler.Simple()
 
-    this._generateMap()
+    this.freeCells = this._generateMap()
+    this.player = this._createActor(Player, tiles.player, this.freeCells)
+    this._createActor(Bandito,  tiles.pedro,  this.freeCells)
+
+    this.camera = {
+      init(x, y) {
+        this.x = x
+        this.y = y
+      }
+    }
     this.camera.init(
       -this.player._x + Math.floor(this.tempWidth/2),
       -this.player._y + Math.floor(this.tempHeight/2)
@@ -54,7 +57,6 @@ export var Game = {
     this.engine.start()
 
     this.render()
-
   },
 
   act() {
@@ -90,7 +92,7 @@ export var Game = {
 
   _generateMap() {
     var win = this._gameWindow()
-    var digger = new ROT.Map.Digger(50, 50, {roomWidth:[3,7], roomHeight:[3,7],dugPercentage:0.3})
+    var digger = new ROT.Map.Digger(cfg.mapWidth, cfg.mapHeight, {roomWidth:[3,7], roomHeight:[3,7],dugPercentage:0.3})
     var freeCells = []
 
     var digCallback = function(x, y, value) {
@@ -104,10 +106,8 @@ export var Game = {
 
     this._generateBoxes(freeCells)
 
-    this.player = this._createActor(Player, tiles.player, freeCells)
-    this._createActor(Bandito,  tiles.pedro,  freeCells)
+    return freeCells
   },
-
 
   _createActor(what, tile, freeCells) {
     var index = Math.floor(ROT.RNG.getUniform() * freeCells.length)
