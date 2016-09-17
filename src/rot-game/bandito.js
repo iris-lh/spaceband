@@ -1,6 +1,8 @@
 import { cfg } from './config'
 import { Actor } from './actor'
 
+
+
 export class Bandito extends Actor {
 
   constructor(game, tile, x, y) {
@@ -10,18 +12,13 @@ export class Bandito extends Actor {
 
   _processTurn() {
     var game = this._game
-    var path = this._computePathTo(game.map, this._target, cfg.pedroPathAlg, cfg.pedroTopology);
+    var path = this._computePathTo(game.map, this._target, cfg.pedroPathAlg, cfg.pedroTopology)
     var nextStep = path[0]
 
     if (path.length >= 2) {
-      // redraw floor
-      game.drawTile(this._x, this._y, game.map[this._x + ',' + this._y])
-
       // move!
       this._x = nextStep[0]
       this._y = nextStep[1]
-
-      this._draw()
 
       // post move cleanup (non needed)
     } else {
