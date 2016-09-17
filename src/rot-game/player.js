@@ -43,34 +43,17 @@ export class Player extends Actor {
 
   handleEvent(e) {
     var code = e.keyCode
-    if (_.includes(this._keyMap.checkBoxKeys, code)) {
+    if (_.includes(this._game.keyMap.checkBoxKeys, code)) {
       this._checkBox(tiles.box.char)
       return
     }
 
     /* one of numpad directions? */
-    if (!(code in this._keyMap.dirs)) { return }
+    if (!(code in this._game.keyMap.dirs)) { return }
 
     /* is there a free space? */
-    var dir = ROT.DIRS[8][this._keyMap.dirs[code]]
+    var dir = ROT.DIRS[8][this._game.keyMap.dirs[code]]
 
     this._processTurn(dir[0], dir[1])
   }
-}
-
-Player.prototype._keyMap = {
-  dirs: {
-           [ROT.VK_UP]: 0,
-      [ROT.VK_PAGE_UP]: 1,
-        [ROT.VK_RIGHT]: 2,
-    [ROT.VK_PAGE_DOWN]: 3,
-         [ROT.VK_DOWN]: 4,
-          [ROT.VK_END]: 5,
-         [ROT.VK_LEFT]: 6,
-         [ROT.VK_HOME]: 7
-  },
-  checkBoxKeys: [
-    ROT.VK_RETURN,
-    ROT.VK_SPACE
-  ]
 }

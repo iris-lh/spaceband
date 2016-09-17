@@ -34,6 +34,8 @@ export var Game = {
     })
     document.body.appendChild(this.display.getContainer())
 
+    this.keyMap = cfg.keyMap
+
     this.scheduler = new ROT.Scheduler.Simple()
 
     this.freeCells = this._generateMap()
