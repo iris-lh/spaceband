@@ -10,7 +10,6 @@ export var Game = {
   display: null,
   map: {},
   engine: null,
-  camera: {},
   player: null,
   pedro: null,
   ananas: null,
@@ -23,8 +22,10 @@ export var Game = {
     this.tempHeight = 30
 
     this.camera = {
-      x: 0,
-      y: 0
+      init(x, y) {
+        this.x = x
+        this.y = y
+      }
     }
 
     this.app = electronRemote
@@ -42,6 +43,10 @@ export var Game = {
     this.scheduler = new ROT.Scheduler.Simple()
 
     this._generateMap()
+    this.camera.init(
+      -this.player._x + Math.floor(this.tempWidth/2),
+      -this.player._y + Math.floor(this.tempHeight/2)
+    )
 
     this.scheduler.add(this, true)
 
@@ -101,10 +106,8 @@ export var Game = {
 
     this.player = this._createActor(Player, tiles.player, freeCells)
     this._createActor(Bandito,  tiles.pedro,  freeCells)
-
-    this.camera.x = -this.player._x + Math.floor(this.tempWidth/2)
-    this.camera.y = -this.player._y + Math.floor(this.tempHeight/2)
   },
+
 
   _createActor(what, tile, freeCells) {
     var index = Math.floor(ROT.RNG.getUniform() * freeCells.length)
