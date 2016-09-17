@@ -138,7 +138,10 @@ export var Game = {
       var parts = coords.split(',')
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
-      this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
+
+      if ( (x > 0) && (x+this.camera.x < cfg.mapWidth) && (y > 0) && (y+this.camera.y < cfg.mapHeight) ) {
+        this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
+      }
     }
     this.drawEntities()
   }
