@@ -1,4 +1,4 @@
-import { ROT } from './rot'
+import { ROT } from './vendor/rot'
 import { cfg } from './config'
 import { tiles } from './tiles'
 import { Player } from './player'
@@ -9,8 +9,8 @@ import { Bandito } from './bandito'
 export var Game = {
   display: null,
   map: {},
+  freecells: [],
   engine: null,
-  camera: {},
   player: null,
   pedro: null,
   ananas: null,
@@ -18,17 +18,12 @@ export var Game = {
   entities: [],
 
   init(electronRemote) {
+    this.app = electronRemote
 
     this.tempWidth = 50
     this.tempHeight = 30
 
-    this.camera = {
-      x: 0,
-      y: 0
-    }
 
-    this.app = electronRemote
-    var win = this._gameWindow()
     this.display = new ROT.Display({
       width:            this.tempWidth,
       height:           this.tempHeight,
@@ -39,9 +34,24 @@ export var Game = {
     })
     document.body.appendChild(this.display.getContainer())
 
+    this.keyMap = cfg.keyMap
+
     this.scheduler = new ROT.Scheduler.Simple()
 
-    this._generateMap()
+    this.freeCells = this._generateMap()
+    this.player = this._createActor(Player, tiles.player, this.freeCells)
+    this._createActor(Bandito,  tiles.pedro,  this.freeCells)
+
+    this.camera = {
+      init(x, y) {
+        this.x = x
+        this.y = y
+      }
+    }
+    this.camera.init(
+      -this.player._x + Math.floor(this.tempWidth/2),
+      -this.player._y + Math.floor(this.tempHeight/2)
+    )
 
     this.scheduler.add(this, true)
 
@@ -49,7 +59,6 @@ export var Game = {
     this.engine.start()
 
     this.render()
-
   },
 
   act() {
@@ -85,7 +94,7 @@ export var Game = {
 
   _generateMap() {
     var win = this._gameWindow()
-    var digger = new ROT.Map.Digger(50, 50, {roomWidth:[3,7], roomHeight:[3,7],dugPercentage:0.3})
+    var digger = new ROT.Map.Digger(cfg.mapWidth, cfg.mapHeight, {roomWidth:[3,7], roomHeight:[3,7],dugPercentage:0.3})
     var freeCells = []
 
     var digCallback = function(x, y, value) {
@@ -99,11 +108,7 @@ export var Game = {
 
     this._generateBoxes(freeCells)
 
-    this.player = this._createActor(Player, tiles.player, freeCells)
-    this._createActor(Bandito,  tiles.pedro,  freeCells)
-
-    this.camera.x = -this.player._x + Math.floor(this.tempWidth/2)
-    this.camera.y = -this.player._y + Math.floor(this.tempHeight/2)
+    return freeCells
   },
 
   _createActor(what, tile, freeCells) {
@@ -135,7 +140,10 @@ export var Game = {
       var parts = coords.split(',')
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
-      this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
+
+      if ( (x > 0) && (x+this.camera.x < cfg.mapWidth) && (y > 0) && (y+this.camera.y < cfg.mapHeight) ) {
+        this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
+      }
     }
     this.drawEntities()
   }
