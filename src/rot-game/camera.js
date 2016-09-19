@@ -14,7 +14,7 @@ export class Camera {
     }
   }
 
-  update(subject=this.subject) {
+  update(subject=this.subject, mode='center') {
     this.subject = subject
     if (this.mode == 'center') {
       this.x = -this.subject.x + Math.floor(this.display.width/2),
