@@ -3,13 +3,13 @@ export class Actor {
     this.isEntity = true
     this._game = game
     this._tile = tile
-    this._x = x
-    this._y = y
+    this.x = x
+    this.y = y
     this.dx = 0
     this.dy = 0
   }
 
   act() {
-    this._processTurn()
+    //this._processTurn()
   }
 }

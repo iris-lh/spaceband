@@ -1,8 +1,10 @@
 import { ROT } from './vendor/rot'
 import { cfg } from './config'
 import { tiles } from './tiles'
+import { Camera } from './camera'
 import { Player } from './player'
 import { Bandito } from './bandito'
+import _ from 'lodash'
 
 
 
@@ -34,24 +36,17 @@ export var Game = {
     })
     document.body.appendChild(this.display.getContainer())
 
+    window.addEventListener('keydown', this)
+
     this.keyMap = cfg.keyMap
 
     this.scheduler = new ROT.Scheduler.Simple()
 
     this.freeCells = this._generateMap()
     this.player = this._createActor(Player, tiles.player, this.freeCells)
-    this._createActor(Bandito,  tiles.pedro,  this.freeCells)
+    //this._createActor(Bandito,  tiles.pedro,  this.freeCells)
 
-    this.camera = {
-      init(x, y) {
-        this.x = x
-        this.y = y
-      }
-    }
-    this.camera.init(
-      -this.player._x + Math.floor(this.tempWidth/2),
-      -this.player._y + Math.floor(this.tempHeight/2)
-    )
+    this.camera = new Camera(this.display, this.player)
 
     this.scheduler.add(this, true)
 
@@ -62,8 +57,37 @@ export var Game = {
   },
 
   act() {
+    this.engine.lock()
+    window.addEventListener('keydown', this)
+    this.moveEntities(this.entities)
+    this.camera.update()
     this.render()
   },
+
+
+
+  handleEvent(e) {
+    var code = e.keyCode
+
+    if (_.includes(this.keyMap.checkBoxKeys, code)) {
+      console.log('event: checkBox')
+      //this.player._checkBox(tiles.box.char)
+      return
+    }
+
+    /* one of numpad directions? */
+    if ((code in this.keyMap.dirs)) {
+      console.log('event: direction')
+      var dir = ROT.DIRS[8][this.keyMap.dirs[code]]
+      this.player.dx = dir[0]
+      this.player.dy = dir[1]
+    }
+
+    window.removeEventListener('keydown', this)
+    this.engine.unlock()
+  },
+
+
 
   _gameWindow() {
     var gameWindow = this.app.getCurrentWindow().getBounds()
@@ -78,11 +102,13 @@ export var Game = {
   moveEntities(entities) {
     for (var ent in entities) {
       if (entities[ent].isEntity) {
-        var newCoords = [ entities[ent]._x + dx, entities[ent]._y + dy ]
+        var newCoords = [ entities[ent].x + entities[ent].dx, entities[ent].y + entities[ent].dy ]
         if (newCoords in this.map) {
-          entities[ent]._x += entities[ent].dx
-          entities[ent]._y += entities[ent].dy
+          entities[ent].x += entities[ent].dx
+          entities[ent].y += entities[ent].dy
         }
+        entities[ent].dx = 0
+        entities[ent].dy = 0
       }
     }
   },
@@ -92,8 +118,8 @@ export var Game = {
     for (var ent in entities) {
       if (entities[ent].isEntity) {
         this.drawTile(
-          entities[ent]._x + this.camera.x,
-          entities[ent]._y + this.camera.y,
+          entities[ent].x + this.camera.x,
+          entities[ent].y + this.camera.y,
           entities[ent]._tile
         )
       }
