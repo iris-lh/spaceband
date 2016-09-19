@@ -55,5 +55,9 @@ export class Player extends Actor {
     var dir = ROT.DIRS[8][this._game.keyMap.dirs[code]]
 
     this._processTurn(dir[0], dir[1])
+    this.dx = dir[0]
+    this.dy = dir[1]
+
+    console.log(this.dx, this.dy)
   }
 }

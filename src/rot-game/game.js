@@ -75,6 +75,18 @@ export var Game = {
     }
   },
 
+  moveEntities(entities) {
+    for (var ent in entities) {
+      if (entities[ent].isEntity) {
+        var newCoords = [ entities[ent]._x + dx, entities[ent]._y + dy ]
+        if (newCoords in this.map) {
+          entities[ent]._x += entities[ent].dx
+          entities[ent]._y += entities[ent].dy
+        }
+      }
+    }
+  },
+
   drawEntities() {
     var entities = this.entities
     for (var ent in entities) {
@@ -98,7 +110,7 @@ export var Game = {
     var freeCells = []
 
     var digCallback = function(x, y, value) {
-        if (value) { return }
+      if (value) { return }
 
       var coords = x+','+y
       this.map[coords] = tiles.floor

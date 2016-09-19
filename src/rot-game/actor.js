@@ -5,6 +5,8 @@ export class Actor {
     this._tile = tile
     this._x = x
     this._y = y
+    this.dx = 0
+    this.dy = 0
   }
 
   act() {
