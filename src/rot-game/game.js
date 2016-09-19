@@ -64,8 +64,6 @@ export var Game = {
     this.render()
   },
 
-
-
   handleEvent(e) {
     var code = e.keyCode
 
@@ -86,8 +84,6 @@ export var Game = {
     window.removeEventListener('keydown', this)
     this.engine.unlock()
   },
-
-
 
   _gameWindow() {
     var gameWindow = this.app.getCurrentWindow().getBounds()
