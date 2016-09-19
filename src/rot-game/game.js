@@ -69,7 +69,7 @@ export var Game = {
 
     if (_.includes(this.keyMap.checkBoxKeys, code)) {
       console.log('event: checkBox')
-      //this.player._checkBox(tiles.box.char)
+      this.checkBox(tiles.box.char)
       return
     }
 
@@ -83,6 +83,19 @@ export var Game = {
 
     window.removeEventListener('keydown', this)
     this.engine.unlock()
+  },
+
+  checkBox(box) {
+    var key = this.player.x + ',' + this.player.y
+    if (this.map[key].char != box) {
+      alert('There is no box here!')
+    } else if (key == this.ananas) {
+      alert('Hooray! You found the ananas and won this game.')
+      this.engine.lock()
+      window.removeEventListener('keydown', this)
+    } else {
+      alert('This box is empty :-(')
+    }
   },
 
   _gameWindow() {
