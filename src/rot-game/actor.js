@@ -1,8 +1,9 @@
 export class Actor {
-  constructor(game, tile, x, y) {
+  constructor(game, tile, type, x, y) {
     this.isEntity = true
     this._game = game
-    this._tile = tile
+    this.tile = tile
+    this.type = type
     this.x = x
     this.y = y
     this.dx = 0

@@ -43,8 +43,8 @@ export var Game = {
     this.scheduler = new ROT.Scheduler.Simple()
 
     this.freeCells = this._generateMap()
-    this.player = this._createActor(Player, tiles.player, this.freeCells)
-    //this._createActor(Bandito,  tiles.pedro,  this.freeCells)
+    this.player = this._createActor(Player, tiles.player, 'player', this.freeCells)
+    //this._createActor(Bandito, tiles.pedro, 'bandito', this.freeCells)
 
     this.camera = new Camera(this.display, this.player)
 
@@ -129,7 +129,7 @@ export var Game = {
         this.drawTile(
           entities[ent].x + this.camera.x,
           entities[ent].y + this.camera.y,
-          entities[ent]._tile
+          entities[ent].tile
         )
       }
     }
