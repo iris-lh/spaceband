@@ -4,12 +4,7 @@ import { Actor } from './actor'
 
 
 export class Bandito extends Actor {
-
-  constructor(game, tile, x, y) {
-    super(game, tile, x, y)
-    this._target = game.player
-  }
-
+/*
   _processTurn() {
     var game = this._game
     var path = this._computePathTo(game.map, this._target, cfg.pedroPathAlg, cfg.pedroTopology)
@@ -46,4 +41,5 @@ export class Bandito extends Actor {
 
     return path
   }
+  */
 }

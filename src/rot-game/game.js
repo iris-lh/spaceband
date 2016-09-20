@@ -43,10 +43,15 @@ export var Game = {
     this.scheduler = new ROT.Scheduler.Simple()
 
     this.freeCells = this._generateMap()
+
     this.player = this._createActor(Player, tiles.player, 'player', this.freeCells)
-    //this._createActor(Bandito, tiles.pedro, 'bandito', this.freeCells)
+    this._createActor(Bandito, tiles.pedro, 'bandito', this.freeCells, this.player)
+
+    _.reverse(this.entities)
 
     this.camera = new Camera(this.display, this.player)
+
+    this.computePaths(this.entities)
 
     this.scheduler.add(this, true)
 
@@ -59,6 +64,7 @@ export var Game = {
   act() {
     this.engine.lock()
     window.addEventListener('keydown', this)
+    this.computePaths(this.entities)
     this.moveEntities(this.entities)
     this.camera.update()
     this.render()
@@ -68,14 +74,12 @@ export var Game = {
     var code = e.keyCode
 
     if (_.includes(this.keyMap.checkBoxKeys, code)) {
-      console.log('event: checkBox')
       this.checkBox(tiles.box.char)
       return
     }
 
     /* one of numpad directions? */
     if ((code in this.keyMap.dirs)) {
-      console.log('event: direction')
       var dir = ROT.DIRS[8][this.keyMap.dirs[code]]
       this.player.dx = dir[0]
       this.player.dy = dir[1]
@@ -111,13 +115,50 @@ export var Game = {
   moveEntities(entities) {
     for (var ent in entities) {
       if (entities[ent].isEntity) {
-        var newCoords = [ entities[ent].x + entities[ent].dx, entities[ent].y + entities[ent].dy ]
+        var entity = entities[ent]
+        console.log('moving: '+entity.type)
+        var newCoords = [ entity.x + entity.dx, entity.y + entity.dy ]
+        console.log(entity.type+' new coords: '+newCoords)
         if (newCoords in this.map) {
-          entities[ent].x += entities[ent].dx
-          entities[ent].y += entities[ent].dy
+          console.log(entity.type+"'s new coords are in the map")
+          entity.x += entity.dx
+          entity.y += entity.dy
         }
-        entities[ent].dx = 0
-        entities[ent].dy = 0
+        entity.dx = 0
+        entity.dy = 0
+      }
+    }
+  },
+
+  computePaths(entities) {
+    var self = this
+    for (var ent in entities) {
+      var entity = entities[ent]
+      if (entity.isEntity && entity.pathAlg && entity.target) {
+        console.log(entity.type+' target: '+entity.target)
+
+        var path = []
+
+        var passableCallback = function(targetX, targetY) {
+            return (targetX+','+targetY in self.map)
+        }
+        var pathingAlgorithm = new entity.pathAlg(
+          entity.target.x,
+          entity.target.y,
+          passableCallback,
+          { topology: entity.topology }
+        )
+
+        pathingAlgorithm.compute(entity.x, entity.y, function(x, y) {
+            path.push([x, y])
+        })
+
+        path.shift()
+
+        console.log(entity.type+' path length: '+path.length)
+
+        entity.dx = path[0][0] - entity.x
+        entity.dy = path[0][1] - entity.y
       }
     }
   },
@@ -126,10 +167,11 @@ export var Game = {
     var entities = this.entities
     for (var ent in entities) {
       if (entities[ent].isEntity) {
+        var entity = entities[ent]
         this.drawTile(
-          entities[ent].x + this.camera.x,
-          entities[ent].y + this.camera.y,
-          entities[ent].tile
+          entity.x + this.camera.x,
+          entity.y + this.camera.y,
+          entity.tile
         )
       }
     }
@@ -139,10 +181,20 @@ export var Game = {
     this.display.draw(x, y, tile.char, tile.fg, tile.bg)
   },
 
+  parseCoords(str) {
+    var coords = freeCells.splice(index, 1)[0]
+    var parts = coords.split(',')
+    var x = parseInt(parts[0])
+    var y = parseInt(parts[1])
+    return {x:x,y:y}
+  },
+
   _generateMap() {
     var win = this._gameWindow()
     var digger = new ROT.Map.Digger(cfg.mapWidth, cfg.mapHeight, {roomWidth:[3,7], roomHeight:[3,7],dugPercentage:0.3})
     var freeCells = []
+
+
 
     var digCallback = function(x, y, value) {
       if (value) { return }
@@ -158,17 +210,17 @@ export var Game = {
     return freeCells
   },
 
-  _createActor(what, tile, freeCells) {
+  _createActor(what, tile, type, freeCells, target=null) {
     var index = Math.floor(ROT.RNG.getUniform() * freeCells.length)
     var coords = freeCells.splice(index, 1)[0]
     var parts = coords.split(',')
     var x = parseInt(parts[0])
     var y = parseInt(parts[1])
 
-    var entity = new what(this, tile, x, y)
+    var entity = new what(this, tile, type, x, y, target)
 
     this.entities.push(entity)
-    this.scheduler.add(entity, true)
+    //this.scheduler.add(entity, true)
     return entity
   },
 
@@ -188,9 +240,9 @@ export var Game = {
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
 
-      if ( (x > 0) && (x+this.camera.x < cfg.mapWidth) && (y > 0) && (y+this.camera.y < cfg.mapHeight) ) {
+      //if ( (x > 0) && (x+this.camera.x < cfg.mapWidth) && (y > 0) && (y+this.camera.y < cfg.mapHeight) ) {
         this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
-      }
+      //}
     }
     this.drawEntities()
   }
