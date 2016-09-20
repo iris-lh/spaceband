@@ -25,7 +25,6 @@ export var Game = {
     this.tempWidth = 50
     this.tempHeight = 30
 
-
     this.display = new ROT.Display({
       width:            this.tempWidth,
       height:           this.tempHeight,
@@ -64,6 +63,7 @@ export var Game = {
   act() {
     this.engine.lock()
     window.addEventListener('keydown', this)
+
     this.computePaths(this.entities)
     this.moveEntities(this.entities)
     this.camera.update()
@@ -78,7 +78,6 @@ export var Game = {
       return
     }
 
-    /* one of numpad directions? */
     if ((code in this.keyMap.dirs)) {
       var dir = ROT.DIRS[8][this.keyMap.dirs[code]]
       this.player.dx = dir[0]
@@ -116,14 +115,15 @@ export var Game = {
     for (var ent in entities) {
       if (entities[ent].isEntity) {
         var entity = entities[ent]
-        console.log('moving: '+entity.type)
+
         var newCoords = [ entity.x + entity.dx, entity.y + entity.dy ]
-        console.log(entity.type+' new coords: '+newCoords)
+
+
         if (newCoords in this.map) {
-          console.log(entity.type+"'s new coords are in the map")
           entity.x += entity.dx
           entity.y += entity.dy
         }
+
         entity.dx = 0
         entity.dy = 0
       }
@@ -135,8 +135,6 @@ export var Game = {
     for (var ent in entities) {
       var entity = entities[ent]
       if (entity.isEntity && entity.pathAlg && entity.target) {
-        console.log(entity.type+' target: '+entity.target)
-
         var path = []
 
         var passableCallback = function(targetX, targetY) {
@@ -155,10 +153,13 @@ export var Game = {
 
         path.shift()
 
-        console.log(entity.type+' path length: '+path.length)
-
-        entity.dx = path[0][0] - entity.x
-        entity.dy = path[0][1] - entity.y
+        if (path.length >= 2) {
+          entity.dx = path[0][0] - entity.x
+          entity.dy = path[0][1] - entity.y
+        } else {
+          alert('Game Over!')
+          this.engine.lock()
+        }
       }
     }
   },
@@ -191,10 +192,16 @@ export var Game = {
 
   _generateMap() {
     var win = this._gameWindow()
-    var digger = new ROT.Map.Digger(cfg.mapWidth, cfg.mapHeight, {roomWidth:[3,7], roomHeight:[3,7],dugPercentage:0.3})
+    var digger = new ROT.Map.Digger(
+      cfg.mapWidth,
+      cfg.mapHeight,
+      {
+        roomWidth:[3,7],
+        roomHeight:[3,7],
+        dugPercentage:0.3
+      }
+    )
     var freeCells = []
-
-
 
     var digCallback = function(x, y, value) {
       if (value) { return }
@@ -220,7 +227,6 @@ export var Game = {
     var entity = new what(this, tile, type, x, y, target)
 
     this.entities.push(entity)
-    //this.scheduler.add(entity, true)
     return entity
   },
 
@@ -239,10 +245,7 @@ export var Game = {
       var parts = coords.split(',')
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
-
-      //if ( (x > 0) && (x+this.camera.x < cfg.mapWidth) && (y > 0) && (y+this.camera.y < cfg.mapHeight) ) {
-        this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
-      //}
+      this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
     }
     this.drawEntities()
   }
