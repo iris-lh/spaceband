@@ -1,5 +1,5 @@
 import { ROT } from './vendor/rot'
-import { Systems } from './systems'
+import { s } from './systems'
 import { cfg } from './config'
 import { tiles } from './tiles'
 import { Camera } from './camera'
@@ -32,16 +32,12 @@ export var Game = {
     })
     document.body.appendChild(this.display.getContainer())
 
-
-    this.S = new Systems(this)
-    var S = this.S
-
     this.scheduler = new ROT.Scheduler.Simple()
     this.scheduler.add(this, true)
 
-    this.freeCells = S.generateMap()
-    this.player = S.createActor(Actor, tiles.player, 'player', this.freeCells)
-    S.createActor(Actor, tiles.pedro, 'bandito', this.freeCells, this.player)
+    this.freeCells = s.generateMap(this)
+    this.player = s.createActor(this, Actor, tiles.player, 'player', this.freeCells)
+    s.createActor(this, Actor, tiles.pedro, 'bandito', this.freeCells, this.player)
     _.reverse(this.entities)
 
     this.camera = new Camera (this.display, this.player, 'center')
@@ -53,14 +49,12 @@ export var Game = {
   },
 
   act() {
-    var S = this.S
-
     this.engine.lock()
     window.addEventListener('keydown', this)
 
-    S.computePaths(this.entities)
-    S.moveEntities(this.entities)
+    s.computePaths(this)
+    s.moveEntities(this)
     this.camera.update()
-    S.render()
+    s.render(this)
   },
 }
