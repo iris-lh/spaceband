@@ -2,8 +2,7 @@ import { ROT } from './vendor/rot'
 import { cfg } from './config'
 import { tiles } from './tiles'
 import { Camera } from './camera'
-import { Player } from './player'
-import { Bandito } from './bandito'
+import { Actor } from './actor'
 import _ from 'lodash'
 
 
@@ -43,8 +42,8 @@ export var Game = {
 
     this.freeCells = this._generateMap()
 
-    this.player = this._createActor(Player, tiles.player, 'player', this.freeCells)
-    this._createActor(Bandito, tiles.pedro, 'bandito', this.freeCells, this.player)
+    this.player = this._createActor(Actor, tiles.player, 'player', this.freeCells)
+    this._createActor(Actor, tiles.pedro, 'bandito', this.freeCells, this.player)
 
     _.reverse(this.entities)
 
