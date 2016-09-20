@@ -1,13 +1,19 @@
+import { ROT } from './vendor/rot'
+
 export class Actor {
-  constructor(game, tile, x, y) {
+  constructor(game, tile, type, x, y, target) {
     this.isEntity = true
     this._game = game
-    this._tile = tile
-    this._x = x
-    this._y = y
-  }
+    this.tile = tile
+    this.type = type
+    this.x = x
+    this.y = y
 
-  act() {
-    this._processTurn()
+    this.dx = 0
+    this.dy = 0
+
+    this.target = target
+    this.topology = 4
+    this.pathAlg = ROT.Path.Dijkstra
   }
 }

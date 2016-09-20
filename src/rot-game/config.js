@@ -2,8 +2,8 @@ import { ROT } from './vendor/rot'
 
 export var cfg = {
 
-  mapHeight:     50,
-  mapWidth:      50,
+  mapHeight:     30,
+  mapWidth:      30,
   fontSize:      20,
 
   numOfBoxes:    5,

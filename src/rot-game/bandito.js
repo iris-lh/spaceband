@@ -4,12 +4,7 @@ import { Actor } from './actor'
 
 
 export class Bandito extends Actor {
-
-  constructor(game, tile, x, y) {
-    super(game, tile, x, y)
-    this._target = game.player
-  }
-
+/*
   _processTurn() {
     var game = this._game
     var path = this._computePathTo(game.map, this._target, cfg.pedroPathAlg, cfg.pedroTopology)
@@ -17,8 +12,8 @@ export class Bandito extends Actor {
 
     if (path.length >= 2) {
       // move!
-      this._x = nextStep[0]
-      this._y = nextStep[1]
+      this.x = nextStep[0]
+      this.y = nextStep[1]
 
       // post move cleanup (non needed)
     } else {
@@ -34,11 +29,11 @@ export class Bandito extends Actor {
         return (targetX+','+targetY in map)
     }
     var pathingAlgorithm = new algorithm(
-      target._x, target._y,
+      target.x, target.y,
       passableCallback,
       { topology: topology })
 
-    pathingAlgorithm.compute(this._x, this._y, function(x, y) {
+    pathingAlgorithm.compute(this.x, this.y, function(x, y) {
         path.push([x, y])
     })
 
@@ -46,4 +41,5 @@ export class Bandito extends Actor {
 
     return path
   }
+  */
 }
