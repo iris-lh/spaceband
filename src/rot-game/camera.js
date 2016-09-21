@@ -1,7 +1,6 @@
 export class Camera {
 
   constructor(display, subject, mode='center') {
-    console.log('constructing camera')
     this.display = display.getOptions()
     this.subject = subject
        this.mode = mode
@@ -9,7 +8,7 @@ export class Camera {
           this.y = 0
 
     if (this.mode == 'center') {
-      this.x = -this.subject.x + Math.floor(this.display.width/2),
+      this.x = -this.subject.x + Math.floor(this.display.width/2)
       this.y = -this.subject.y + Math.floor(this.display.height/2)
     }
   }
@@ -17,7 +16,7 @@ export class Camera {
   update(subject=this.subject, mode='center') {
     this.subject = subject
     if (this.mode == 'center') {
-      this.x = -this.subject.x + Math.floor(this.display.width/2),
+      this.x = -this.subject.x + Math.floor(this.display.width/2)
       this.y = -this.subject.y + Math.floor(this.display.height/2)
     }
   }
