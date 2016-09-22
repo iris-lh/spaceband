@@ -1,6 +1,3 @@
-import { _ } from 'lodash'
-
-
 export class Scene {
   constructor () {
     this.map = {}
