@@ -5,21 +5,27 @@ import { _ } from 'lodash'
 
 export class Systems {
 
+  constructor(scene, view) {
+    this.scene = scene
+    this.view  = view
+  }
+
+
   act() {
     this.engine.lock()
     window.addEventListener('keydown', this)
 
-    this.computePaths()
-    this.moveEntities()
-    this.scene.camera.update()
-    this.render()
+    this._computePaths()
+    this._moveEntities()
+    this.view.render()
   }
+
 
   handleEvent(e) {
     var code = e.keyCode
 
     if (_.includes(cfg.keyMap.checkBoxKeys, code)) {
-      this.checkBox(tiles.box.char)
+      this._checkBox(tiles.box.char)
       return
     }
 
@@ -34,8 +40,7 @@ export class Systems {
   }
 
 
-
-  checkBox(box) {
+  _checkBox(box) {
     var key = this.scene.player.x + ',' + this.scene.player.y
     if (this.scene.map[key].char != box) {
       alert('There is no box here!')
@@ -49,8 +54,7 @@ export class Systems {
   }
 
 
-
-  moveEntities() {
+  _moveEntities() {
     var self = this
     this.scene.entities().forEach(function(entity) {
       if (entity.isEntity) {
@@ -69,8 +73,7 @@ export class Systems {
   }
 
 
-
-  computePaths() {
+  _computePaths() {
     var entities = this.scene.entities()
     for (var ent in entities) {
       var entity = entities[ent]
@@ -105,38 +108,4 @@ export class Systems {
     }
   }
 
-
-  //eventually move to 'view'
-  drawEntities() {
-    var self = this
-    var scene = this.scene
-    var entities = this.scene.entities()
-    console.log('entities:',entities)
-    entities.forEach(function(entity) {
-      self.drawTile(
-        entity.x + scene.camera.x,
-        entity.y + scene.camera.y,
-        entity.tile
-      )
-    })
-  }
-
-
-  //eventually move to 'view'
-  drawTile(x, y, tile) {
-    this.display.draw(x, y, tile.char, tile.fg, tile.bg)
-  }
-
-
-  //eventually move to 'view'
-  render() {
-    this.display.clear()
-    for (var coords in this.scene.map) {
-      var parts = coords.split(',')
-      var x = parseInt(parts[0])
-      var y = parseInt(parts[1])
-      this.drawTile(x+this.scene.camera.x, y+this.scene.camera.y, this.scene.map[coords])
-    }
-    this.drawEntities()
-  }
 }

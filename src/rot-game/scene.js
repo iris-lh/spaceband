@@ -20,8 +20,4 @@ export class Scene {
     return this._entities.concat(this.player)
   }
 
-  addCamera(camera) {
-    this.camera = camera
-  }
-
 }
