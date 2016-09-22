@@ -1,12 +1,11 @@
 import { ROT } from './vendor/rot'
 import { cfg } from './config'
 import { tiles } from './tiles'
-import _ from 'lodash'
+import { _ } from 'lodash'
 
 export class Systems {
 
   act() {
-    console.log('# of entities: '+this.scene.entities.length)
     this.engine.lock()
     window.addEventListener('keydown', this)
 
@@ -53,7 +52,7 @@ export class Systems {
 
   moveEntities() {
     var self = this
-    this.scene.entities.forEach(function(entity) {
+    this.scene.entities().forEach(function(entity) {
       if (entity.isEntity) {
 
         var newCoords = [ entity.x + entity.dx, entity.y + entity.dy ]
@@ -72,7 +71,7 @@ export class Systems {
 
 
   computePaths() {
-    var entities = this.scene.entities
+    var entities = this.scene.entities()
     for (var ent in entities) {
       var entity = entities[ent]
       if (entity.isEntity && entity.pathAlg && entity.target) {
@@ -107,14 +106,13 @@ export class Systems {
   }
 
 
-
+  //eventually move to 'view'
   drawEntities() {
-    console.log('drawEntities called')
     var self = this
     var scene = this.scene
-    var entities = this.scene.entities
+    var entities = this.scene.entities()
+    console.log('entities:',entities)
     entities.forEach(function(entity) {
-      console.log('drawing entity:'+entity.type)
       self.drawTile(
         entity.x + scene.camera.x,
         entity.y + scene.camera.y,
@@ -124,13 +122,13 @@ export class Systems {
   }
 
 
-
+  //eventually move to 'view'
   drawTile(x, y, tile) {
     this.display.draw(x, y, tile.char, tile.fg, tile.bg)
   }
 
 
-
+  //eventually move to 'sceneBuilder'
   generateMap() {
     var digger = new ROT.Map.Digger(
       cfg.mapWidth,
@@ -154,7 +152,7 @@ export class Systems {
   }
 
 
-
+  //eventually move to 'sceneBuilder'
   createActor(what, tile, type, target=null) {
     var index = Math.floor(ROT.RNG.getUniform() * this.scene.map.freeCells.length)
     var coords = this.scene.map.freeCells.splice(index, 1)[0]
@@ -168,7 +166,7 @@ export class Systems {
   }
 
 
-
+  //eventually move to 'sceneBuilder'
   generateBoxes(freeCells) {
     for (var i=0;i<cfg.numOfBoxes;i++) {
       var index = Math.floor(ROT.RNG.getUniform() * this.scene.map.freeCells.length)
@@ -179,9 +177,8 @@ export class Systems {
   }
 
 
-
+  //eventually move to 'view'
   render() {
-    console.log('render called')
     this.display.clear()
     for (var coords in this.scene.map) {
       var parts = coords.split(',')

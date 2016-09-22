@@ -5,7 +5,7 @@ import { cfg } from './config'
 import { tiles } from './tiles'
 import { Camera } from './camera'
 import { Actor } from './actor'
-import _ from 'lodash'
+import { _ } from 'lodash'
 
 export var Game = {
 
@@ -25,23 +25,20 @@ export var Game = {
     })
     document.body.appendChild(s.display.getContainer())
 
-
     var scheduler = new ROT.Scheduler.Simple()
     scheduler.add(s, true)
 
-    s.scene = new Scene
+    var scene = new Scene
 
     s.generateMap()
-    s.scene.player = s.createActor(Actor, tiles.player, 'player')
+    var player = s.createActor(Actor, tiles.player, 'player')
 
-    var entities = []
-    s.scene.entities.unshift( s.scene.player )
-    s.scene.entities.push( s.createActor(Actor, tiles.pedro, 'bandito', s.scene.player) )
-    //s.scene.entities = _.reverse(entities)
+    scene.addPlayer( player )
+    scene.addEntity( s.createActor(Actor, tiles.pedro, 'bandito', scene.player) )
 
-    s.scene.camera = new Camera (s.display, s.scene.player, 'center')
+    scene.addCamera( new Camera (s.display, scene.player, 'center') )
 
-    console.log('s.scene:', s.scene)
+    s.scene = scene
 
     s.engine = new ROT.Engine(scheduler)
     s.engine.start()
