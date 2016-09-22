@@ -1,26 +1,23 @@
 import { ROT } from './vendor/rot'
 import { Actor } from './actor'
 import { tiles } from './tiles'
-import { Camera } from './camera'
 import { Scene } from './scene'
 import { cfg } from './config'
 
 export class SceneBuilder {
-  constructor(system) {
+  constructor() {
     var scene = new Scene()
 
-    this.generateMap(scene)
-    var player = this.createActor(scene, tiles.player, 'player')
+    this._generateMap(scene)
+    var player = this._createActor(scene, tiles.player, 'player')
 
     scene.addPlayer( player )
-    scene.addEntity( this.createActor(scene, tiles.pedro, 'bandito', scene.player) )
-
-    scene.addCamera( new Camera(system.display, scene.player, 'center') )
+    scene.addEntity( this._createActor(scene, tiles.pedro, 'bandito', scene.player) )
 
     this.scene = scene
   }
 
-  generateMap(scene) {
+  _generateMap(scene) {
     var digger = new ROT.Map.Digger(
       cfg.mapWidth,
       cfg.mapHeight,
@@ -39,10 +36,10 @@ export class SceneBuilder {
     }
     digger.create(digCallback.bind(this))
 
-    this.generateBoxes(scene)
+    this._generateBoxes(scene)
   }
 
-  generateBoxes(scene) {
+  _generateBoxes(scene) {
     for (var i=0;i<cfg.numOfBoxes;i++) {
       var index = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
       var coords = scene.map.freeCells.splice(index, 1)[0]
@@ -51,7 +48,7 @@ export class SceneBuilder {
     }
   }
 
-  createActor(scene, tile, type, target=null) {
+  _createActor(scene, tile, type, target=null) {
     var index = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
     var coords = scene.map.freeCells.splice(index, 1)[0]
     var parts = coords.split(',')

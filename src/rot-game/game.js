@@ -1,36 +1,29 @@
 import { ROT } from './vendor/rot'
 import { Systems } from './systems'
 import { SceneBuilder } from './scene-builder'
-import { cfg } from './config'
-
-import { _ } from 'lodash'
+import { View } from './view'
 
 export var Game = {
 
   init(electronRemote) {
-    var s = new Systems
-
+    // Eventually we will need the app for adjustments to the window size.
+    // Probably it should be passed to the view.
     this.app = electronRemote
-    this.tempWidth = 50
-    this.tempHeight = 30
-    s.display = new ROT.Display({
-      width:            this.tempWidth,
-      height:           this.tempHeight,
-      spacing:          1,
-      forceSquareRatio: true,
-      fontSize:         cfg.fontSize,
-      fg:               cfg.floorFg
-    })
-    document.body.appendChild(s.display.getContainer())
 
+    // setup game system
+    var scene     = new SceneBuilder().scene
+    var view      = new View(scene)
+    var system    = new Systems(scene, view)
+
+    // setup game engine
     var scheduler = new ROT.Scheduler.Simple()
-    scheduler.add(s, true)
+    var engine    = new ROT.Engine(scheduler)
+    system.engine = engine
 
-    var builder = new SceneBuilder(s)
-
-    s.scene = builder.scene
-
-    s.engine = new ROT.Engine(scheduler)
-    s.engine.start()
+    // starting up
+    scheduler.add(system, true)
+    view.attachToDOM()
+    system.engine.start()
   }
+
 }

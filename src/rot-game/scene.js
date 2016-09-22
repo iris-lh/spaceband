@@ -1,6 +1,3 @@
-import { _ } from 'lodash'
-
-
 export class Scene {
   constructor () {
     this.map = {}
@@ -18,10 +15,6 @@ export class Scene {
 
   entities(type=null) {
     return this._entities.concat(this.player)
-  }
-
-  addCamera(camera) {
-    this.camera = camera
   }
 
 }
