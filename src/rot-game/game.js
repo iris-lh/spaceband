@@ -1,10 +1,8 @@
 import { ROT } from './vendor/rot'
 import { Systems } from './systems'
-import { Scene } from './scene'
+import { SceneBuilder } from './scene-builder'
 import { cfg } from './config'
-import { tiles } from './tiles'
-import { Camera } from './camera'
-import { Actor } from './actor'
+
 import { _ } from 'lodash'
 
 export var Game = {
@@ -28,17 +26,9 @@ export var Game = {
     var scheduler = new ROT.Scheduler.Simple()
     scheduler.add(s, true)
 
-    var scene = new Scene
+    var builder = new SceneBuilder(s)
 
-    s.generateMap()
-    var player = s.createActor(Actor, tiles.player, 'player')
-
-    scene.addPlayer( player )
-    scene.addEntity( s.createActor(Actor, tiles.pedro, 'bandito', scene.player) )
-
-    scene.addCamera( new Camera (s.display, scene.player, 'center') )
-
-    s.scene = scene
+    s.scene = builder.scene
 
     s.engine = new ROT.Engine(scheduler)
     s.engine.start()

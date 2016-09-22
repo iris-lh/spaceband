@@ -128,55 +128,6 @@ export class Systems {
   }
 
 
-  //eventually move to 'sceneBuilder'
-  generateMap() {
-    var digger = new ROT.Map.Digger(
-      cfg.mapWidth,
-      cfg.mapHeight,
-      {
-        roomWidth:[3,7],
-        roomHeight:[3,7],
-        dugPercentage:0.3
-      }
-    )
-    var digCallback = function(x, y, value) {
-      if (value) { return }
-
-      var coords = x+','+y
-      this.scene.map[coords] = tiles.floor
-      this.scene.map.freeCells.push(coords)
-    }
-    digger.create(digCallback.bind(this))
-
-    this.generateBoxes(this.scene.map.freeCells)
-  }
-
-
-  //eventually move to 'sceneBuilder'
-  createActor(what, tile, type, target=null) {
-    var index = Math.floor(ROT.RNG.getUniform() * this.scene.map.freeCells.length)
-    var coords = this.scene.map.freeCells.splice(index, 1)[0]
-    var parts = coords.split(',')
-    var x = parseInt(parts[0])
-    var y = parseInt(parts[1])
-
-    var entity = new what(this, tile, type, x, y, target)
-
-    return entity
-  }
-
-
-  //eventually move to 'sceneBuilder'
-  generateBoxes(freeCells) {
-    for (var i=0;i<cfg.numOfBoxes;i++) {
-      var index = Math.floor(ROT.RNG.getUniform() * this.scene.map.freeCells.length)
-      var coords = this.scene.map.freeCells.splice(index, 1)[0]
-      this.scene.map[coords] = tiles.box
-      if (!i) { this.scene.ananas = coords } /* first box contains the ananas */
-    }
-  }
-
-
   //eventually move to 'view'
   render() {
     this.display.clear()
