@@ -3,20 +3,18 @@ import { cfg } from './config'
 import { tiles } from './tiles'
 import _ from 'lodash'
 
-export var s = {
-  freeCells: [],
-  entities: [],
-  map: {},
+export class Systems {
 
   act() {
+    console.log('# of entities: '+this.scene.entities.length)
     this.engine.lock()
     window.addEventListener('keydown', this)
 
     this.computePaths()
     this.moveEntities()
-    this.camera.update()
+    this.scene.camera.update()
     this.render()
-  },
+  }
 
   handleEvent(e) {
     var code = e.keyCode
@@ -28,39 +26,39 @@ export var s = {
 
     if ((code in cfg.keyMap.dirs)) {
       var dir = ROT.DIRS[8][cfg.keyMap.dirs[code]]
-      this.player.dx = dir[0]
-      this.player.dy = dir[1]
+      this.scene.player.dx = dir[0]
+      this.scene.player.dy = dir[1]
     }
 
     window.removeEventListener('keydown', this)
     this.engine.unlock()
-  },
+  }
 
 
 
   checkBox(box) {
-    var key = this.player.x + ',' + this.player.y
-    if (this.map[key].char != box) {
+    var key = this.scene.player.x + ',' + this.scene.player.y
+    if (this.scene.map[key].char != box) {
       alert('There is no box here!')
-    } else if (key == this.ananas) {
+    } else if (key == this.scene.ananas) {
       alert('Hooray! You found the ananas and won this game.')
       this.engine.lock()
       window.removeEventListener('keydown', this)
     } else {
       alert('This box is empty :-(')
     }
-  },
+  }
 
 
 
   moveEntities() {
     var self = this
-    this.entities.forEach(function(entity) {
+    this.scene.entities.forEach(function(entity) {
       if (entity.isEntity) {
 
         var newCoords = [ entity.x + entity.dx, entity.y + entity.dy ]
 
-        if (newCoords in self.map) {
+        if (newCoords in self.scene.map) {
           entity.x += entity.dx
           entity.y += entity.dy
         }
@@ -69,20 +67,20 @@ export var s = {
         entity.dy = 0
       }
     })
-  },
+  }
 
 
 
   computePaths() {
-    var entities = this.entities
+    var entities = this.scene.entities
     for (var ent in entities) {
       var entity = entities[ent]
       if (entity.isEntity && entity.pathAlg && entity.target) {
         var path = []
 
-        var self = this
+        var scene = this.scene
         var passableCallback = function(targetX, targetY) {
-            return (targetX+','+targetY in self.map)
+            return scene.map[targetX+','+targetY]
         }
         var pathingAlgorithm = new entity.pathAlg(
           entity.target.x,
@@ -106,27 +104,30 @@ export var s = {
         }
       }
     }
-  },
+  }
 
 
 
   drawEntities() {
+    console.log('drawEntities called')
     var self = this
-    var entities = this.entities
+    var scene = this.scene
+    var entities = this.scene.entities
     entities.forEach(function(entity) {
+      console.log('drawing entity:'+entity.type)
       self.drawTile(
-        entity.x + self.camera.x,
-        entity.y + self.camera.y,
+        entity.x + scene.camera.x,
+        entity.y + scene.camera.y,
         entity.tile
       )
     })
-  },
+  }
 
 
 
   drawTile(x, y, tile) {
     this.display.draw(x, y, tile.char, tile.fg, tile.bg)
-  },
+  }
 
 
 
@@ -144,19 +145,19 @@ export var s = {
       if (value) { return }
 
       var coords = x+','+y
-      this.map[coords] = tiles.floor
-      this.freeCells.push(coords)
+      this.scene.map[coords] = tiles.floor
+      this.scene.map.freeCells.push(coords)
     }
     digger.create(digCallback.bind(this))
 
-    this.generateBoxes(this.freeCells)
-  },
+    this.generateBoxes(this.scene.map.freeCells)
+  }
 
 
 
   createActor(what, tile, type, target=null) {
-    var index = Math.floor(ROT.RNG.getUniform() * this.freeCells.length)
-    var coords = this.freeCells.splice(index, 1)[0]
+    var index = Math.floor(ROT.RNG.getUniform() * this.scene.map.freeCells.length)
+    var coords = this.scene.map.freeCells.splice(index, 1)[0]
     var parts = coords.split(',')
     var x = parseInt(parts[0])
     var y = parseInt(parts[1])
@@ -164,28 +165,29 @@ export var s = {
     var entity = new what(this, tile, type, x, y, target)
 
     return entity
-  },
+  }
 
 
 
   generateBoxes(freeCells) {
     for (var i=0;i<cfg.numOfBoxes;i++) {
-      var index = Math.floor(ROT.RNG.getUniform() * this.freeCells.length)
-      var coords = this.freeCells.splice(index, 1)[0]
-      this.map[coords] = tiles.box
-      if (!i) { this.ananas = coords } /* first box contains the ananas */
+      var index = Math.floor(ROT.RNG.getUniform() * this.scene.map.freeCells.length)
+      var coords = this.scene.map.freeCells.splice(index, 1)[0]
+      this.scene.map[coords] = tiles.box
+      if (!i) { this.scene.ananas = coords } /* first box contains the ananas */
     }
-  },
+  }
 
 
 
   render() {
+    console.log('render called')
     this.display.clear()
-    for (var coords in this.map) {
+    for (var coords in this.scene.map) {
       var parts = coords.split(',')
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
-      this.drawTile(x+this.camera.x, y+this.camera.y, this.map[coords])
+      this.drawTile(x+this.scene.camera.x, y+this.scene.camera.y, this.scene.map[coords])
     }
     this.drawEntities()
   }
