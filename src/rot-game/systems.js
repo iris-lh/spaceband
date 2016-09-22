@@ -55,13 +55,12 @@ export class Systems {
 
 
   _moveEntities() {
-    var self = this
-    this.scene.entities().forEach(function(entity) {
+    this.scene.entities().forEach((entity) => {
       if (entity.isEntity) {
 
         var newCoords = [ entity.x + entity.dx, entity.y + entity.dy ]
 
-        if (newCoords in self.scene.map) {
+        if (newCoords in this.scene.map) {
           entity.x += entity.dx
           entity.y += entity.dy
         }

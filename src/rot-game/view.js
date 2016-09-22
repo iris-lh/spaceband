@@ -27,13 +27,12 @@ export class View {
   }
 
   _drawEntities() {
-    var self = this
     var scene = this.scene
     var entities = this.scene.entities()
-    entities.forEach(function(entity) {
-      self._drawTile(
-        entity.x + self.camera.x,
-        entity.y + self.camera.y,
+    entities.forEach((entity) => {
+      this._drawTile(
+        entity.x + this.camera.x,
+        entity.y + this.camera.y,
         entity.tile
       )
     })
