@@ -1,4 +1,5 @@
 import { ROT } from './vendor/rot'
+import { util } from './util'
 import { cfg } from './config'
 import { Camera } from './camera'
 
@@ -6,11 +7,13 @@ export class View {
 
   constructor(scene) {
     this.scene = scene
-    this._createDisplay()
+    this.display = this._createDisplay()
     this._createCamera()
+    this._setupResizeListener()
   }
 
   attachToDOM() {
+    document.body.innerHTML = ''
     document.body.appendChild(this.display.getContainer())
   }
 
@@ -42,18 +45,15 @@ export class View {
     })
   }
 
-
   _drawTile(x, y, tile) {
     this.display.draw(x, y, tile.char, tile.fg, tile.bg)
   }
 
   _createDisplay() {
-    var tempWidth = 50
-    var tempHeight = 30
-
-    this.display = new ROT.Display({
-      width:            tempWidth,
-      height:           tempHeight,
+    var window = util.gameWindow()
+    return new ROT.Display({
+      width:            window.width,
+      height:           window.height,
       spacing:          1,
       forceSquareRatio: true,
       fontSize:         cfg.fontSize,
@@ -63,6 +63,15 @@ export class View {
 
   _createCamera() {
     this.camera = new Camera(this.display, this.scene.player, 'center')
+  }
+
+  _setupResizeListener() {
+    util.setupResizeListener( ()=> {
+      this.display = this._createDisplay()
+      this.camera.setDisplay(this.display)
+      this.attachToDOM()
+      this.render()
+    })
   }
 
 }

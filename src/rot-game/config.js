@@ -27,4 +27,4 @@ export var cfg = {
       ROT.VK_SPACE
     ]
   }
-};
+}

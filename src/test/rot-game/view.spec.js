@@ -139,9 +139,7 @@ describe('View', ()=> {
       var tempView = view
       tempView.display = null
 
-      tempView._createDisplay()
-
-      expect(tempView.display).to.be.an.instanceof(ROT.Display)
+      expect(tempView._createDisplay()).to.be.an.instanceof(ROT.Display)
     })
   })
 
