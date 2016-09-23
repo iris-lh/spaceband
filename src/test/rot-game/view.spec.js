@@ -9,10 +9,10 @@ import { Camera } from '../../rot-game/camera'
 
 
 describe('View', ()=> {
-  var view, scene, builder
+  var view, scene
 
   beforeEach( ()=> {
-    builder = new SceneBuilder
+    var builder = new SceneBuilder
     scene = builder.scene
     view = new View(scene)
   })

@@ -6,11 +6,11 @@ import { SceneBuilder } from '../../rot-game/scene-builder'
 
 
 describe('Camera', ()=> {
-  var builder, player, display, camera
+  var display, camera
 
   beforeEach( ()=> {
-    builder = new SceneBuilder
-    player = builder.scene.player
+    var builder = new SceneBuilder
+    var player = builder.scene.player
     display = new ROT.Display()
     camera = new Camera(display, player, 'center')
   })
