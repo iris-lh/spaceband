@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import td from 'testdouble'
+import { ROT } from '../../rot-game/vendor/rot'
 import { View } from '../../rot-game/view'
 import { SceneBuilder } from '../../rot-game/scene-builder'
 import { Scene } from '../../rot-game/scene'
-import { ROT } from '../../rot-game/vendor/rot'
 import { Camera } from '../../rot-game/camera'
 
 
