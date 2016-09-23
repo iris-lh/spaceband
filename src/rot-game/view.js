@@ -17,13 +17,17 @@ export class View {
   render() {
     this.camera.update()
     this.display.clear()
+    this._drawMap()
+    this._drawEntities()
+  }
+
+  _drawMap() {
     for (var coords in this.scene.map) {
       var parts = coords.split(',')
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
       this._drawTile(x+this.camera.x, y+this.camera.y, this.scene.map[coords])
     }
-    this._drawEntities()
   }
 
   _drawEntities() {
