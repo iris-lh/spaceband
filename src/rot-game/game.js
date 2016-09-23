@@ -5,11 +5,7 @@ import { View } from './view'
 
 export var Game = {
 
-  init(electronRemote) {
-    // Eventually we will need the app for adjustments to the window size.
-    // Probably it should be passed to the view.
-    this.app = electronRemote
-
+  init() {
     // setup game system
     var scene     = new SceneBuilder().scene
     var view      = new View(scene)

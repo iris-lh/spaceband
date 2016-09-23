@@ -1,4 +1,5 @@
 import { ROT } from './vendor/rot'
+import { util } from './util'
 import { cfg } from './config'
 import { Camera } from './camera'
 
@@ -42,18 +43,15 @@ export class View {
     })
   }
 
-
   _drawTile(x, y, tile) {
     this.display.draw(x, y, tile.char, tile.fg, tile.bg)
   }
 
   _createDisplay() {
-    var tempWidth = 50
-    var tempHeight = 30
-
+    var window = util.gameWindow()
     this.display = new ROT.Display({
-      width:            tempWidth,
-      height:           tempHeight,
+      width:            window.width,
+      height:           window.height,
       spacing:          1,
       forceSquareRatio: true,
       fontSize:         cfg.fontSize,
