@@ -7,11 +7,13 @@ export class View {
 
   constructor(scene) {
     this.scene = scene
-    this._createDisplay()
+    this.display = this._createDisplay()
     this._createCamera()
+    this._setupResizeListener()
   }
 
   attachToDOM() {
+    document.body.innerHTML = ''
     document.body.appendChild(this.display.getContainer())
   }
 
@@ -49,7 +51,7 @@ export class View {
 
   _createDisplay() {
     var window = util.gameWindow()
-    this.display = new ROT.Display({
+    return new ROT.Display({
       width:            window.width,
       height:           window.height,
       spacing:          1,
@@ -61,6 +63,15 @@ export class View {
 
   _createCamera() {
     this.camera = new Camera(this.display, this.scene.player, 'center')
+  }
+
+  _setupResizeListener() {
+    util.setupResizeListener( ()=> {
+      this.display = this._createDisplay()
+      this.camera.setDisplay(this.display)
+      this.attachToDOM()
+      this.render()
+    })
   }
 
 }

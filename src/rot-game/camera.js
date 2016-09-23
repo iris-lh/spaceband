@@ -1,11 +1,15 @@
 export class Camera {
 
   constructor(display, subject, mode='center') {
-    this.display = display.getOptions()
+    this.setDisplay(display)
     this.subject = subject
-       this.mode = mode
-          this.x = 0
-          this.y = 0
+    this.mode    = mode
+    this.x       = 0
+    this.y       = 0
+  }
+
+  setDisplay(display) {
+    this.display = display.getOptions()
   }
 
   update(subject=this.subject, mode=this.mode) {
