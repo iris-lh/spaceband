@@ -2,6 +2,7 @@ import { ROT } from './vendor/rot'
 import { cfg } from './config'
 import { tiles } from './tiles'
 import { _ } from 'lodash'
+var flatten = require('flat')
 
 export class Systems {
 
@@ -24,13 +25,19 @@ export class Systems {
   handleEvent(e) {
     var code = e.keyCode
 
+    console.log('flattened keymap:',flatten(cfg.keyMap))
+    if (!_.includes(flatten(cfg.keyMap), code)) {
+      return
+    }
+
     if (_.includes(cfg.keyMap.checkBoxKeys, code)) {
       this._checkBox(this.scene.tiles.box.char)
       return
     }
 
-    if ((code in cfg.keyMap.dirs)) {
-      var dir = ROT.DIRS[8][cfg.keyMap.dirs[code]]
+    if (_.includes(cfg.keyMap.dirs, code)) {
+      console.log('dir:',_.indexOf(cfg.keyMap.dirs, code))
+      var dir = ROT.DIRS[8][_.indexOf(cfg.keyMap.dirs, code)]
       this.scene.player.dx = dir[0]
       this.scene.player.dy = dir[1]
     }

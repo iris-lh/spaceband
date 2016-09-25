@@ -55,6 +55,7 @@
     "yargs": "^4.2.0"
   },
   "dependencies": {
+    "flat": "^2.0.1",
     "yaml": "^0.3.0"
   }
 }
