@@ -9,7 +9,7 @@ export var Game = {
 
   init() {
     // setup game system
-    var scene     = new SceneBuilder('03').scene
+    var scene     = new SceneBuilder('00').scene
     var view      = new View(scene)
     var system    = new Systems(scene, view)
 

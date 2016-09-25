@@ -36,7 +36,7 @@ export class View {
           y+this.camera.y,
           tile.char,
           tile.fg,
-          tile.bg
+          this.scene.tiles.floor.bg
         )
       }
     }
@@ -45,13 +45,13 @@ export class View {
   _drawEntities() {
     var scene = this.scene
     var entities = this.scene.entities()
-    entities.forEach((entity) => {
+    entities.forEach( (entity)=> {
       this.display.draw(
         entity.x + this.camera.x,
         entity.y + this.camera.y,
         entity.char,
         entity.fg,
-        entity.bg
+        scene.tiles.floor.bg
       )
     })
   }
