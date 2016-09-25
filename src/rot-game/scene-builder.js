@@ -9,7 +9,6 @@ var jetpack = require('fs-jetpack')
 
 export class SceneBuilder {
   constructor(givenLevel) {
-    //this.scene = new Scene()
     this.scene = {
       map: {
         freeCells: []

@@ -4,7 +4,7 @@ import { Systems } from '../../rot-game/systems'
 import { SceneBuilder } from '../../rot-game/scene-builder'
 import { View } from '../../rot-game/view'
 
-describe.only('Systems', ()=> {
+describe('Systems', ()=> {
   var s
 
   beforeEach( ()=> {
