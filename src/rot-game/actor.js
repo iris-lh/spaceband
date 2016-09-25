@@ -1,9 +1,8 @@
 import { ROT } from './vendor/rot'
 
 export class Actor {
-  constructor(game, tile, type, x, y, target) {
+  constructor(tile, type, x, y, target) {
     this.isEntity = true
-    this._game = game
     this.tile = tile
     this.type = type
     this.x = x

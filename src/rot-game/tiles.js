@@ -16,13 +16,11 @@ export var tiles = {
     bg:    '#111',
   },
   pedro: {
-    name:  'Pedro',
     char:  '\u229A',
     fg:    'red',
     bg:    '#111',
   },
   pablo: {
-    name:  'Pablo',
     char:  '\u229A',
     fg:    'green',
     bg:    '#111',

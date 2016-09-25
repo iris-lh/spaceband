@@ -9,7 +9,7 @@ describe('Camera', ()=> {
   var display, camera
 
   beforeEach( ()=> {
-    var builder = new SceneBuilder
+    var builder = new SceneBuilder('00')
     var player = builder.scene.player
     display = new ROT.Display()
     camera = new Camera(display, player, 'center')

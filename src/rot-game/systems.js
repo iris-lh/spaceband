@@ -55,6 +55,7 @@ export class Systems {
 
 
   _moveEntities() {
+    console.log('systems._moveEntities entities:',this.scene.entities())
     this.scene.entities().forEach((entity) => {
       if (entity.isEntity) {
 

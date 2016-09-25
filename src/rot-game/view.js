@@ -36,6 +36,7 @@ export class View {
   _drawEntities() {
     var scene = this.scene
     var entities = this.scene.entities()
+    console.log('_drawEntities entities:',entities)
     entities.forEach((entity) => {
       this._drawTile(
         entity.x + this.camera.x,

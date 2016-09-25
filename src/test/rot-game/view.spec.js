@@ -12,7 +12,7 @@ describe('View', ()=> {
   var view, scene
 
   beforeEach( ()=> {
-    var builder = new SceneBuilder
+    var builder = new SceneBuilder('00')
     scene = builder.scene
     view = new View(scene)
   })

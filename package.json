@@ -53,5 +53,8 @@
     "spectron": "^3.3.0",
     "testdouble": "^1.7.0",
     "yargs": "^4.2.0"
+  },
+  "dependencies": {
+    "yaml": "^0.3.0"
   }
 }

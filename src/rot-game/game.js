@@ -3,11 +3,13 @@ import { Systems } from './systems'
 import { SceneBuilder } from './scene-builder'
 import { View } from './view'
 
+
+
 export var Game = {
 
   init() {
     // setup game system
-    var scene     = new SceneBuilder().scene
+    var scene     = new SceneBuilder('00').scene
     var view      = new View(scene)
     var system    = new Systems(scene, view)
 
