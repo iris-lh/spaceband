@@ -52,7 +52,6 @@ export class View {
         entity.char,
         entity.fg,
         entity.bg
-
       )
     })
   }
