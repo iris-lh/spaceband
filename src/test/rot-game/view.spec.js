@@ -79,15 +79,20 @@ describe('View', ()=> {
       var size = function(obj) {
         var size = 0, key;
         for (key in obj) {
-          if (obj.hasOwnProperty(key)) size++;
+          if (
+            obj.hasOwnProperty(key) &&
+            key.split(',').length == 2
+          ) {
+            size++
+          }
         }
         return size;
       }
-      view._drawTile = td.function('._drawTile')
+      view.display.draw = td.function('.draw')
 
       view._drawMap()
 
-      td.verify(view._drawTile(), {
+      td.verify(view.display.draw(), {
           times: size(view.scene.map),
           ignoreExtraArgs: true
       })
@@ -100,33 +105,14 @@ describe('View', ()=> {
 
   describe('_drawEntities', ()=> {
     it('draws each entity tile', ()=> {
-      view._drawTile = td.function('._drawTile')
+      view.display.draw = td.function('.draw')
 
       view._drawEntities()
 
-      td.verify(view._drawTile(), {
+      td.verify(view.display.draw(), {
         times: view.scene.entities().length,
         ignoreExtraArgs: true
       })
-    })
-
-    afterEach( ()=> {
-      td.reset()
-    })
-  })
-
-  describe('_drawTile', ()=> {
-    it('draws a tile', ()=> {
-      var draw = td.function('.draw')
-      var fakeDisplay = { draw: draw }
-      var fakeTile = {char:'@', fg:'999', bg:'111'}
-      view.display = fakeDisplay
-
-      view._drawTile(1, 1, fakeTile)
-
-      td.verify(view.display.draw(
-        1, 1, fakeTile.char, fakeTile.fg, fakeTile.bg
-      ))
     })
 
     afterEach( ()=> {

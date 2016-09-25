@@ -1,8 +1,5 @@
 import { ROT } from './vendor/rot'
 import { newUUID } from './vendor/uuid'
-import { Actor } from './actor'
-//import { tiles } from './tiles'
-//import { Scene } from './scene'
 import { cfg } from './config'
 import { _ } from 'lodash'
 import yaml from 'yaml'
@@ -136,7 +133,6 @@ export class SceneBuilder {
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
 
-      console.log('createActors creating entity:',entity)
       generatedEntities.push({
         'isEntity': true,
         'id': newUUID(),
