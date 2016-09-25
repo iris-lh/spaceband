@@ -1,7 +1,8 @@
 import { ROT } from './vendor/rot'
+import { newUUID } from './vendor/uuid'
 import { Actor } from './actor'
 //import { tiles } from './tiles'
-import { Scene } from './scene'
+//import { Scene } from './scene'
 import { cfg } from './config'
 import { _ } from 'lodash'
 import yaml from 'yaml'
@@ -11,15 +12,41 @@ var jetpack = require('fs-jetpack')
 
 export class SceneBuilder {
   constructor(givenLevel) {
-    this.tiles = this._loadTiles()
-    this.level = this._loadLevel(givenLevel)
-    this._matchTilesToEntities(this.tiles, this.level)
-    this.scene = new Scene()
+    //this.scene = new Scene()
+    this.scene = {
+      map: {
+        freeCells: []
+      },
+      _entities: [],
 
-    this._generateMap(this.scene, this.level)
+      addEntity(entity) {
+        this._entities.unshift(entity)
+      },
 
-    this.scene.addPlayer( this._createActor(this.scene, this.tiles.player, 'player') )
-    this.scene.addEntities( this._createActors(this.scene, this.level) )
+      addEntities(entities) {
+        if (!entities) {return}
+        entities.forEach( (entity)=> {
+          this._entities.unshift(entity)
+        })
+      },
+
+      addPlayer(player) {
+        this.player = player
+      },
+
+      entities(type=null) {
+        return this._entities.concat(this.player)
+      }
+    }
+
+    this.scene.tiles = this._loadTiles()
+    this.scene.level = this._loadLevel(givenLevel)
+    this._matchTilesToEntities(this.scene.tiles, this.scene.level)
+
+    this._generateMap(this.scene, this.scene.level)
+
+    this.scene.addPlayer( this._createActor(this.scene, this.scene.tiles.player) )
+    this.scene.addEntities( this._createActors(this.scene, this.scene.level.entities) )
   }
 
   _loadTiles() {
@@ -35,16 +62,13 @@ export class SceneBuilder {
   }
 
   _matchTilesToEntities(tiles, level) {
-    console.log('before matchTilesToEntities tiles:',tiles,'level:',level)
     _.forOwn(level.entities, (entity, k1)=> {
       _.forOwn(tiles, (tile, k2)=> {
         if (entity == tile.name) {
-          console.log('entity/tile match found')
           level.entities[k1] = tile
         }
       })
     })
-    console.log('after matchTilesToEntities tiles:',tiles,'level:',level)
   }
 
   _generateMap(scene, level) {
@@ -62,7 +86,7 @@ export class SceneBuilder {
       if (value) { return }
 
       var coords = x+','+y
-      scene.map[coords] = this.tiles.floor
+      scene.map[coords] = this.scene.tiles.floor
       scene.map.freeCells.push(coords)
     }
     digger.create(digCallback.bind(this))
@@ -74,35 +98,59 @@ export class SceneBuilder {
     for (var i=0;i<level.map.numOfBoxes;i++) {
       var index = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
       var coords = scene.map.freeCells.splice(index, 1)[0]
-      scene.map[coords] = this.tiles.box
+      scene.map[coords] = this.scene.tiles.box
       if (!i) { scene.ananas = coords } /* first box contains the ananas */
     }
   }
 
-  _createActor(scene, tile, type, target=null) {
+  _createActor(scene, tile) {
     var index = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
     var coords = scene.map.freeCells.splice(index, 1)[0]
     var parts = coords.split(',')
     var x = parseInt(parts[0])
     var y = parseInt(parts[1])
 
-    var entity = new Actor(tile, type, x, y, target)
-
-    return entity
+    return {
+      'isEntity': true,
+      'id': newUUID(),
+      'name': tile.name,
+      'type': tile.type,
+      'char': tile.char,
+      'fg': tile.fg,
+      'bg': tile.bg,
+      'x': x,
+      'y': y,
+      'dx': 0,
+      'dy': 0,
+      'target': tile.target,
+    }
   }
 
-  _createActors(scene, level, target=null) {
-    if (!level.entities) {return}
+  _createActors(scene, entities) {
+    if (!entities) {return}
     var generatedEntities = []
-    level.entities.forEach( (entity)=> {
+    entities.forEach( (entity)=> {
       var index = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
       var coords = scene.map.freeCells.splice(index, 1)[0]
       var parts = coords.split(',')
       var x = parseInt(parts[0])
       var y = parseInt(parts[1])
 
-      var generatedEntity = new Actor(entity.tile, entity.type, x, y, target)
-      generatedEntities.push(generatedEntity)
+      console.log('createActors creating entity:',entity)
+      generatedEntities.push({
+        'isEntity': true,
+        'id': newUUID(),
+        'name': entity.name,
+        'type': entity.type,
+        'char': entity.char,
+        'fg': entity.fg,
+        'bg': entity.bg,
+        'x': x,
+        'y': y,
+        'dx': 0,
+        'dy': 0,
+        'target': entity.target,
+      })
     })
     return generatedEntities
   }

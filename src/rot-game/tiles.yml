@@ -1,9 +1,9 @@
 floor:
-  char: '\u22C5'
+  char: '.' # '\u22C5'
   fg: '#999'
   bg: '#111'
 box:
-  char: '\u2187'
+  char: '#' # '\u2187'
   fg: '#B84'
   bg: '#111'
 player:
@@ -15,12 +15,21 @@ player:
 pedro:
   type: 'bandito'
   name: 'Pedro'
-  char: '\u229A'
+  char: 'P' # '\u229A'
   fg: 'red'
   bg: '#111'
+  target: 'player'
 pablo:
   type: 'bandito'
   name: 'Pablo'
-  char: '\u229A'
+  char: 'P' # '\u229A'
   fg: 'green'
   bg: '#111'
+  target: 'player'
+juan:
+  type: 'bandito'
+  name: 'Juan'
+  char: 'P' # '\u229A'
+  fg: 'blue'
+  bg: '#111'
+  target: 'player'

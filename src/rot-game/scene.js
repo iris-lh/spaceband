@@ -14,7 +14,6 @@ export class Scene {
     entities.forEach( (entity)=> {
       this._entities.unshift(entity)
     })
-    console.log('addEntities',this._entities)
   }
 
   addPlayer(player) {

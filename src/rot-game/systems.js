@@ -25,7 +25,7 @@ export class Systems {
     var code = e.keyCode
 
     if (_.includes(cfg.keyMap.checkBoxKeys, code)) {
-      this._checkBox(tiles.box.char)
+      this._checkBox(this.scene.tiles.box.char)
       return
     }
 
@@ -55,8 +55,7 @@ export class Systems {
 
 
   _moveEntities() {
-    console.log('systems._moveEntities entities:',this.scene.entities())
-    this.scene.entities().forEach((entity) => {
+    this.scene.entities().forEach( (entity)=> {
       if (entity.isEntity) {
 
         var newCoords = [ entity.x + entity.dx, entity.y + entity.dy ]
@@ -72,40 +71,55 @@ export class Systems {
     })
   }
 
+  _fetchTarget(target) {
+    var entities = this.scene.entities()
+    for (var ent in entities) {
+      var entity = entities[ent]
+      if (entity.type == target) {
+        var coords = {x:entity.x, y:entity.y}
+        return coords
+      }
+    }
+  }
 
   _computePaths() {
     var entities = this.scene.entities()
     for (var ent in entities) {
       var entity = entities[ent]
-      if (entity.isEntity && entity.pathAlg && entity.target) {
+      if (entity.target) {
+        var asdf = this._fetchTarget(entity.target)
+
         var path = []
 
         var scene = this.scene
-        var passableCallback = function(targetX, targetY) {
-            return scene.map[targetX+','+targetY]
+        var passableCallback = (targetX, targetY)=> {
+          return scene.map[targetX+','+targetY]
         }
-        var pathingAlgorithm = new entity.pathAlg(
-          entity.target.x,
-          entity.target.y,
+        var pathingAlgorithm = new ROT.Path.Dijkstra(
+          asdf.x,
+          asdf.y,
           passableCallback,
-          { topology: entity.topology }
+          { topology: 4 }
         )
 
-        pathingAlgorithm.compute(entity.x, entity.y, function(x, y) {
-            path.push([x, y])
-        })
+        pathingAlgorithm.compute(
+          entity.x,
+          entity.y,
+          (x, y) => { path.push([x, y]) }
+        )
 
         path.shift()
 
         if (path.length >= 2) {
           entity.dx = path[0][0] - entity.x
           entity.dy = path[0][1] - entity.y
-        } else {
-          alert('Game Over!')
-          this.engine.lock()
+        } else if (path) {
+           alert('Game Over! You were caught by '+entity.name+'.')
+           this.engine.lock()
         }
       }
     }
   }
+
 
 }

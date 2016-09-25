@@ -27,27 +27,37 @@ export class View {
   _drawMap() {
     for (var coords in this.scene.map) {
       var parts = coords.split(',')
-      var x = parseInt(parts[0])
-      var y = parseInt(parts[1])
-      this._drawTile(x+this.camera.x, y+this.camera.y, this.scene.map[coords])
+      if (parts.length == 2) {
+        var tile = this.scene.map[coords]
+        var x = parseInt(parts[0])
+        var y = parseInt(parts[1])
+        this.display.draw(
+          x+this.camera.x,
+          y+this.camera.y,
+          tile.char,
+          tile.fg,
+          tile.bg
+        )
+      }
     }
   }
 
   _drawEntities() {
     var scene = this.scene
     var entities = this.scene.entities()
-    console.log('_drawEntities entities:',entities)
     entities.forEach((entity) => {
-      this._drawTile(
+      this.display.draw(
         entity.x + this.camera.x,
         entity.y + this.camera.y,
-        entity.tile
+        entity.char,
+        entity.fg,
+        entity.bg
       )
     })
   }
 
-  _drawTile(x, y, tile) {
-    this.display.draw(x, y, tile.char, tile.fg, tile.bg)
+  _drawTile(x, y, char, fg, bg) {
+    this.display.draw(x, y, char, fg, bg)
   }
 
   _createDisplay() {

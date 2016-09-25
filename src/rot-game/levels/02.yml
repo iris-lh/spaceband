@@ -1,0 +1,16 @@
+map:
+  width: 50
+  height: 50
+  numOfBoxes: 1
+  digger:
+    roomWidth:
+      - 5
+      - 10
+    roomHeight:
+      - 5
+      - 10
+    dugPercentage: 0.5
+entities:
+  - Pedro
+  - Pablo
+  - Juan
