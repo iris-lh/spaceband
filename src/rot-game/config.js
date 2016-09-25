@@ -2,14 +2,7 @@ import { ROT } from './vendor/rot'
 
 export var cfg = {
 
-  mapHeight:     30,
-  mapWidth:      30,
-  fontSize:      20,
-
-  numOfBoxes:    5,
-
-  pedroTopology: 4,
-  pedroPathAlg:  ROT.Path.Dijkstra,
+  fontSize: 20,
 
   keyMap: {
     dirs: [
