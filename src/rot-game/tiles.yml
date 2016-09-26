@@ -1,60 +1,42 @@
 floor:
   char: '.' # '\u22C5'
-  fg: '#999'
-  bg: '#111'
+  fg:   '#999'
+  bg:   '#111'
 box:
   char: '#' # '\u2187'
-  fg: '#B84'
-player:
-  type: 'player'
-  name: 'Player'
-  char: '@'
-  fg: '#ff0'
-pedro:
-  type: 'bandito'
-  name: 'Pedro'
-  char: 'P' # '\u229A'
-  fg: 'red'
-  target: 'player'
-pablo:
-  type: 'bandito'
-  name: 'Pablo'
-  char: 'P' # '\u229A'
-  fg: 'green'
-  target: 'player'
-juan:
-  type: 'bandito'
-  name: 'Juan'
-  char: 'P' # '\u229A'
-  fg: 'blue'
-  target: 'player'
-manuel:
-  type: 'bandito'
-  name: 'Manuel'
-  char: 'P' # '\u229A'
-  fg: 'purple'
-  target: 'player'
-jose:
-  type: 'bandito'
-  name: 'Jose'
-  char: 'P' # '\u229A'
-  fg: 'orange'
-  target: 'player'
-diego:
-  type: 'bandito'
-  name: 'Diego'
-  char: 'P' # '\u229A'
-  fg: 'teal'
-  target: 'player'
-rico:
-  type: 'bandito'
-  name: 'Rico'
-  char: 'P' # '\u229A'
-  fg: 'lime'
-  target: 'player'
-alejandro:
-  type: 'bandito'
-  name: 'Alejandro'
-  char: 'P' # '\u229A'
-  fg: 'aqua'
-  target: 'player'
+  fg:   '#B84'
+entityTypes:
+  player:
+    type: 'player'
+    name: 'Player'
+    char: '@'
+    fg:   '#ff0'
+  bandito:
+    type:   'bandito'
+    char:   'P' # '\u229A'
+    target: 'player'
+    varieties:
+      pedro:
+        name: 'Pedro'
+        fg:   'red'
+      pablo:
+        name: 'Pablo'
+        fg:   'green'
+      juan:
+        name: 'Juan'
+        fg:   'blue'
+      manuel:
+        name: 'Manuel'
+        fg:   'purple'
+      jose:
+        name: 'Jose'
+        fg:   'orange'
+      diego:
+        name: 'Diego'
+        fg:   'teal'
+      rico:
+        name: 'Rico'
+        fg:   'lime'
+      alejandro:
+        name: 'Alejandro'
+        fg:   'aqua'
