@@ -11,11 +11,11 @@ map:
       - 10
     dugPercentage: 0.5
 entities:
-  - Pedro
-  - Pablo
-  - Juan
-  - Manuel
-  - Jose
-  - Diego
-  - Rico
-  - Alejandro
+  - bandito.pedro
+  - bandito.pablo
+  - bandito.juan
+  - bandito.manuel
+  - bandito.jose
+  - bandito.diego
+  - bandito.rico
+  - bandito.alejandro

@@ -8,7 +8,7 @@ var jetpack = require('fs-jetpack')
 
 
 export class SceneBuilder {
-  constructor(givenLevel) {
+  constructor(level) {
     this.scene = {
       map: {
         freeCells: []
@@ -36,13 +36,14 @@ export class SceneBuilder {
     }
 
     this.scene.tiles = this._loadTiles()
-    this.scene.level = this._loadLevel(givenLevel)
-    this._matchTilesToEntities(this.scene.tiles, this.scene.level)
+    this.scene.level = this._loadLevel(level)
+    var parsedEntities = this._parseLevelEntities(this.scene.level)
+    var entitiesToAdd = this._matchTilesToEntities(this.scene.tiles.entityTypes, parsedEntities)
 
     this._generateMap(this.scene, this.scene.level)
 
-    this.scene.addPlayer( this._createActor(this.scene, this.scene.tiles.player) )
-    this.scene.addEntities( this._createActors(this.scene, this.scene.level.entities) )
+    this.scene.addPlayer( this._createActor(this.scene, this.scene.tiles.entityTypes.player) )
+    this.scene.addEntities( this._createActors(this.scene, entitiesToAdd) )
   }
 
   _loadTiles() {
@@ -51,20 +52,46 @@ export class SceneBuilder {
     return yaml.eval(yamlString)
   }
 
-  _loadLevel(givenLevel) {
-    var path = __dirname+'/../src/rot-game/levels/'+givenLevel+'.yml'
+  _loadLevel(yamlLevel) {
+    var path = __dirname+'/../src/rot-game/levels/'+yamlLevel+'.yml'
     var yamlString = jetpack.read(path, 'utf8')
     return yaml.eval(yamlString)
   }
 
-  _matchTilesToEntities(tiles, level) {
-    _.forOwn(level.entities, (entity, k1)=> {
-      _.forOwn(tiles, (tile, k2)=> {
-        if (entity == tile.name) {
-          level.entities[k1] = tile
+  _parseLevelEntities(level) {
+    var entities = []
+    level.entities.forEach( (entity)=> {
+      var parts = entity.split('.')
+      entities.push({
+        type: parts[0],
+        variety: parts[1]
+      })
+    })
+    return entities
+  }
+
+  _matchTilesToEntities(entityTypes, entities) {
+    var outputEntities = []
+
+    _.forOwn(entities, (entity, k1)=> {
+      _.forOwn(entityTypes, (entityType, k2)=> {
+        if (entity.type == String(k2)) {
+          var foundType = entityType
+          _.forOwn(foundType.varieties, (variety, varietyKey)=> {
+            if (entity.variety == varietyKey) {
+              outputEntities.push({
+                type: foundType.type,
+                name: variety.name,
+                char: foundType.char,
+                fg:   variety.fg,
+                target: foundType.target
+              })
+            }
+          })
         }
       })
     })
+    return outputEntities
   }
 
   _generateMap(scene, level) {
