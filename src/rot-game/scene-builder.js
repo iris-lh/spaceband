@@ -2,13 +2,11 @@ import { ROT } from './vendor/rot'
 import { newUUID } from './vendor/uuid'
 import { cfg } from './config'
 import { _ } from 'lodash'
-import yaml from 'yaml'
-var jetpack = require('fs-jetpack')
 
 
 
 export class SceneBuilder {
-  constructor(level) {
+  constructor(fileManager, level) {
     this.scene = {
       map: {
         freeCells: []
@@ -35,40 +33,17 @@ export class SceneBuilder {
       }
     }
 
-    this.scene.tiles = this._loadTiles()
-    this.scene.level = this._loadLevel(level)
-    var parsedEntities = this._parseLevelEntities(this.scene.level)
+    this.fm = fileManager
+
+    this.scene.tiles = this.fm.loadTiles()
+    this.scene.level = this.fm.loadLevel(level)
+    var parsedEntities = this.fm.parseLevelEntities(this.scene.level)
     var entitiesToAdd = this._matchTilesToEntities(this.scene.tiles.entityTypes, parsedEntities)
 
     this._generateMap(this.scene, this.scene.level)
 
     this.scene.addPlayer( this._createActor(this.scene, this.scene.tiles.entityTypes.player) )
     this.scene.addEntities( this._createActors(this.scene, entitiesToAdd) )
-  }
-
-  _loadTiles() {
-    var path = __dirname+'/../src/rot-game/tiles.yml'
-    var yamlString = jetpack.read(path, 'utf8')
-    return yaml.eval(yamlString)
-  }
-
-  _loadLevel(yamlLevel) {
-    var path = __dirname+'/../src/rot-game/levels/'+yamlLevel+'.yml'
-    var yamlString = jetpack.read(path, 'utf8')
-    return yaml.eval(yamlString)
-  }
-
-  _parseLevelEntities(level) {
-    if (!level.entities) {return}
-    var entities = []
-    level.entities.forEach( (entity)=> {
-      var parts = entity.split('.')
-      entities.push({
-        type: parts[0],
-        variety: parts[1]
-      })
-    })
-    return entities
   }
 
   _matchTilesToEntities(entityTypes, entities) {
