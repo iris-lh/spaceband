@@ -8,20 +8,59 @@ export class Systems {
   constructor(scene, view) {
     this.scene = scene
     this.view  = view
+    this.alertMessage = ''
+    this.playerCaught = {by:null}
     this.gameIsOver = false
+    if (this.scene.entities('bandito').length > 0) {
+      this.banditoThreat = true
+    } else {
+      this.banditoThreat = false
+    }
   }
 
 
   act() {
     this.engine.lock()
     window.addEventListener('keydown', this)
+    this._checkIfGameIsOver()
 
-    this._computePaths()
     if (!this.gameIsOver) {
+      this._computePaths()
       this._moveEntities()
     }
     this.view.render()
   }
+
+  _checkIfGameIsOver() {
+    var gameOver
+
+    // all banditos have been killed
+    if (this.banditoThreat && this.scene.entities('bandito').length == 0) {
+      this.banditoThreat = false
+      alert('All banditos are dead. You\'re safe!')
+
+    // player has found ananas
+    } else if (this.scene.player.hasAnanas) {
+      gameOver = true
+      alert('Hooray! You found the ananas and won this game.')
+
+    // a bandito has caught the player
+    } else if (this.playerCaught.by) {
+      gameOver = true
+      alert('Game Over! You were caught by '+this.playerCaught.by+'.')
+    }
+
+    if (gameOver) {
+      this.gameIsOver = true
+      window.removeEventListener('keydown', this)
+      this.engine.lock()
+    }
+  }
+
+  addAlertMessage(message) {
+    this.alertMessage = this.alertMessage+' '+message
+  }
+
 
 
   handleEvent(e) {
@@ -33,7 +72,7 @@ export class Systems {
 
     if (_.includes(cfg.keyMap.checkBoxKeys, code)) {
       this._checkBox(this.scene.tiles.box.char)
-      return
+      if (!this.scene.player.hasAnanas) {return}
     }
 
     if (_.includes(cfg.keyMap.dirs, code)) {
@@ -52,10 +91,7 @@ export class Systems {
     if (this.scene.map[key].char != box) {
       alert('There is no box here!')
     } else if (key == this.scene.ananas) {
-      this.gameIsOver = true
-      alert('Hooray! You found the ananas and won this game.')
-      this.engine.lock()
-      window.removeEventListener('keydown', this)
+      this.scene.player.hasAnanas = true
     } else {
       alert('This box is empty :-(')
     }
@@ -94,7 +130,7 @@ export class Systems {
     for (var ent in entities) {
       var entity = entities[ent]
       if (entity.type == target) {
-        var coords = {x:entity.x, y:entity.y, id:entity.id}
+        var coords = {x:entity.x, y:entity.y, id:entity.id, name:entity.name}
         return coords
       }
     }
@@ -137,11 +173,9 @@ export class Systems {
 
             if (entity.type == 'lawman') {
               this._killEntity(this._fetchEntity(target.id))
-              alert('Huzzah! Law-man '+entity.name+' has killed a bandito.')
+              alert('Law-man '+entity.name+' has killed bandito '+target.name+'.')
             } else if (entity.type == 'bandito') {
-              this.gameIsOver = true
-              alert('Game Over! You were caught by '+entity.name+'.')
-              this.engine.lock()
+              this.playerCaught.by = entity.name
             }
           }
         }

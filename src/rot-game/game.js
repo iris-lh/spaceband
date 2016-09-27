@@ -26,5 +26,5 @@ export var Game = {
     view.attachToDOM()
     system.engine.start()
   }
-  
+
 }
