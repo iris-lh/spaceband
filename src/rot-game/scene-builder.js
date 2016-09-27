@@ -74,9 +74,11 @@ export class SceneBuilder {
     var outputEntities = []
 
     _.forOwn(entities, (entity, k1)=> {
+
       _.forOwn(entityTypes, (entityType, k2)=> {
         if (entity.type == String(k2)) {
           var foundType = entityType
+
           _.forOwn(foundType.varieties, (variety, varietyKey)=> {
             if (entity.variety == varietyKey) {
               outputEntities.push({
