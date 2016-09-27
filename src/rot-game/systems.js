@@ -79,58 +79,71 @@ export class Systems {
     })
   }
 
+  _killEntity(entity) {
+    this.scene._entities.pop(entity)
+  }
+
+  _fetchEntity(id) {
+    for (var entity in this.scene.entities()) {
+      if (id == entity.id) {return entity}
+    }
+  }
+
   _fetchTarget(target) {
     var entities = this.scene.entities()
     for (var ent in entities) {
       var entity = entities[ent]
       if (entity.type == target) {
-        var coords = {x:entity.x, y:entity.y}
+        var coords = {x:entity.x, y:entity.y, id:entity.id}
         return coords
       }
     }
   }
+
 
   _computePaths() {
     var entities = this.scene.entities()
     for (var ent in entities) {
       var entity = entities[ent]
       if (entity.target) {
-        var asdf = this._fetchTarget(entity.target)
+        var target = this._fetchTarget(entity.target)
+        if (target) {
 
-        var path = []
+          var path = []
 
-        var scene = this.scene
-        var passableCallback = (targetX, targetY)=> {
-          return scene.map[targetX+','+targetY]
-        }
-        var pathingAlgorithm = new ROT.Path.Dijkstra(
-          asdf.x,
-          asdf.y,
-          passableCallback,
-          { topology: 4 }
-        )
-
-        pathingAlgorithm.compute(
-          entity.x,
-          entity.y,
-          (x, y) => { path.push([x, y]) }
-        )
-
-        path.shift()
-
-        if (path.length >= 2) {
-          entity.dx = path[0][0] - entity.x
-          entity.dy = path[0][1] - entity.y
-        } else if (path) {
-          this.gameIsOver = true
-
-          if (entity.type == 'lawman') {
-            alert('Huzzah! Law-man '+entity.name+' has caught a bandito.')
-          } else if (entity.type == 'bandito') {
-            alert('Game Over! You were caught by '+entity.name+'.')
+          var scene = this.scene
+          var passableCallback = (targetX, targetY)=> {
+            return scene.map[targetX+','+targetY]
           }
+          var pathingAlgorithm = new ROT.Path.Dijkstra(
+            target.x,
+            target.y,
+            passableCallback,
+            { topology: 4 }
+          )
 
-          this.engine.lock()
+          pathingAlgorithm.compute(
+            entity.x,
+            entity.y,
+            (x, y) => { path.push([x, y]) }
+          )
+
+          path.shift()
+
+          if (path.length >= 2) {
+            entity.dx = path[0][0] - entity.x
+            entity.dy = path[0][1] - entity.y
+          } else if (path) {
+
+            if (entity.type == 'lawman') {
+              this._killEntity(this._fetchEntity(target.id))
+              alert('Huzzah! Law-man '+entity.name+' has killed a bandito.')
+            } else if (entity.type == 'bandito') {
+              this.gameIsOver = true
+              alert('Game Over! You were caught by '+entity.name+'.')
+              this.engine.lock()
+            }
+          }
         }
       }
     }
