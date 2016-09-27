@@ -28,7 +28,9 @@ export class Systems {
     if (!this.gameIsOver) {
       this._computePaths()
       this._moveEntities()
+      this._checkIfGameIsOver()
     }
+
     this.view.render()
   }
 
@@ -117,24 +119,54 @@ export class Systems {
   }
 
   _killEntity(entity) {
-    this.scene._entities.pop(entity)
+    this.scene._entities = _.without(this.scene._entities, entity)
   }
 
-  _fetchEntity(id) {
-    for (var entity in this.scene.entities()) {
-      if (id == entity.id) {return entity}
-    }
-  }
-
-  _fetchTarget(target) {
-    var entities = this.scene.entities()
+  _fetchEntity(target) {
+    var entities = this.scene.entities(target.type)
     for (var ent in entities) {
       var entity = entities[ent]
-      if (entity.type == target) {
-        var coords = {x:entity.x, y:entity.y, id:entity.id, name:entity.name}
-        return coords
+      if (target.id == entity.id) {return entity}
+    }
+  }
+
+  _fetchTarget(targetType) {
+    var entities = this.scene.entities(targetType)
+    for (var ent in entities) {
+      var entity = entities[ent]
+      if (entity.type == targetType) {
+        return {x:entity.x, y:entity.y, id:entity.id, name:entity.name}
       }
     }
+  }
+
+  _fetchClosestTarget(seeker) {
+    var entities = this.scene.entities(seeker.target)
+    if (entities.length == 0) {return}
+    var closest = entities[0]
+    for (var ent in entities) {
+      var entity = entities[ent]
+      var distance = this._hypoteneuse(
+        Math.abs(closest.x - seeker.x),
+        Math.abs(closest.y - seeker.y)
+      )
+
+      if (
+        entity.type == seeker.target &&
+        this._hypoteneuse(
+          Math.abs(entity.x - seeker.x),
+          Math.abs(entity.y - seeker.y)
+        ) < distance
+      ) {
+        closest = {x:entity.x, y:entity.y, id:entity.id, name:entity.name}
+      }
+    }
+    return closest
+  }
+
+  _hypoteneuse(a, b) {
+    var c2 = a*a + b*b
+    return Math.sqrt(c2)
   }
 
 
@@ -143,7 +175,7 @@ export class Systems {
     for (var ent in entities) {
       var entity = entities[ent]
       if (entity.target) {
-        var target = this._fetchTarget(entity.target)
+        var target = this._fetchClosestTarget(entity)
         if (target) {
 
           var path = []
@@ -156,7 +188,7 @@ export class Systems {
             target.x,
             target.y,
             passableCallback,
-            { topology: 4 }
+            { topology: entity.topology||4 }
           )
 
           pathingAlgorithm.compute(
