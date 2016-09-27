@@ -8,6 +8,7 @@ export class Systems {
   constructor(scene, view) {
     this.scene = scene
     this.view  = view
+    this.gameIsOver = false
   }
 
 
@@ -16,7 +17,9 @@ export class Systems {
     window.addEventListener('keydown', this)
 
     this._computePaths()
-    this._moveEntities()
+    if (!this.gameIsOver) {
+      this._moveEntities()
+    }
     this.view.render()
   }
 
@@ -49,6 +52,7 @@ export class Systems {
     if (this.scene.map[key].char != box) {
       alert('There is no box here!')
     } else if (key == this.scene.ananas) {
+      this.gameIsOver = true
       alert('Hooray! You found the ananas and won this game.')
       this.engine.lock()
       window.removeEventListener('keydown', this)
@@ -118,8 +122,9 @@ export class Systems {
           entity.dx = path[0][0] - entity.x
           entity.dy = path[0][1] - entity.y
         } else if (path) {
-           alert('Game Over! You were caught by '+entity.name+'.')
-           this.engine.lock()
+          this.gameIsOver = true
+          alert('Game Over! You were caught by '+entity.name+'.')
+          this.engine.lock()
         }
       }
     }
