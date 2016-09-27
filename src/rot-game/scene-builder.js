@@ -59,6 +59,7 @@ export class SceneBuilder {
   }
 
   _parseLevelEntities(level) {
+    if (!level.entities) {return}
     var entities = []
     level.entities.forEach( (entity)=> {
       var parts = entity.split('.')

@@ -1,0 +1,13 @@
+map:
+  width: 25
+  height: 25
+  numOfBoxes: 1
+  digger:
+    roomWidth:
+      - 5
+      - 10
+    roomHeight:
+      - 5
+      - 10
+    dugPercentage: 0.5
+entities:
