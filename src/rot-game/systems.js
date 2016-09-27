@@ -16,6 +16,7 @@ export class Systems {
     } else {
       this.banditoThreat = false
     }
+
   }
 
 
@@ -37,17 +38,17 @@ export class Systems {
     // all banditos have been killed
     if (this.banditoThreat && this.scene.entities('bandito').length == 0) {
       this.banditoThreat = false
-      alert('All banditos are dead. You\'re safe!')
+      console.log('All banditos are in jail. "All in a days work, pardner."')
 
     // player has found ananas
     } else if (this.scene.player.hasAnanas) {
       gameOver = true
-      alert('Hooray! You found the ananas and won this game.')
+      console.log('Hooray! You found the ananas and won this game.')
 
     // a bandito has caught the player
     } else if (this.playerCaught.by) {
       gameOver = true
-      alert('Game Over! You were caught by '+this.playerCaught.by+'.')
+      console.log('Game Over! You were caught by '+this.playerCaught.by+'.')
     }
 
     if (gameOver) {
@@ -89,11 +90,11 @@ export class Systems {
   _checkBox(box) {
     var key = this.scene.player.x + ',' + this.scene.player.y
     if (this.scene.map[key].char != box) {
-      alert('There is no box here!')
+      console.log('There is no box here!')
     } else if (key == this.scene.ananas) {
       this.scene.player.hasAnanas = true
     } else {
-      alert('This box is empty :-(')
+      console.log('This box is empty :-(')
     }
   }
 
@@ -172,8 +173,8 @@ export class Systems {
           } else if (path) {
 
             if (entity.type == 'lawman') {
-              this._killEntity(this._fetchEntity(target.id))
-              alert('Law-man '+entity.name+' has killed bandito '+target.name+'.')
+              this._killEntity(this._fetchEntity(target))
+              console.log('Law-man '+entity.name+' has arrested bandito '+target.name+'.')
             } else if (entity.type == 'bandito') {
               this.playerCaught.by = entity.name
             }
