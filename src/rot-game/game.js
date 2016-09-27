@@ -11,8 +11,7 @@ export var Game = {
   init() {
     // setup game system
     var gamePath  = jetpack.cwd()+'src/rot-game/'
-    console.log(gamePath)
-    var fm   = new FileManager(gamePath)
+    var fm        = new FileManager(gamePath)
     var scene     = new SceneBuilder(fm, '00').scene
     var view      = new View(scene)
     var system    = new Systems(scene, view)
