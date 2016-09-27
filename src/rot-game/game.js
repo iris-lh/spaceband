@@ -12,7 +12,7 @@ export var Game = {
     // setup game system
     var gamePath  = jetpack.cwd()+'src/rot-game/'
     var fm        = new FileManager(gamePath)
-    var scene     = new SceneBuilder(fm, '00').scene
+    var scene     = new SceneBuilder(fm, '05').scene
     var view      = new View(scene)
     var system    = new Systems(scene, view)
 
@@ -26,5 +26,5 @@ export var Game = {
     view.attachToDOM()
     system.engine.start()
   }
-
+  
 }

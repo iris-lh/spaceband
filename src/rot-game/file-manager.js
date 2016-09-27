@@ -27,8 +27,8 @@ export class FileManager {
     level.entities.forEach( (entity)=> {
       var parts = entity.split('.')
       entities.push({
-        type: parts[0],
-        variety: parts[1]
+        type:    parts[0]||entity,
+        variety: parts[1]||null
       })
     })
     return entities
