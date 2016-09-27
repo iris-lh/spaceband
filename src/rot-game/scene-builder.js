@@ -29,17 +29,18 @@ export class SceneBuilder {
       },
 
       entities(whitelistType=null) {
-        var list = []
+        var allEntities = this._entities.concat(this.player)
+        var outputEntities = []
         if (whitelistType) {
-          this._entities.forEach( (entity)=> {
+          allEntities.forEach( (entity)=> {
             if (whitelistType == entity.type) {
-              list.push(entity)
+              outputEntities.push(entity)
             }
           })
         } else {
-          list = this._entities.concat(this.player)
+          outputEntities = allEntities
         }
-        return list
+        return outputEntities
       }
     }
 
@@ -130,6 +131,7 @@ export class SceneBuilder {
       'dx':        0,
       'dy':        0,
       'target':    tile.target    || null,
+      'topology':  tile.topology,
       'hasAnanas': tile.hasAnanas || null
     }
   }
@@ -138,26 +140,7 @@ export class SceneBuilder {
     if (!entities) {return}
     var generatedEntities = []
     entities.forEach( (entity)=> {
-      var index = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
-      var coords = scene.map.freeCells.splice(index, 1)[0]
-      var parts = coords.split(',')
-      var x = parseInt(parts[0])
-      var y = parseInt(parts[1])
-
-      generatedEntities.push({
-        'isEntity': true,
-        'id': newUUID(),
-        'name': entity.name,
-        'type': entity.type,
-        'char': entity.char,
-        'fg': entity.fg,
-        'bg': entity.bg,
-        'x': x,
-        'y': y,
-        'dx': 0,
-        'dy': 0,
-        'target': entity.target,
-      })
+      generatedEntities.push(this._createActor(scene, entity))
     })
     return generatedEntities
   }
