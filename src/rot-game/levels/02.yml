@@ -11,6 +11,6 @@ map:
       - 10
     dugPercentage: 0.5
 entities:
-  - Pedro
-  - Pablo
-  - Juan
+  - bandito.pedro
+  - bandito.pablo
+  - bandito.juan

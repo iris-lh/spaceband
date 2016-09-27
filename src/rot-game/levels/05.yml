@@ -1,7 +1,7 @@
 map:
   width: 30
   height: 30
-  numOfBoxes: 1
+  numOfBoxes: 5
   digger:
     roomWidth:
       - 3
@@ -12,4 +12,4 @@ map:
     dugPercentage: 0.3
 entities:
   - bandito.pedro
-  - bandito.pablo
+  - lawman.jerry

@@ -3,7 +3,7 @@ floor:
   fg:   '#999'
   bg:   '#111'
 box:
-  char: '⊠' # '\u22A0'
+  char: '⊠' # \u22A0
   fg:   '#B84'
 entityTypes:
   player:
@@ -11,6 +11,14 @@ entityTypes:
     name: Player
     char: @
     fg:   '#ff0'
+  lawman:
+    type:   lawman
+    char:   '✪' # \u272A
+    fg:     orange
+    target: bandito
+    varieties:
+      jerry:
+        name: Jerry
   bandito:
     type:   bandito
     char:   '⊚' # \u229A

@@ -123,7 +123,13 @@ export class Systems {
           entity.dy = path[0][1] - entity.y
         } else if (path) {
           this.gameIsOver = true
-          alert('Game Over! You were caught by '+entity.name+'.')
+
+          if (entity.type == 'lawman') {
+            alert('Huzzah! Law-man '+entity.name+' has caught a bandito.')
+          } else if (entity.type == 'bandito') {
+            alert('Game Over! You were caught by '+entity.name+'.')
+          }
+
           this.engine.lock()
         }
       }

@@ -11,4 +11,4 @@ map:
       - 7
     dugPercentage: 0.3
 entities:
-  - Pedro
+  - bandito.pedro

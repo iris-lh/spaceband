@@ -33,11 +33,11 @@ export class SceneBuilder {
       }
     }
 
-    this.fm = fileManager
+    var fm = fileManager
 
-    this.scene.tiles = this.fm.loadTiles()
-    this.scene.level = this.fm.loadLevel(level)
-    var parsedEntities = this.fm.parseLevelEntities(this.scene.level)
+    this.scene.tiles = fm.loadTiles()
+    this.scene.level = fm.loadLevel(level)
+    var parsedEntities = fm.parseLevelEntities(this.scene.level)
     var entitiesToAdd = this._matchTilesToEntities(this.scene.tiles.entityTypes, parsedEntities)
 
     this._generateMap(this.scene, this.scene.level)
@@ -54,18 +54,14 @@ export class SceneBuilder {
       _.forOwn(entityTypes, (entityType, k2)=> {
         if (entity.type == String(k2)) {
           var foundType = entityType
+          var foundVariety
 
           _.forOwn(foundType.varieties, (variety, varietyKey)=> {
             if (entity.variety == varietyKey) {
-              outputEntities.push({
-                type: foundType.type,
-                name: variety.name,
-                char: foundType.char,
-                fg:   variety.fg,
-                target: foundType.target
-              })
+              foundVariety = variety
             }
           })
+          outputEntities.push(_.merge(foundVariety, foundType))
         }
       })
     })
