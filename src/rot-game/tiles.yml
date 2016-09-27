@@ -14,11 +14,15 @@ entityTypes:
   lawman:
     type:   lawman
     char:   '✪' # \u272A
-    fg:     orange
     target: bandito
+    topology: 8 # The long arm of the law
     varieties:
       jerry:
         name: Jerry
+        fg:   orange
+      williams:
+        name: Williams
+        fg:   blue
   bandito:
     type:   bandito
     char:   '⊚' # \u229A

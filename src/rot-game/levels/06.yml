@@ -1,0 +1,17 @@
+map:
+  width: 30
+  height: 30
+  numOfBoxes: 1
+  digger:
+    roomWidth:
+      - 3
+      - 7
+    roomHeight:
+      - 3
+      - 7
+    dugPercentage: 0.3
+entities:
+  - bandito.pedro
+  - bandito.pablo
+  - lawman.jerry
+  - lawman.williams
