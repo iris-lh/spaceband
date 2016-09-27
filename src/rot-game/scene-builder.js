@@ -28,8 +28,18 @@ export class SceneBuilder {
         this.player = player
       },
 
-      entities(type=null) {
-        return this._entities.concat(this.player)
+      entities(whitelistType=null) {
+        var list = []
+        if (whitelistType) {
+          this._entities.forEach( (entity)=> {
+            if (whitelistType == entity.type) {
+              list.push(entity)
+            }
+          })
+        } else {
+          list = this._entities.concat(this.player)
+        }
+        return list
       }
     }
 
@@ -108,18 +118,19 @@ export class SceneBuilder {
     var y = parseInt(parts[1])
 
     return {
-      'isEntity': true,
-      'id': newUUID(),
-      'name': tile.name,
-      'type': tile.type,
-      'char': tile.char,
-      'fg': tile.fg,
-      'bg': tile.bg,
-      'x': x,
-      'y': y,
-      'dx': 0,
-      'dy': 0,
-      'target': tile.target,
+      'isEntity':  true,
+      'id':        newUUID(),
+      'type':      tile.type,
+      'name':      tile.name      || tile.type,
+      'char':      tile.char,
+      'fg':        tile.fg        || 'white',
+      'bg':        tile.bg        || null,
+      'x':         x,
+      'y':         y,
+      'dx':        0,
+      'dy':        0,
+      'target':    tile.target    || null,
+      'hasAnanas': tile.hasAnanas || null
     }
   }
 
