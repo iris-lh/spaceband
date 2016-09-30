@@ -8,6 +8,7 @@ export class Systems {
   constructor(scene, view) {
     this.scene = scene
     this.view  = view
+    this.turn  = 0
     this.alertMessage = ''
     this.playerCaught = {by:null}
     this.gameIsOver = false
@@ -22,15 +23,15 @@ export class Systems {
 
   act() {
     this.engine.lock()
+    this.turn += 1
     window.addEventListener('keydown', this)
-    this._checkIfGameIsOver()
 
     if (!this.gameIsOver) {
       this._computePaths()
       this._moveEntities()
-      this._checkIfGameIsOver()
     }
 
+    this._checkIfGameIsOver()
     this.view.render()
   }
 
@@ -40,17 +41,20 @@ export class Systems {
     // all banditos have been killed
     if (this.banditoThreat && this.scene.entities('bandito').length == 0) {
       this.banditoThreat = false
-      console.log('All banditos are in jail. "All in a days work, pardner."')
+      this.view.addMessage('All banditos are in jail.', this.turn)
+      this.view.addMessage('"All in a days work, pardner."', this.turn)
 
     // player has found ananas
     } else if (this.scene.player.hasAnanas) {
       gameOver = true
-      console.log('Hooray! You found the ananas and won this game.')
+      this.view.addMessage('Hooray! You found the ananas and won this game.', this.turn)
 
     // a bandito has caught the player
     } else if (this.playerCaught.by) {
       gameOver = true
-      console.log('Game Over! You were caught by '+this.playerCaught.by+'.')
+      var captor = this.playerCaught.by
+      var fg = captor.fg
+      this.view.addMessage('Game Over! You were caught by '+captor.name+'.', this.turn)
     }
 
     if (gameOver) {
@@ -58,10 +62,6 @@ export class Systems {
       window.removeEventListener('keydown', this)
       this.engine.lock()
     }
-  }
-
-  addAlertMessage(message) {
-    this.alertMessage = this.alertMessage+' '+message
   }
 
 
@@ -92,11 +92,11 @@ export class Systems {
   _checkBox(box) {
     var key = this.scene.player.x + ',' + this.scene.player.y
     if (this.scene.map[key].char != box) {
-      console.log('There is no box here!')
+      this.view.addMessage('There is no box here!', this.turn, true)
     } else if (key == this.scene.ananas) {
       this.scene.player.hasAnanas = true
     } else {
-      console.log('This box is empty :-(')
+      this.view.addMessage('This box is empty :-(', this.turn, true)
     }
   }
 
@@ -205,10 +205,14 @@ export class Systems {
           } else if (path) {
 
             if (entity.type == 'lawman') {
-              this._killEntity(this._fetchEntity(target))
-              console.log('Law-man '+entity.name+' has arrested bandito '+target.name+'.')
+              var victim = this._fetchEntity(target)
+              this._killEntity(victim)
+              this.view.addMessage(
+                'Law-man '+entity.name+' has arrested bandito '+victim.name+'.',
+                this.turn
+              )
             } else if (entity.type == 'bandito') {
-              this.playerCaught.by = entity.name
+              this.playerCaught.by = this._fetchEntity(entity)
             }
           }
         }

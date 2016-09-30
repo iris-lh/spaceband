@@ -877,9 +877,9 @@ ROT.Display.prototype.draw = function(x, y, ch, fg, bg) {
  * @param {int} [maxWidth] wrap at what width?
  * @returns {int} lines drawn
  */
-ROT.Display.prototype.drawText = function(x, y, text, maxWidth) {
-	var fg = null;
-	var bg = null;
+ROT.Display.prototype.drawText = function(x, y, text, fg=null, bg=null, maxWidth) {
+	//var fg = null;
+	//var bg = null;
 	var cx = x;
 	var cy = y;
 	var lines = 1;
@@ -4543,7 +4543,6 @@ ROT.Color = {
 
 			this._cache[str] = cached;
 		}
-
 		return cached.slice();
 	},
 

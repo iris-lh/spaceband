@@ -2,6 +2,7 @@ import { ROT } from './vendor/rot'
 import { util } from './util'
 import { cfg } from './config'
 import { Camera } from './camera'
+import { _ } from 'lodash'
 
 export class View {
 
@@ -10,6 +11,7 @@ export class View {
     this.display = this._createDisplay()
     this._createCamera()
     this._setupResizeListener()
+    this._messageStack = []
   }
 
   attachToDOM() {
@@ -22,6 +24,30 @@ export class View {
     this.display.clear()
     this._drawMap()
     this._drawEntities()
+    this.drawMessage()
+  }
+
+  addMessage(message, turn, shouldDrawNow=false) {
+    var numOfPaddingSpaces = 4 - String(turn).length
+    var padding = _.repeat(' ', numOfPaddingSpaces)
+    message = '\n'+turn+padding+message
+    this._messageStack.unshift(message)
+    if (shouldDrawNow) {
+      this.drawMessage()
+    }
+  }
+
+  drawMessage() {
+    var stack = this._messageStack
+    var stackMax = 5
+    if (stack.length > 5) {stack.pop()}
+    var cursor = -2
+    stack.forEach( (message, i)=> {
+      var c = Math.ceil(255/(i+1))
+      var fg = 'rgb('+c+','+c+','+c+')'
+      this.display.drawText(0, stack.length+cursor, message, fg, 'black')
+      cursor -= 1
+    })
   }
 
   _drawMap() {
@@ -68,6 +94,7 @@ export class View {
       spacing:          1,
       forceSquareRatio: true,
       fontSize:         cfg.fontSize,
+      fontFamily:       'lekton',
       fg:               cfg.floorFg
     })
   }
