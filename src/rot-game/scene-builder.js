@@ -119,20 +119,20 @@ export class SceneBuilder {
     var y = parseInt(parts[1])
 
     return {
-      'isEntity':  true,
-      'id':        newUUID(),
-      'type':      tile.type,
-      'name':      tile.name      || tile.type,
-      'char':      tile.char,
-      'fg':        tile.fg        || 'white',
-      'bg':        tile.bg        || null,
-      'x':         x,
-      'y':         y,
-      'dx':        0,
-      'dy':        0,
-      'target':    tile.target    || null,
-      'topology':  tile.topology,
-      'hasAnanas': tile.hasAnanas || null
+      'isEntity'  : true,
+      'id'        : newUUID(),
+      'type'      : tile.type,
+      'name'      : tile.name      || tile.type,
+      'char'      : tile.char,
+      'fg'        : tile.fg        || 'white',
+      'bg'        : tile.bg        || null,
+      'x'         : x,
+      'y'         : y,
+      'dx'        : 0,
+      'dy'        : 0,
+      'target'    : tile.target    || null,
+      'topology'  : tile.topology,
+      'hasAnanas' : tile.hasAnanas || null
     }
   }
 
