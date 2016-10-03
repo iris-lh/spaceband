@@ -1,0 +1,24 @@
+ship:
+  type: shuttle
+
+  map:
+    - ' ◥■◤           '
+    - '  ◥■■■■■■■■■◣  '
+    - '  ▶■⚛.▯...■.☸◣ '
+    - '  ▶■0.■...▯..◤ '
+    - '  ◢■■■■■●■■■◤  '
+    - ' ◢■◣           '
+
+  legend:
+    navigation: '☸'
+    engine: '▶'
+    reactor: '⚛'
+    lifeSupport: '0'
+    airlockClosed: '●'
+    airlockOpen: '○'
+
+    doorVertClosed: '▮'
+    doorVertOpen: '▯'
+    doorHorizClosed: '▬'
+    doorHorizOpen: '▭'
+    
