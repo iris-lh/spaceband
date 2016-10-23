@@ -20,8 +20,19 @@ export class Scene {
     this.player = player
   }
 
-  entities(type=null) {
-    return this._entities.concat(this.player)
+  entities(whitelistType=null) {
+    var allEntities = this._entities.concat(this.player)
+    var outputEntities = []
+    if (whitelistType) {
+      allEntities.forEach( (entity)=> {
+        if (whitelistType == entity.type) {
+          outputEntities.push(entity)
+        }
+      })
+    } else {
+      outputEntities = allEntities
+    }
+    return outputEntities
   }
 
 }
