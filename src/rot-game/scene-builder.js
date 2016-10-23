@@ -1,50 +1,17 @@
 import { ROT } from './vendor/rot'
 import { newUUID } from './vendor/uuid'
 import { cfg } from './config'
+import { Scene } from './scene'
+import { FileManager } from './file-manager'
 import { _ } from 'lodash'
 
 
 
 export class SceneBuilder {
-  constructor(fileManager, level) {
-    this.scene = {
-      map: {
-        freeCells: []
-      },
-      _entities: [],
+  constructor(level) {
+    this.scene = new Scene()
 
-      addEntity(entity) {
-        this._entities.unshift(entity)
-      },
-
-      addEntities(entities) {
-        if (!entities) {return}
-        entities.forEach( (entity)=> {
-          this._entities.unshift(entity)
-        })
-      },
-
-      addPlayer(player) {
-        this.player = player
-      },
-
-      entities(whitelistType=null) {
-        var allEntities = this._entities.concat(this.player)
-        var outputEntities = []
-        if (whitelistType) {
-          allEntities.forEach( (entity)=> {
-            if (whitelistType == entity.type) {
-              outputEntities.push(entity)
-            }
-          })
-        } else {
-          outputEntities = allEntities
-        }
-        return outputEntities
-      }
-    }
-
-    var fm = fileManager
+    var fm = new FileManager()
 
     this.scene.tiles = fm.loadTiles()
     this.scene.level = fm.loadLevel(level)

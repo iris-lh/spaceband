@@ -20,7 +20,6 @@ export class Systems {
 
   }
 
-
   act() {
     this.engine.lock()
     this.turn += 1
@@ -64,8 +63,6 @@ export class Systems {
     }
   }
 
-
-
   handleEvent(e) {
     var code = e.keyCode
 
@@ -88,7 +85,6 @@ export class Systems {
     this.engine.unlock()
   }
 
-
   _checkBox(box) {
     var key = this.scene.player.x + ',' + this.scene.player.y
     if (this.scene.map[key].char != box) {
@@ -99,7 +95,6 @@ export class Systems {
       this.view.addMessage('This box is empty :-(', this.turn, true)
     }
   }
-
 
   _moveEntities() {
     this.scene.entities().forEach( (entity)=> {
@@ -169,7 +164,6 @@ export class Systems {
     return Math.sqrt(c2)
   }
 
-
   _computePaths() {
     var entities = this.scene.entities()
     for (var ent in entities) {
@@ -219,6 +213,4 @@ export class Systems {
       }
     }
   }
-
-
 }
