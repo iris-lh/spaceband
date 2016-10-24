@@ -25,6 +25,7 @@
   },
   "scripts": {
     "postinstall": "install-app-deps",
+    "coffee": "gulp coffee",
     "build": "gulp build",
     "prerelease": "gulp build --env=production",
     "release": "build --x64 --publish never",
@@ -40,13 +41,13 @@
     "electron-builder": "^5.12.1",
     "electron-mocha": "^3.0.0",
     "fs-jetpack": "^0.9.0",
-    "gulp": "^3.9.0",
+    "gulp": "^3.9.1",
     "gulp-batch": "^1.0.5",
+    "gulp-coffee": "^2.3.2",
     "gulp-less": "^3.0.3",
     "gulp-plumber": "^1.1.0",
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.3.5",
-    "lodash": "4.15.0",
     "mocha": "^3.0.2",
     "rollup": "^0.34.7",
     "source-map-support": "^0.4.2",
@@ -55,6 +56,7 @@
     "yargs": "^4.2.0"
   },
   "dependencies": {
+    "lodash": "4.15.0",
     "flat": "^2.0.1",
     "yaml": "^0.3.0"
   }

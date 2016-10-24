@@ -1,4 +1,4 @@
-import { ROT } from './vendor/rot'
+import { ROT } from '../vendor/rot'
 
 export var cfg = {
 

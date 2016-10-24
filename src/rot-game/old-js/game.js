@@ -1,4 +1,4 @@
-import { ROT } from './vendor/rot'
+import { ROT } from '../vendor/rot'
 import { Systems } from './systems'
 import { FileManager } from './file-manager'
 import { SceneBuilder } from './scene-builder'

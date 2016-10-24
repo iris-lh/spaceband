@@ -1,4 +1,4 @@
-import { ROT } from './vendor/rot'
+import { ROT } from '../vendor/rot'
 import { util } from './util'
 import { cfg } from './config'
 import { Camera } from './camera'

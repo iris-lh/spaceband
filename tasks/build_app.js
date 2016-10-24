@@ -2,9 +2,11 @@
 
 var gulp = require('gulp');
 var less = require('gulp-less');
+var coffee = require('gulp-coffee');
 var watch = require('gulp-watch');
 var batch = require('gulp-batch');
 var plumber = require('gulp-plumber');
+var gutil = require('gulp-util');
 var jetpack = require('fs-jetpack');
 var bundle = require('./bundle');
 var utils = require('./utils');
@@ -12,6 +14,31 @@ var utils = require('./utils');
 var projectDir = jetpack;
 var srcDir = jetpack.cwd('./src');
 var destDir = jetpack.cwd('./app');
+var gameCoffeeDir = jetpack.cwd()+'/src/rot-game/coffee/'
+var gameJsDir = jetpack.cwd()+'/src/rot-game/js/'
+var gameJsFiles = jetpack.list(gameJsDir)
+
+
+gulp.task('coffee', function() {
+    gulp.src(gameCoffeeDir+'*.coffee')
+        .pipe(coffee({bare: true}).on('error', gutil.log))
+        .pipe(gulp.dest(gameJsDir));
+
+    // delete coffeeless js files
+    for (var i = 0, len = gameJsFiles.length; i < len; i++) {
+        var fileToken = gameJsFiles[i]
+            .replace(gameJsDir, '')
+            .replace('.js', '')
+
+        var filePath = gameJsDir+fileToken+'.js'
+
+        if(!(jetpack.exists(gameCoffeeDir+fileToken+'.coffee'))) {
+          console.log('~~~ removing: ', filePath)
+          jetpack.remove(filePath);
+        };
+    };
+
+});
 
 gulp.task('bundle', function () {
     return Promise.all([
@@ -42,6 +69,9 @@ gulp.task('watch', function () {
         };
     };
 
+    watch('src/**/*.coffee', batch(function (events, done) {
+        gulp.start('coffee', beepOnError(done));
+    }));
     watch('src/**/*.js', batch(function (events, done) {
         gulp.start('bundle', beepOnError(done));
     }));
@@ -50,4 +80,4 @@ gulp.task('watch', function () {
     }));
 });
 
-gulp.task('build', ['bundle', 'less', 'environment']);
+gulp.task('build', ['coffee', 'bundle', 'less', 'environment']);
