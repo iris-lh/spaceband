@@ -6,8 +6,8 @@ import jetpack from 'fs-jetpack'
 export class FileManager {
   constructor() {
     this.gamePath   = jetpack.cwd()+'src/rot-game/'
-    this.levelsPath = this.gamePath+'levels/'
-    this.tilesPath  = this.gamePath+'tiles.yml'
+    this.levelsPath = this.gamePath+'assets/levels/'
+    this.tilesPath  = this.gamePath+'assets/tiles.yml'
   }
 
   loadTiles() {
