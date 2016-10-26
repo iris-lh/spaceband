@@ -1,0 +1,7 @@
+floor:
+  char: '⋅' # \u22C5
+  fg:   '#999'
+  bg:   '#111'
+box:
+  char: '⊠' # \u22A0
+  fg:   '#B84'
