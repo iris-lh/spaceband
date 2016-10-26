@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import td from 'testdouble'
-import { Systems } from '../../rot-game/systems'
-import { SceneBuilder } from '../../rot-game/scene-builder'
-import { View } from '../../rot-game/view'
+import { Systems } from '../../rot-game/lib/systems'
+import { SceneBuilder } from '../../rot-game/lib/scene-builder'
+import { View } from '../../rot-game/lib/view'
 
 describe('Systems', ()=> {
   var s

@@ -1,5 +1,5 @@
 import { expect } from "chai"
-import { Scene } from "../../rot-game/scene"
+import { Scene } from "../../rot-game/lib/scene"
 
 describe('Scene', ()=> {
   var scene

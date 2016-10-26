@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import td from 'testdouble'
-import { SceneBuilder } from '../../rot-game/scene-builder'
+import { SceneBuilder } from '../../rot-game/lib/scene-builder'
 
 
 

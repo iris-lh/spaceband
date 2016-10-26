@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import td from 'testdouble'
-import { ROT } from '../../rot-game/vendor/rot'
-import { Camera } from '../../rot-game/camera'
-import { SceneBuilder } from '../../rot-game/scene-builder'
+import { ROT } from '../../rot-game/lib/vendor/rot'
+import { Camera } from '../../rot-game/lib/camera'
+import { SceneBuilder } from '../../rot-game/lib/scene-builder'
 
 
 describe('Camera', ()=> {
