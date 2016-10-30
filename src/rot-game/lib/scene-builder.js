@@ -49,9 +49,9 @@ export class SceneBuilder {
       level.map.width,
       level.map.height,
       {
-        roomWidth:    level.map.digger.roomWidth,
-        roomHeight:   level.map.digger.roomHeight,
-        dugPercentage:level.map.digger.dugPercentage
+        roomWidth:     level.map.digger.roomWidth,
+        roomHeight:    level.map.digger.roomHeight,
+        dugPercentage: level.map.digger.dugPercentage
       }
     )
     var self = this
@@ -77,11 +77,11 @@ export class SceneBuilder {
   }
 
   _createActor(scene, tile) {
-    var index = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
+    var index  = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
     var coords = scene.map.freeCells.splice(index, 1)[0]
-    var parts = coords.split(',')
-    var x = parseInt(parts[0])
-    var y = parseInt(parts[1])
+    var parts  = coords.split(',')
+    var x      = parseInt(parts[0])
+    var y      = parseInt(parts[1])
 
     return {
       'isEntity'  : true,

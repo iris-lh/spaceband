@@ -1,8 +1,8 @@
 export class Scene {
   constructor () {
-    this.map = {}
+    this.map           = {}
     this.map.freeCells = []
-    this._entities = []
+    this._entities     = []
   }
 
   addEntity(entity) {
@@ -21,7 +21,7 @@ export class Scene {
   }
 
   entities(whitelistType=null) {
-    var allEntities = this._entities.concat(this.player)
+    var allEntities    = this._entities.concat(this.player)
     var outputEntities = []
     if (whitelistType) {
       allEntities.forEach( (entity)=> {

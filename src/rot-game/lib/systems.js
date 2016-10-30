@@ -71,7 +71,7 @@ export class Systems {
     }
 
     if (_.includes(cfg.keyMap.checkBoxKeys, code)) {
-      this._checkBox(this.scene.tiles.box.char)
+      this._checkBox(this.scene.assets.terrain.box.char)
       if (!this.scene.player.hasAnanas) {return}
     }
 

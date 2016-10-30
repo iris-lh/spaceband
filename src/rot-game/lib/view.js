@@ -7,11 +7,12 @@ import { _ } from 'lodash'
 export class View {
 
   constructor(scene) {
-    this.scene = scene
-    this.display = this._createDisplay()
+    this.scene         = scene
+    this.display       = this._createDisplay()
+    this._messageStack = []
+
     this._createCamera()
     this._setupResizeListener()
-    this._messageStack = []
   }
 
   attachToDOM() {
@@ -30,7 +31,7 @@ export class View {
   addMessage(message, turn, shouldDrawNow=false) {
     var numOfPaddingSpaces = 4 - String(turn).length
     var padding = _.repeat(' ', numOfPaddingSpaces)
-    message = '\n'+turn+padding+message
+    message     = '\n'+turn+padding+message
     this._messageStack.unshift(message)
     if (shouldDrawNow) {
       this.drawMessage()
@@ -38,12 +39,12 @@ export class View {
   }
 
   drawMessage() {
-    var stack = this._messageStack
+    var stack    = this._messageStack
     var stackMax = 5
     if (stack.length > 5) {stack.pop()}
     var cursor = -2
     stack.forEach( (message, i)=> {
-      var c = Math.ceil(255/(i+1))
+      var c  = Math.ceil(255/(i+1))
       var fg = 'rgb('+c+','+c+','+c+')'
       this.display.drawText(0, stack.length+cursor, message, fg, 'black')
       cursor -= 1
@@ -55,8 +56,8 @@ export class View {
       var parts = coords.split(',')
       if (parts.length == 2) {
         var tile = this.scene.map[coords]
-        var x = parseInt(parts[0])
-        var y = parseInt(parts[1])
+        var x    = parseInt(parts[0])
+        var y    = parseInt(parts[1])
         this.display.draw(
           x+this.camera.x,
           y+this.camera.y,
@@ -69,7 +70,7 @@ export class View {
   }
 
   _drawEntities() {
-    var scene = this.scene
+    var scene    = this.scene
     var entities = this.scene.entities()
     entities.forEach( (entity)=> {
       this.display.draw(
