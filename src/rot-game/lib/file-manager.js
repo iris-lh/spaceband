@@ -7,17 +7,7 @@ export class FileManager {
   constructor() {
     this.gamePath   = jetpack.cwd()+'/app/../src/rot-game/'
     this.assetsPath = this.gamePath+'assets/'
-    this.levelsPath = this.assetsPath+'levels/'
-
-    this.tilesPath  = this.assetsPath+'tiles.yml'
   }
-
-  loadTiles() {
-    var yamlString = jetpack.read(this.tilesPath, 'utf8')
-    return yaml.eval(yamlString)
-  }
-
-
 
   loadAssets() {
     var entitiesPath, terrainPath,
@@ -48,12 +38,9 @@ export class FileManager {
     assets.entities = entities
     assets.terrain  = terrain
 
-    console.log(assets)
     return assets
 
   }
-
-
 
   loadLevel(yamlLevel) {
     var levelsPath = this.assetsPath+'levels/'

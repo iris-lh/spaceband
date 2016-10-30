@@ -49,8 +49,8 @@ export class SceneBuilder {
       level.map.width,
       level.map.height,
       {
-        roomWidth:level.map.digger.roomWidth,
-        roomHeight:level.map.digger.roomHeight,
+        roomWidth:    level.map.digger.roomWidth,
+        roomHeight:   level.map.digger.roomHeight,
         dugPercentage:level.map.digger.dugPercentage
       }
     )
@@ -58,7 +58,7 @@ export class SceneBuilder {
     var digCallback = function(x, y, value) {
       if (value) { return }
 
-      var coords = x+','+y
+      var coords        = x+','+y
       scene.map[coords] = this.scene.assets.terrain.floor
       scene.map.freeCells.push(coords)
     }
@@ -69,8 +69,8 @@ export class SceneBuilder {
 
   _generateBoxes(scene, level) {
     for (var i=0;i<level.map.numOfBoxes;i++) {
-      var index = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
-      var coords = scene.map.freeCells.splice(index, 1)[0]
+      var index         = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
+      var coords        = scene.map.freeCells.splice(index, 1)[0]
       scene.map[coords] = this.scene.assets.terrain.box
       if (!i) { scene.ananas = coords } /* first box contains the ananas */
     }
