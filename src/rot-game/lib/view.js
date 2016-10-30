@@ -25,20 +25,20 @@ export class View {
     this.display.clear()
     this._drawMap()
     this._drawEntities()
-    this.drawMessage()
+    this.drawMessages()
   }
 
   addMessage(message, turn, shouldDrawNow=false) {
-    var numOfPaddingSpaces = 4 - String(turn).length
-    var padding = _.repeat(' ', numOfPaddingSpaces)
-    message     = '\n'+turn+padding+message
+    var paddingSpaces = 4 - String(turn).length
+    var padding       = _.repeat(' ', paddingSpaces)
+    message           = '\n'+turn+padding+message
     this._messageStack.unshift(message)
     if (shouldDrawNow) {
-      this.drawMessage()
+      this.drawMessages()
     }
   }
 
-  drawMessage() {
+  drawMessages() {
     var stack    = this._messageStack
     var stackMax = 5
     if (stack.length > 5) {stack.pop()}
