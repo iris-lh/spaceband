@@ -1,6 +1,7 @@
-import { ROT } from './vendor/rot'
-import { cfg } from './config'
-import { _ }   from 'lodash'
+import { ROT } from  './vendor/rot'
+import { cfg } from  './config'
+import { _ }   from  'lodash'
+import { util } from './util'
 var flatten  = require('flat')
 
 export class Systems {
@@ -141,14 +142,14 @@ export class Systems {
     var closest = entities[0]
     for (var ent in entities) {
       var entity = entities[ent]
-      var distance = this._hypoteneuse(
+      var distance = util.hypoteneuse(
         Math.abs(closest.x - seeker.x),
         Math.abs(closest.y - seeker.y)
       )
 
       if (
         entity.type == seeker.target &&
-        this._hypoteneuse(
+        util.hypoteneuse(
           Math.abs(entity.x - seeker.x),
           Math.abs(entity.y - seeker.y)
         ) < distance
@@ -157,11 +158,6 @@ export class Systems {
       }
     }
     return closest
-  }
-
-  _hypoteneuse(a, b) {
-    var c2 = a*a + b*b
-    return Math.sqrt(c2)
   }
 
   _computePaths() {

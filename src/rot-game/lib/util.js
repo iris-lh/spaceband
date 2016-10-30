@@ -16,5 +16,10 @@ export var util = {
   setupResizeListener: function(listener) {
     let currentWindow = remote.getCurrentWindow().removeAllListeners()
     currentWindow.on('resize', _.debounce(listener, 100))
+  },
+
+  hypoteneuse: function(a, b) {
+    var c2 = a*a + b*b
+    return Math.sqrt(c2)
   }
 }
