@@ -44,11 +44,6 @@ export class Systems {
       this.view.addMessage('All banditos are in jail.', this.turn)
       this.view.addMessage('"All in a days work, pardner."', this.turn)
 
-    // player has found ananas
-    } else if (this.scene.player.hasAnanas) {
-      gameOver = true
-      this.view.addMessage('Hooray! You found the ananas and won this game.', this.turn)
-
     // a bandito has caught the player
     } else if (this.playerCaught.by) {
       gameOver = true
@@ -73,7 +68,6 @@ export class Systems {
 
     if (_.includes(cfg.keyMap.checkBoxKeys, code)) {
       this._checkBox(this.scene.assets.terrain.box.char)
-      if (!this.scene.player.hasAnanas) {return}
     }
 
     if (_.includes(cfg.keyMap.dirs, code)) {
@@ -90,8 +84,6 @@ export class Systems {
     var key = this.scene.player.x + ',' + this.scene.player.y
     if (this.scene.map[key].char != box) {
       this.view.addMessage('There is no box here!', this.turn, true)
-    } else if (key == this.scene.ananas) {
-      this.scene.player.hasAnanas = true
     } else {
       this.view.addMessage('This box is empty :-(', this.turn, true)
     }

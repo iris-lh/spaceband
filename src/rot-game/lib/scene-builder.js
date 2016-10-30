@@ -74,7 +74,6 @@ export class SceneBuilder {
       var index         = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
       var coords        = scene.map.freeCells.splice(index, 1)[0]
       scene.map[coords] = this.scene.assets.terrain.box
-      if (!i) { scene.ananas = coords } /* first box contains the ananas */
     }
   }
 
@@ -99,7 +98,6 @@ export class SceneBuilder {
       'dy'        : 0,
       'target'    : entity.target    || null,
       'topology'  : entity.topology,
-      'hasAnanas' : entity.hasAnanas || null
     }
   }
 
