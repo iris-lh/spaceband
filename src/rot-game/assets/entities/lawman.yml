@@ -1,11 +1,12 @@
-type:   lawman
-char:   '✪' # \u272A
-target: bandito
-topology: 8 # The long arm of the law
-varieties:
-  jerry:
-    name: Jerry
-    fg:   orange
-  williams:
-    name: Williams
-    fg:   blue
+---
+  type:   lawman
+  char:   '✪' # \u272A
+  target: bandito
+  topology: 8 # The long arm of the law
+  varieties:
+    jerry:
+      name: Jerry
+      fg:   orange
+    williams:
+      name: Williams
+      fg:   blue

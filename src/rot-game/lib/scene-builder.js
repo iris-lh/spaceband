@@ -10,17 +10,15 @@ import { _ } from 'lodash'
 export class SceneBuilder {
   constructor(level) {
     this.scene = new Scene()
+    var fm     = new FileManager()
 
-    var fm = new FileManager()
-
-    this.scene.tiles = fm.loadTiles()
-    this.scene.level = fm.loadLevel(level)
+    this.scene.assets  = fm.loadAssets()
+    this.scene.level   = fm.loadLevel(level)
     var parsedEntities = fm.parseLevelEntities(this.scene.level)
-    var entitiesToAdd = this._matchTilesToEntities(this.scene.tiles.entityTypes, parsedEntities)
+    var entitiesToAdd  = this._matchTilesToEntities(this.scene.assets.entities, parsedEntities)
 
     this._generateMap(this.scene, this.scene.level)
-
-    this.scene.addPlayer( this._createActor(this.scene, this.scene.tiles.entityTypes.player) )
+    this.scene.addPlayer(this._createActor(this.scene, this.scene.assets.entities.player) )
     this.scene.addEntities( this._createActors(this.scene, entitiesToAdd) )
   }
 
@@ -61,7 +59,7 @@ export class SceneBuilder {
       if (value) { return }
 
       var coords = x+','+y
-      scene.map[coords] = this.scene.tiles.floor
+      scene.map[coords] = this.scene.assets.terrain.floor
       scene.map.freeCells.push(coords)
     }
     digger.create(digCallback.bind(this))
@@ -73,7 +71,7 @@ export class SceneBuilder {
     for (var i=0;i<level.map.numOfBoxes;i++) {
       var index = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
       var coords = scene.map.freeCells.splice(index, 1)[0]
-      scene.map[coords] = this.scene.tiles.box
+      scene.map[coords] = this.scene.assets.terrain.box
       if (!i) { scene.ananas = coords } /* first box contains the ananas */
     }
   }

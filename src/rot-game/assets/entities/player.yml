@@ -1,4 +1,5 @@
-type: player
-name: Player
-char: @
-fg:   '#ff0'
+---
+  type: player
+  name: Player
+  char: @
+  fg:   '#ff0'

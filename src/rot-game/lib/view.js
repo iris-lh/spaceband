@@ -62,7 +62,7 @@ export class View {
           y+this.camera.y,
           tile.char,
           tile.fg,
-          this.scene.tiles.floor.bg
+          this.scene.assets.terrain.floor.bg
         )
       }
     }
@@ -77,7 +77,7 @@ export class View {
         entity.y + this.camera.y,
         entity.char,
         entity.fg,
-        scene.tiles.floor.bg
+        scene.assets.terrain.floor.bg
       )
     })
   }
