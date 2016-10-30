@@ -15,8 +15,8 @@ describe('SceneBuilder', ()=> {
       expect(sb.scene).to.be.an('object')
     })
 
-    it('has a tileset', ()=> {
-      expect(sb.scene.tiles).to.be.an('object')
+    it('has assets', ()=> {
+      expect(sb.scene.assets).to.be.an('object')
     })
 
     it('has a level', ()=> {
