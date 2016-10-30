@@ -1,8 +1,8 @@
-import { ROT } from './vendor/rot'
-import { util } from './util'
-import { cfg } from './config'
+import { ROT }    from './vendor/rot'
+import { util }   from './util'
+import { cfg }    from './config'
 import { Camera } from './camera'
-import { _ } from 'lodash'
+import { _ }      from 'lodash'
 
 export class View {
 

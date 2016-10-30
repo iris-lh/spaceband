@@ -11,3 +11,4 @@ map:
       - 10
     dugPercentage: 0.5
 entities:
+  - dog.fido

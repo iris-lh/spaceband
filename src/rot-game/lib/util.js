@@ -1,6 +1,6 @@
 import { remote } from 'electron'
-import { cfg } from './config'
-import _ from 'lodash'
+import { cfg }    from './config'
+import _          from 'lodash'
 
 export var util = {
   gameWindow: function() {

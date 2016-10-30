@@ -1,0 +1,9 @@
+---
+  type: dog
+  char: d
+  target: player
+  topology: 8
+  varieties:
+    fido:
+      name: Fido
+      fg:   skyblue

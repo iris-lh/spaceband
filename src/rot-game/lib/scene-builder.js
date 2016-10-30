@@ -1,9 +1,9 @@
-import { ROT } from './vendor/rot'
-import { newUUID } from './vendor/uuid'
-import { cfg } from './config'
-import { Scene } from './scene'
+import { ROT }         from './vendor/rot'
+import { newUUID }     from './vendor/uuid'
+import { cfg }         from './config'
+import { Scene }       from './scene'
 import { FileManager } from './file-manager'
-import { _ } from 'lodash'
+import { _ }           from 'lodash'
 
 
 
@@ -15,14 +15,16 @@ export class SceneBuilder {
     this.scene.assets  = fm.loadAssets()
     this.scene.level   = fm.loadLevel(level)
     var parsedEntities = fm.parseLevelEntities(this.scene.level)
-    var entitiesToAdd  = this._matchTilesToEntities(this.scene.assets.entities, parsedEntities)
+    var entitiesToAdd  = this._matchAssetsToEntities(this.scene.assets.entities, parsedEntities)
+
+    console.log(entitiesToAdd)
 
     this._generateMap(this.scene, this.scene.level)
     this.scene.addPlayer(this._createActor(this.scene, this.scene.assets.entities.player) )
     this.scene.addEntities( this._createActors(this.scene, entitiesToAdd) )
   }
 
-  _matchTilesToEntities(entityTypes, entities) {
+  _matchAssetsToEntities(entityTypes, entities) {
     var outputEntities = []
 
     _.forOwn(entities, (entity, k1)=> {
@@ -76,7 +78,7 @@ export class SceneBuilder {
     }
   }
 
-  _createActor(scene, tile) {
+  _createActor(scene, entity) {
     var index  = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
     var coords = scene.map.freeCells.splice(index, 1)[0]
     var parts  = coords.split(',')
@@ -86,18 +88,18 @@ export class SceneBuilder {
     return {
       'isEntity'  : true,
       'id'        : newUUID(),
-      'type'      : tile.type,
-      'name'      : tile.name      || tile.type,
-      'char'      : tile.char,
-      'fg'        : tile.fg        || 'white',
-      'bg'        : tile.bg        || null,
+      'type'      : entity.type,
+      'name'      : entity.name      || entity.type,
+      'char'      : entity.char,
+      'fg'        : entity.fg        || 'white',
+      'bg'        : entity.bg        || null,
       'x'         : x,
       'y'         : y,
       'dx'        : 0,
       'dy'        : 0,
-      'target'    : tile.target    || null,
-      'topology'  : tile.topology,
-      'hasAnanas' : tile.hasAnanas || null
+      'target'    : entity.target    || null,
+      'topology'  : entity.topology,
+      'hasAnanas' : entity.hasAnanas || null
     }
   }
 

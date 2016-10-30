@@ -1,7 +1,7 @@
 import { ROT } from './vendor/rot'
 import { cfg } from './config'
-import { _ } from 'lodash'
-var flatten = require('flat')
+import { _ }   from 'lodash'
+var flatten  = require('flat')
 
 export class Systems {
 
