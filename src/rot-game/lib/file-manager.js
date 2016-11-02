@@ -42,10 +42,8 @@ export class FileManager {
 
   }
 
-  loadLevel(yamlLevel) {
-    var levelsPath = this.assetsPath+'levels/'
-    var path       = levelsPath + yamlLevel + '.yml'
-    var yamlString = jetpack.read(path, 'utf8')
+  loadLevel(levelPath) {
+    var yamlString = jetpack.read(levelPath, 'utf8')
     return yaml.eval(yamlString)
   }
 
