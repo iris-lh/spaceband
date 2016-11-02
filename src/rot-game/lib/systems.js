@@ -1,5 +1,5 @@
 import { ROT } from  './vendor/rot'
-import { cfg } from  './config'
+import { cfg } from  './../config'
 import { _ }   from  'lodash'
 import { util } from './util'
 var flatten  = require('flat')
@@ -13,7 +13,7 @@ export class Systems {
     this.alertMessage = ''
     this.playerCaught = {by:null}
     this.gameIsOver   = false
-    
+
     if (this.scene.entities('bandito').length > 0) {
       this.banditoThreat = true
     } else {

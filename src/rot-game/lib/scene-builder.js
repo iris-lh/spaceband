@@ -1,6 +1,6 @@
 import { ROT }         from './vendor/rot'
 import { newUUID }     from './vendor/uuid'
-import { cfg }         from './config'
+import { cfg }         from './../config'
 import { Scene }       from './scene'
 import { FileManager } from './file-manager'
 import { _ }           from 'lodash'

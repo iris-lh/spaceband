@@ -1,6 +1,6 @@
 import { ROT }    from './vendor/rot'
 import { util }   from './util'
-import { cfg }    from './config'
+import { cfg }    from './../config'
 import { Camera } from './camera'
 import { _ }      from 'lodash'
 

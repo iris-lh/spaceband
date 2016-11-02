@@ -1,33 +1,25 @@
+import jetpack          from 'fs-jetpack'
 import { ROT }          from './lib/vendor/rot'
 import { Systems }      from './lib/systems'
 import { FileManager }  from './lib/file-manager'
 import { SceneBuilder } from './lib/scene-builder'
 import { View }         from './lib/view'
-import jetpack          from 'fs-jetpack'
-
-const dialog = require('electron').remote.dialog
+import { UserDialog }   from './lib/user-dialog'
+import { cfg }          from './config'
 
 
 
 export var Game = {
 
+  level: '/Users/isu/coding/gamedev/rot/spaceband/src/rot-game/assets/levels/00.yml',
+
   init() {
+    window.addEventListener('keydown', this)
+    // var level = UserDialog.chooseLevel()
+    this.startGame(this.level)
+  },
 
-    var level
-    var buttonPressed = dialog.showMessageBox({
-      type:    'question',
-      title:   '',
-      message: 'SpaceBand',
-      detail:  '',
-      buttons: ['Play', 'Select Level']
-    })
-
-    if (buttonPressed == 1) {
-      level = dialog.showOpenDialog({properties: ['openFile']})[0]
-    } else {
-      level = '/Users/isu/coding/gamedev/rot/spaceband/src/rot-game/assets/levels/00.yml'
-    }
-
+  startGame(level) {
     // setup game system
     var scene     = new SceneBuilder(level).scene
     var view      = new View(scene)
@@ -41,7 +33,17 @@ export var Game = {
     scheduler.add(system, true)
     view.attachToDOM()
     system.engine.start()
+  },
 
+  handleEvent(e) {
+    var code = e.keyCode
+    if (code == cfg.keyMap.loadLevel) {
+      this.level = UserDialog.chooseLevel()
+      this.init(this.level)
+    }
+    if (code == cfg.keyMap.resetLevel) {
+      this.init(this.level)
+    }
   }
 
 }

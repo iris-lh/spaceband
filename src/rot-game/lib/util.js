@@ -1,5 +1,5 @@
 import { remote } from 'electron'
-import { cfg }    from './config'
+import { cfg }    from './../config'
 import _          from 'lodash'
 
 export var util = {

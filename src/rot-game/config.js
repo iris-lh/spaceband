@@ -1,10 +1,12 @@
-import { ROT } from './vendor/rot'
+import { ROT } from './lib/vendor/rot'
 
 export var cfg = {
 
   fontSize: 20,
 
   keyMap: {
+    loadLevel:  79,
+    resetLevel: 82,
     dirs: [
       ROT.VK_UP,
       ROT.VK_PAGE_UP,
