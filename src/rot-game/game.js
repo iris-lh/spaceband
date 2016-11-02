@@ -11,11 +11,11 @@ import { cfg }          from './config'
 
 export var Game = {
 
-  level: '/Users/isu/coding/gamedev/rot/spaceband/src/rot-game/assets/levels/00.yml',
+  level: jetpack.cwd()+'/src/rot-game/assets/levels/00.yml',
 
   init() {
+    console.log('game.level:',this.level)
     window.addEventListener('keydown', this)
-    // var level = UserDialog.chooseLevel()
     this.startGame(this.level)
   },
 
@@ -39,10 +39,10 @@ export var Game = {
     var code = e.keyCode
     if (code == cfg.keyMap.loadLevel) {
       this.level = UserDialog.chooseLevel()
-      this.init(this.level)
+      this.startGame(this.level)
     }
     if (code == cfg.keyMap.resetLevel) {
-      this.init(this.level)
+      this.startGame(this.level)
     }
   }
 

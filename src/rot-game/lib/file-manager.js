@@ -5,7 +5,7 @@ import jetpack from 'fs-jetpack'
 
 export class FileManager {
   constructor() {
-    this.gamePath   = jetpack.cwd()+'/app/../src/rot-game/'
+    this.gamePath   = jetpack.cwd()+'/src/rot-game/'
     this.assetsPath = this.gamePath+'assets/'
   }
 
@@ -43,6 +43,7 @@ export class FileManager {
   }
 
   loadLevel(levelPath) {
+    console.log('file-manager loadLevel:',levelPath)
     var yamlString = jetpack.read(levelPath, 'utf8')
     return yaml.eval(yamlString)
   }
