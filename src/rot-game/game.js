@@ -22,6 +22,7 @@ export var Game = {
     scheduler.add(system, true)
     view.attachToDOM()
     system.engine.start()
+
   }
 
 }

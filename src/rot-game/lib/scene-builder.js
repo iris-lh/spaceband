@@ -17,8 +17,6 @@ export class SceneBuilder {
     var parsedEntities = fm.parseLevelEntities(this.scene.level)
     var entitiesToAdd  = this._matchAssetsToEntities(this.scene.assets.entities, parsedEntities)
 
-    console.log(entitiesToAdd)
-
     this._generateMap(this.scene, this.scene.level)
     this.scene.addPlayer(this._createActor(this.scene, this.scene.assets.entities.player) )
     this.scene.addEntities( this._createActors(this.scene, entitiesToAdd) )

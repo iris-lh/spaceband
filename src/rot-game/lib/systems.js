@@ -7,12 +7,13 @@ var flatten  = require('flat')
 export class Systems {
 
   constructor(scene, view) {
-    this.scene = scene
-    this.view  = view
-    this.turn  = 0
+    this.scene        = scene
+    this.view         = view
+    this.turn         = 0
     this.alertMessage = ''
     this.playerCaught = {by:null}
-    this.gameIsOver = false
+    this.gameIsOver   = false
+    
     if (this.scene.entities('bandito').length > 0) {
       this.banditoThreat = true
     } else {
@@ -68,6 +69,7 @@ export class Systems {
 
     if (_.includes(cfg.keyMap.checkBoxKeys, code)) {
       this._checkBox(this.scene.assets.terrain.box.char)
+      return
     }
 
     if (_.includes(cfg.keyMap.dirs, code)) {
