@@ -2,7 +2,8 @@ import { ROT } from './lib/vendor/rot'
 
 export var cfg = {
 
-  fontSize: 20,
+  fontSize:   20,
+  fontFamily: 'monospace',
 
   keyMap: {
     loadLevel:  79,

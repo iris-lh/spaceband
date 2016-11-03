@@ -95,7 +95,7 @@ export class View {
       spacing:          1,
       forceSquareRatio: true,
       fontSize:         cfg.fontSize,
-      fontFamily:       'lekton',
+      fontFamily:       cfg.fontFamily,
       fg:               cfg.floorFg
     })
   }
