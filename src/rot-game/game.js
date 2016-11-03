@@ -14,7 +14,6 @@ export var Game = {
   level: jetpack.cwd()+'/src/rot-game/assets/levels/00.yml',
 
   init() {
-    console.log('game.level:',this.level)
     window.addEventListener('keydown', this)
     this.startGame(this.level)
   },

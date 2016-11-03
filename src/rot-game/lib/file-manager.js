@@ -43,7 +43,6 @@ export class FileManager {
   }
 
   loadLevel(levelPath) {
-    console.log('file-manager loadLevel:',levelPath)
     var yamlString = jetpack.read(levelPath, 'utf8')
     return yaml.eval(yamlString)
   }
