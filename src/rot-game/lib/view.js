@@ -96,7 +96,6 @@ export class View {
       forceSquareRatio: true,
       fontSize:         cfg.fontSize,
       fontFamily:       cfg.fontFamily,
-      fg:               cfg.floorFg
     })
   }
 

@@ -19,7 +19,6 @@ export class Systems {
     } else {
       this.banditoThreat = false
     }
-
   }
 
   act() {
