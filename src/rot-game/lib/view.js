@@ -17,7 +17,10 @@ export class View {
 
   attachToDOM() {
     document.body.innerHTML = ''
-    document.body.appendChild(this.display.getContainer())
+
+    var canvas = this.display.getContainer()
+    canvas.setAttribute("id", "rotCanvas")
+    document.body.appendChild(canvas)
   }
 
   render() {
