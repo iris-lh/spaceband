@@ -716,6 +716,7 @@ if (typeof window != "undefined") {
  */
 ROT.Display = function(options) {
 	var canvas = document.createElement("canvas");
+  canvas.setAttribute("id", "rotCanvas")
 	this._context = canvas.getContext("2d");
 	this._data = {};
 	this._dirty = false; /* false = nothing, true = all, object = dirty cells */
