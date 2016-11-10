@@ -11,35 +11,18 @@ import { cfg }          from './config'
 
 export var Game = {
 
-  levelPath: jetpack.cwd()+'/src/rot-game/assets/levels/00.yml',
+  defaultLevel: jetpack.cwd()+'/src/rot-game/assets/levels/00.yml',
 
   init() {
     this.fm = new FileManager
     window.addEventListener('keydown', this)
-    this.startGameFromLevel(this.levelPath)
+    this.startGame(this.defaultLevel)
   },
 
-  startGameFromLevel(levelPath) {
+  startGame(dataOrPath) {
     // setup game system
     var builder = new SceneBuilder()
-    var scene   = builder.buildSceneFromLevel(levelPath)
-    var view    = new View(scene)
-    this.system = new Systems(scene, view)
-
-    // setup game engine
-    var scheduler      = new ROT.Scheduler.Simple()
-    this.system.engine = new ROT.Engine(scheduler)
-
-    // starting up
-    scheduler.add(this.system, true)
-    view.attachToDOM()
-    this.system.engine.start()
-  },
-
-  startGameFromSave(saveData) {
-    // setup game system
-    var builder = new SceneBuilder()
-    var scene   = builder.buildSceneFromSave(saveData)
+    var scene   = builder.buildScene(dataOrPath)
     var view    = new View(scene)
     this.system = new Systems(scene, view)
 
@@ -57,10 +40,10 @@ export var Game = {
     var code = e.keyCode
     if (code == cfg.keyMap.loadLevel) {
       this.levelPath = UserDialog.chooseLevel()
-      this.startGameFromLevel(this.levelPath)
+      this.startGame(this.levelPath)
     }
     if (code == cfg.keyMap.resetLevel) {
-      this.startGameFromLevel(this.levelPath)
+      this.startGame(this.levelPath)
     }
     if (code == cfg.keyMap.saveGame) {
       var path = UserDialog.chooseSaveGamePath()
@@ -69,7 +52,7 @@ export var Game = {
     if (code == cfg.keyMap.loadGame) {
       var path     = UserDialog.chooseLoadGamePath()
       var loadData = this.fm.loadGame(path)
-      this.startGameFromSave(loadData)
+      this.startGame(loadData)
     }
   }
 

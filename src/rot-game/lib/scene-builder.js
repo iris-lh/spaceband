@@ -12,26 +12,25 @@ export class SceneBuilder {
     this.fm = new FileManager()
   }
 
-  buildSceneFromLevel(levelPath) {
-    this.scene         = new Scene()
-    this.scene.assets  = this.fm.loadAssets()
-    this.scene.level   = this.fm.loadLevel(levelPath)
-    var parsedEntities = this.fm.parseLevelEntities(this.scene.level)
-    var entitiesToAdd  = this._matchAssetsToEntities(this.scene.assets.entities, parsedEntities)
-
-    this._generateMap(this.scene, this.scene.level)
-    this.scene.addPlayer(this._createActor(this.scene, this.scene.assets.entities.player) )
-    this.scene.addEntities( this._createActors(this.scene, entitiesToAdd) )
-
-    return this.scene
-  }
-
-  buildSceneFromSave(saveData) {
+  buildScene(input) {
     this.scene        = new Scene()
     this.scene.assets = this.fm.loadAssets()
-    this.scene.map    = saveData.map
-    this.scene.addPlayer(saveData.player)
-    this.scene.addEntities(saveData.entities)
+
+    if(typeof input === 'string') { // input is a level path
+      var levelPath      = input
+      this.scene.level   = this.fm.loadLevel(levelPath)
+      var parsedEntities = this.fm.parseLevelEntities(this.scene.level)
+      var entitiesToAdd  = this._matchAssetsToEntities(this.scene.assets.entities, parsedEntities)
+      this._generateMap(this.scene, this.scene.level)
+      this.scene.addPlayer(this._createActor(this.scene, this.scene.assets.entities.player) )
+      this.scene.addEntities( this._createActors(this.scene, entitiesToAdd) )
+    }
+    else if (typeof input === 'object') { // input is save data
+      var saveData   = input
+      this.scene.map = saveData.map
+      this.scene.addPlayer(saveData.player)
+      this.scene.addEntities(saveData.entities)
+    }
 
     return this.scene
   }
