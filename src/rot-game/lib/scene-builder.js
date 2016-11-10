@@ -8,18 +8,32 @@ import { _ }           from 'lodash'
 
 
 export class SceneBuilder {
-  constructor(level) {
-    this.scene = new Scene()
-    var fm     = new FileManager()
+  constructor(levelPath) {
+    this.fm = new FileManager()
+  }
 
-    this.scene.assets  = fm.loadAssets()
-    this.scene.level   = fm.loadLevel(level)
-    var parsedEntities = fm.parseLevelEntities(this.scene.level)
+  buildSceneFromLevel(levelPath) {
+    this.scene         = new Scene()
+    this.scene.assets  = this.fm.loadAssets()
+    this.scene.level   = this.fm.loadLevel(levelPath)
+    var parsedEntities = this.fm.parseLevelEntities(this.scene.level)
     var entitiesToAdd  = this._matchAssetsToEntities(this.scene.assets.entities, parsedEntities)
 
     this._generateMap(this.scene, this.scene.level)
     this.scene.addPlayer(this._createActor(this.scene, this.scene.assets.entities.player) )
     this.scene.addEntities( this._createActors(this.scene, entitiesToAdd) )
+
+    return this.scene
+  }
+
+  buildSceneFromSave(saveData) {
+    this.scene        = new Scene()
+    this.scene.assets = this.fm.loadAssets()
+    this.scene.map    = saveData.map
+    this.scene.addPlayer(saveData.player)
+    this.scene.addEntities(saveData.entities)
+
+    return this.scene
   }
 
   _matchAssetsToEntities(entityTypes, entities) {

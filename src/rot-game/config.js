@@ -9,7 +9,7 @@ export var cfg = {
     loadLevel:  76,
     resetLevel: 82,
     saveGame:   83,
-    loadGame:   91
+    loadGame:   79,
     dirs: [
       ROT.VK_UP,
       ROT.VK_PAGE_UP,

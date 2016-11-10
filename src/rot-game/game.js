@@ -11,22 +11,40 @@ import { cfg }          from './config'
 
 export var Game = {
 
-  level: jetpack.cwd()+'/src/rot-game/assets/levels/00.yml',
+  levelPath: jetpack.cwd()+'/src/rot-game/assets/levels/00.yml',
 
   init() {
     this.fm = new FileManager
     window.addEventListener('keydown', this)
-    this.startGame(this.level)
+    this.startGameFromLevel(this.levelPath)
   },
 
-  startGame(level) {
+  startGameFromLevel(levelPath) {
     // setup game system
-    var scene     = new SceneBuilder(level).scene
-    var view      = new View(scene)
-    this.system    = new Systems(scene, view)
+    var builder = new SceneBuilder()
+    var scene   = builder.buildSceneFromLevel(levelPath)
+    var view    = new View(scene)
+    this.system = new Systems(scene, view)
 
     // setup game engine
-    var scheduler = new ROT.Scheduler.Simple()
+    var scheduler      = new ROT.Scheduler.Simple()
+    this.system.engine = new ROT.Engine(scheduler)
+
+    // starting up
+    scheduler.add(this.system, true)
+    view.attachToDOM()
+    this.system.engine.start()
+  },
+
+  startGameFromSave(saveData) {
+    // setup game system
+    var builder = new SceneBuilder()
+    var scene   = builder.buildSceneFromSave(saveData)
+    var view    = new View(scene)
+    this.system = new Systems(scene, view)
+
+    // setup game engine
+    var scheduler      = new ROT.Scheduler.Simple()
     this.system.engine = new ROT.Engine(scheduler)
 
     // starting up
@@ -38,15 +56,20 @@ export var Game = {
   handleEvent(e) {
     var code = e.keyCode
     if (code == cfg.keyMap.loadLevel) {
-      this.level = UserDialog.chooseLevel()
-      this.startGame(this.level)
+      this.levelPath = UserDialog.chooseLevel()
+      this.startGameFromLevel(this.levelPath)
     }
     if (code == cfg.keyMap.resetLevel) {
-      this.startGame(this.level)
+      this.startGameFromLevel(this.levelPath)
     }
     if (code == cfg.keyMap.saveGame) {
-      var path = UserDialog.chooseSavePath()
+      var path = UserDialog.chooseSaveGamePath()
       this.fm.saveGame(this.system.scene, path)
+    }
+    if (code == cfg.keyMap.loadGame) {
+      var path     = UserDialog.chooseLoadGamePath()
+      var loadData = this.fm.loadGame(path)
+      this.startGameFromSave(loadData)
     }
   }
 
