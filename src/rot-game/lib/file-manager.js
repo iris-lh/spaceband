@@ -7,6 +7,8 @@ export class FileManager {
   constructor() {
     this.gamePath   = jetpack.cwd()+'/src/rot-game/'
     this.assetsPath = this.gamePath+'assets/'
+
+    jetpack.dir(jetpack.cwd()+'/src/rot-game/saves')
   }
 
   loadAssets() {
