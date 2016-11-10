@@ -1,11 +1,11 @@
 {
   "name": "Spaceband",
   "productName": "Spaceband",
-  "description": "",
-  "version": "0.0.0",
-  "author": "Mr. Gumby <mr.gumby@example.com>",
-  "copyright": "© 2016, Gumby inc.",
-  "homepage": "http://example.com",
+  "description": "A rogue-like text-based space adventure game.",
+  "version": "0.1.0",
+  "author": "Isaac Helbling <imhelbling@gmail.com>",
+  "copyright": "© 2016, Meteor Sandwich, D.B.A.",
+  "homepage": "http://meteorsandwich.com",
   "license": "MIT",
   "main": "background.js",
   "dependencies": {
