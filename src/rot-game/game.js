@@ -11,7 +11,7 @@ import { cfg }          from './config'
 
 export var Game = {
 
-  defaultLevel: jetpack.cwd()+'/src/rot-game/assets/levels/00.yml',
+  defaultLevel: jetpack.cwd()+'/app/assets/levels/00.yml',
 
   init() {
     this.fm = new FileManager
