@@ -6,8 +6,10 @@ export var cfg = {
   fontFamily: 'ModeNine',
 
   keyMap: {
-    loadLevel:  79,
+    loadLevel:  76,
     resetLevel: 82,
+    saveGame:   83,
+    loadGame:   91
     dirs: [
       ROT.VK_UP,
       ROT.VK_PAGE_UP,

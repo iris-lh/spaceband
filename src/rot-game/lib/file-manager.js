@@ -60,4 +60,17 @@ export class FileManager {
     return entities
   }
 
+  saveGame(scene, path) {
+    console.log(path)
+    var saveData = {
+      map:      scene.map,
+      entities: scene._entities,
+      player:   scene.player
+    }
+    var jsonData = JSON.stringify(saveData)
+    console.log(jsonData)
+
+    jetpack.write(path, saveData, {jsonIndent: 0})
+  }
+
 }

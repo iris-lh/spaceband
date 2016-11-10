@@ -6,8 +6,17 @@ import jetpack from 'fs-jetpack'
 export var UserDialog = {
   chooseLevel() {
     return dialog.showOpenDialog({
-      properties: ['openFile'],
+      title:       'Load Level',
+      properties:  ['openFile'],
       defaultPath: jetpack.cwd()+'/src/rot-game/assets/levels/'
     })[0]
+  },
+
+  chooseSavePath() {
+    return dialog.showSaveDialog({
+      title:       'Save Game',
+      defaultPath: jetpack.cwd()+'/src/rot-game/saves',
+      filters:     [{name: 'JSON Files', extensions: ['json']}]
+    })
   }
 }

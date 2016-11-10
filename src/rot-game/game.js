@@ -14,6 +14,7 @@ export var Game = {
   level: jetpack.cwd()+'/src/rot-game/assets/levels/00.yml',
 
   init() {
+    this.fm = new FileManager
     window.addEventListener('keydown', this)
     this.startGame(this.level)
   },
@@ -22,16 +23,16 @@ export var Game = {
     // setup game system
     var scene     = new SceneBuilder(level).scene
     var view      = new View(scene)
-    var system    = new Systems(scene, view)
+    this.system    = new Systems(scene, view)
 
     // setup game engine
     var scheduler = new ROT.Scheduler.Simple()
-    system.engine = new ROT.Engine(scheduler)
+    this.system.engine = new ROT.Engine(scheduler)
 
     // starting up
-    scheduler.add(system, true)
+    scheduler.add(this.system, true)
     view.attachToDOM()
-    system.engine.start()
+    this.system.engine.start()
   },
 
   handleEvent(e) {
@@ -42,6 +43,10 @@ export var Game = {
     }
     if (code == cfg.keyMap.resetLevel) {
       this.startGame(this.level)
+    }
+    if (code == cfg.keyMap.saveGame) {
+      var path = UserDialog.chooseSavePath()
+      this.fm.saveGame(this.system.scene, path)
     }
   }
 
