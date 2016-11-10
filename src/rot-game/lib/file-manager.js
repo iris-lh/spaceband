@@ -7,7 +7,6 @@ export class FileManager {
   constructor() {
     this.gamePath   = jetpack.cwd()+'/app/'
     this.assetsPath = this.gamePath+'assets/'
-    console.log(this.assetsPath)
 
     jetpack.dir(jetpack.cwd()+'app/saves')
   }
@@ -28,14 +27,12 @@ export class FileManager {
 
     entityFiles.forEach( (entityFile)=> {
       var yamlString                  = jetpack.read(entitiesPath+entityFile, 'utf8')
-      console.log('loadAssets entities yaml: '+yamlString)
       var entityDefinition            = (yaml.eval(yamlString))
       entities[entityDefinition.type] = entityDefinition
     })
 
     terrainFiles.forEach( (terrainFile)=> {
       var yamlString                  = jetpack.read(terrainPath+terrainFile, 'utf8')
-      console.log('loadAssets terrain yaml: '+yamlString)
       var terrainDefinition           = (yaml.eval(yamlString))
       terrain[terrainDefinition.type] = terrainDefinition
     })
@@ -49,7 +46,6 @@ export class FileManager {
 
   loadLevel(levelPath) {
     var yamlString = jetpack.read(levelPath, 'utf8')
-    console.log('loadLevel yaml: '+yamlString)
     return yaml.eval(yamlString)
   }
 

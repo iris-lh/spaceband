@@ -8,7 +8,7 @@ export var UserDialog = {
     return dialog.showOpenDialog({
       title:       'Load Level',
       properties:  ['openFile'],
-      defaultPath: jetpack.cwd()+'/src/rot-game/assets/levels/',
+      defaultPath: jetpack.cwd()+'/app/assets/levels/',
       filters:     [{name: 'YAML Files', extensions: ['yml']}]
     })[0]
   },
@@ -16,7 +16,7 @@ export var UserDialog = {
   chooseSaveGamePath() {
     return dialog.showSaveDialog({
       title:       'Save Game',
-      defaultPath: jetpack.cwd()+'/src/rot-game/saves/',
+      defaultPath: jetpack.cwd()+'/app/saves/',
       filters:     [{name: 'JSON Files', extensions: ['json']}]
     })
   },
@@ -25,7 +25,7 @@ export var UserDialog = {
     return dialog.showOpenDialog({
       title:       'Load Game',
       properties:  ['openFile'],
-      defaultPath: jetpack.cwd()+'/src/rot-game/saves/',
+      defaultPath: jetpack.cwd()+'/app/saves/',
       filters:     [{name: 'JSON Files', extensions: ['json']}]
     })[0]
   },
