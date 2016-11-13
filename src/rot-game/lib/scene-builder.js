@@ -13,26 +13,26 @@ export class SceneBuilder {
   }
 
   buildScene(input) {
-    this.scene        = new Scene()
-    this.scene.assets = this.fm.loadAssets()
+    var scene    = new Scene()
+    scene.assets = this.fm.loadAssets()
 
     if(typeof input === 'string') { // input is a level path
       var levelPath      = input
-      this.scene.level   = this.fm.loadLevel(levelPath)
-      var parsedEntities = this.fm.parseLevelEntities(this.scene.level)
-      var entitiesToAdd  = this._matchAssetsToEntities(this.scene.assets.entities, parsedEntities)
-      this._generateMap(this.scene, this.scene.level)
-      this.scene.addPlayer(this._createActor(this.scene, this.scene.assets.entities.player) )
-      this.scene.addEntities( this._createActors(this.scene, entitiesToAdd) )
+      scene.level        = this.fm.loadLevel(levelPath)
+      var parsedEntities = this.fm.parseLevelEntities(scene.level)
+      var entitiesToAdd  = this._matchAssetsToEntities(scene.assets.entities, parsedEntities)
+      this._generateMap(scene, scene.level)
+      scene.addPlayer(this._createActor(scene, scene.assets.entities.player) )
+      scene.addEntities( this._createActors(scene, entitiesToAdd) )
     }
     else if (typeof input === 'object') { // input is save data
-      var saveData   = input
-      this.scene.map = saveData.map
-      this.scene.addPlayer(saveData.player)
-      this.scene.addEntities(saveData.entities)
+      var saveData = input
+      scene.map    = saveData.map
+      scene.addPlayer(saveData.player)
+      scene.addEntities(saveData.entities)
     }
 
-    return this.scene
+    return scene
   }
 
   _matchAssetsToEntities(entityTypes, entities) {
@@ -72,7 +72,7 @@ export class SceneBuilder {
       if (value) { return }
 
       var coords        = x+','+y
-      scene.map[coords] = this.scene.assets.terrain.floor
+      scene.map[coords] = scene.assets.terrain.floor
       scene.map.freeCells.push(coords)
     }
     digger.create(digCallback.bind(this))
@@ -84,7 +84,7 @@ export class SceneBuilder {
     for (var i=0;i<level.map.numOfBoxes;i++) {
       var index         = Math.floor(ROT.RNG.getUniform() * scene.map.freeCells.length)
       var coords        = scene.map.freeCells.splice(index, 1)[0]
-      scene.map[coords] = this.scene.assets.terrain.box
+      scene.map[coords] = scene.assets.terrain.box
     }
   }
 
