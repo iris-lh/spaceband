@@ -5,21 +5,21 @@ import { Scene }       from './scene'
 import { FileManager } from './file-manager'
 import { _ }           from 'lodash'
 
-
+var fm = FileManager
 
 export class SceneBuilder {
   constructor(levelPath) {
-    this.fm = new FileManager()
+    fm = new FileManager()
   }
 
   buildScene(input) {
     var scene    = new Scene()
-    scene.assets = this.fm.loadAssets()
+    scene.assets = fm.loadAssets()
 
     if(typeof input === 'string') { // input is a level path
       var levelPath      = input
-      scene.level        = this.fm.loadLevel(levelPath)
-      var parsedEntities = this.fm.parseLevelEntities(scene.level)
+      scene.level        = fm.loadLevel(levelPath)
+      var parsedEntities = fm.parseLevelEntities(scene.level)
       var entitiesToAdd  = this._matchAssetsToEntities(scene.assets.entities, parsedEntities)
       this._generateMap(scene, scene.level)
       scene.addPlayer(this._createActor(scene, scene.assets.entities.player) )

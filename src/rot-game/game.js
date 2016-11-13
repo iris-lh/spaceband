@@ -7,14 +7,13 @@ import { View }         from './lib/view'
 import { UserDialog }   from './lib/user-dialog'
 import { cfg }          from './config'
 
-
+var fm = FileManager
 
 export var Game = {
 
   defaultLevel: jetpack.cwd()+'/app/assets/levels/00.yml',
 
   init() {
-    this.fm = new FileManager
     window.addEventListener('keydown', this)
     this.startGame(this.defaultLevel)
   },
@@ -47,11 +46,11 @@ export var Game = {
     }
     if (code == cfg.keyMap.saveGame) {
       var path = UserDialog.chooseSaveGamePath()
-      this.fm.saveGame(this.system.scene, path)
+      fm.saveGame(this.system.scene, path)
     }
     if (code == cfg.keyMap.loadGame) {
       var path     = UserDialog.chooseLoadGamePath()
-      var loadData = this.fm.loadGame(path)
+      var loadData = fm.loadGame(path)
       this.startGame(loadData)
     }
   }

@@ -2,24 +2,24 @@ import { _ }   from 'lodash'
 import yaml    from 'yaml'
 import jetpack from 'fs-jetpack'
 
+export var FileManager = {
+  gamePath: function() {
+    return jetpack.cwd()+'/app/'
+  },
 
-export class FileManager {
-  constructor() {
-    this.gamePath   = jetpack.cwd()+'/app/'
-    this.assetsPath = this.gamePath+'assets/'
+  assetsPath: function() {
+    this.gamePath()+'assets/'
+  },
 
-    jetpack.dir(jetpack.cwd()+'app/saves')
-  }
-
-  loadAssets() {
+  loadAssets: function() {
     var entitiesPath, terrainPath,
         entityFiles, terrainFiles,
         assets, entities, terrain
 
-    entitiesPath = this.assetsPath+'entities/'
-    terrainPath  = this.assetsPath+'terrain/'
-    entityFiles  = jetpack.list(this.assetsPath+'entities/')
-    terrainFiles = jetpack.list(this.assetsPath+'terrain/')
+    entitiesPath = this.assetsPath()+'entities/'
+    terrainPath  = this.assetsPath()+'terrain/'
+    entityFiles  = jetpack.list(this.assetsPath()+'entities/')
+    terrainFiles = jetpack.list(this.assetsPath()+'terrain/')
 
     assets       = {}
     entities     = {}
@@ -41,15 +41,14 @@ export class FileManager {
     assets.terrain  = terrain
 
     return assets
+  },
 
-  }
-
-  loadLevel(levelPath) {
+  loadLevel: function(levelPath) {
     var yamlString = jetpack.read(levelPath, 'utf8')
     return yaml.eval(yamlString)
-  }
+  },
 
-  parseLevelEntities(level) {
+  parseLevelEntities: function(level) {
     if (!level.entities) {return}
     var entities = []
     level.entities.forEach( (entity)=> {
@@ -60,18 +59,18 @@ export class FileManager {
       })
     })
     return entities
-  }
+  },
 
-  saveGame(scene, path) {
+  saveGame: function(scene, path) {
     var saveData = {
       map:      scene.map,
       entities: scene._entities,
       player:   scene.player
     }
     jetpack.write(path, saveData, {jsonIndent: 0})
-  }
+  },
 
-  loadGame(path) {
+  loadGame: function(path) {
     return jetpack.read(path, 'json')
   }
 
