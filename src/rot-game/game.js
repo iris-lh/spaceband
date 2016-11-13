@@ -10,8 +10,7 @@ import { cfg }          from './config'
 var fm = FileManager
 
 export var Game = {
-
-  defaultLevel: jetpack.cwd()+'/app/assets/levels/00.yml',
+  defaultLevel: fm.assetsPath()+'/levels/00.yml',
 
   init() {
     window.addEventListener('keydown', this)

@@ -1,14 +1,14 @@
 const dialog = require('electron').remote.dialog
-import jetpack from 'fs-jetpack'
-
-
+import jetpack          from 'fs-jetpack'
+import { FileManager }  from './file-manager'
+var fm = FileManager
 
 export var UserDialog = {
   chooseLevel() {
     return dialog.showOpenDialog({
       title:       'Load Level',
       properties:  ['openFile'],
-      defaultPath: jetpack.cwd()+'/app/assets/levels/',
+      defaultPath: fm.assetsPath()+'/levels/',
       filters:     [{name: 'YAML Files', extensions: ['yml']}]
     })[0]
   },
@@ -16,7 +16,7 @@ export var UserDialog = {
   chooseSaveGamePath() {
     return dialog.showSaveDialog({
       title:       'Save Game',
-      defaultPath: jetpack.cwd()+'/app/saves/',
+      defaultPath: fm.appPath()+'/saves/',
       filters:     [{name: 'JSON Files', extensions: ['json']}]
     })
   },
@@ -25,7 +25,7 @@ export var UserDialog = {
     return dialog.showOpenDialog({
       title:       'Load Game',
       properties:  ['openFile'],
-      defaultPath: jetpack.cwd()+'/app/saves/',
+      defaultPath: fm.appPath()+'/saves/',
       filters:     [{name: 'JSON Files', extensions: ['json']}]
     })[0]
   },

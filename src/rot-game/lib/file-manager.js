@@ -3,12 +3,12 @@ import yaml    from 'yaml'
 import jetpack from 'fs-jetpack'
 
 export var FileManager = {
-  gamePath: function() {
+  appPath: function() {
     return jetpack.cwd()+'/app/'
   },
 
   assetsPath: function() {
-    return this.gamePath()+'assets/'
+    return this.appPath()+'/assets/'
   },
 
   loadAssets: function() {
@@ -16,10 +16,10 @@ export var FileManager = {
         entityFiles, terrainFiles,
         assets, entities, terrain
 
-    entitiesPath = this.assetsPath()+'entities/'
-    terrainPath  = this.assetsPath()+'terrain/'
-    entityFiles  = jetpack.list(this.assetsPath()+'entities/')
-    terrainFiles = jetpack.list(this.assetsPath()+'terrain/')
+    entitiesPath = this.assetsPath()+'/entities/'
+    terrainPath  = this.assetsPath()+'/terrain/'
+    entityFiles  = jetpack.list(this.assetsPath()+'/entities/')
+    terrainFiles = jetpack.list(this.assetsPath()+'/terrain/')
 
     assets       = {}
     entities     = {}
