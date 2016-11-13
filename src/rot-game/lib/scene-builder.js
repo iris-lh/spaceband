@@ -9,7 +9,6 @@ var fm = FileManager
 
 export class SceneBuilder {
   constructor(levelPath) {
-    fm = new FileManager()
   }
 
   buildScene(input) {

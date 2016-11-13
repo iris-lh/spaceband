@@ -8,7 +8,7 @@ export var FileManager = {
   },
 
   assetsPath: function() {
-    this.gamePath()+'assets/'
+    return this.gamePath()+'assets/'
   },
 
   loadAssets: function() {
