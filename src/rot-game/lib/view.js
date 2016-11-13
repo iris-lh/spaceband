@@ -8,7 +8,7 @@ export class View {
 
   constructor(scene) {
     this.scene         = scene
-    this.display       = this._createDisplay()
+    this.actionDisplay = this._createActionDisplay()
     this._messageStack = []
 
     this._createCamera()
@@ -18,14 +18,14 @@ export class View {
   attachToDOM() {
     document.body.innerHTML = ''
 
-    var canvas = this.display.getContainer()
-    canvas.setAttribute("id", "rotCanvas")
+    var canvas = this.actionDisplay.getContainer()
+    canvas.setAttribute("id", "rotActionCanvas")
     document.body.appendChild(canvas)
   }
 
   render() {
     this.camera.update()
-    this.display.clear()
+    this.actionDisplay.clear()
     this._drawMap()
     this._drawEntities()
     this.drawMessages()
@@ -45,11 +45,11 @@ export class View {
     var stack    = this._messageStack
     var stackMax = 5
     if (stack.length > 5) {stack.pop()}
-    var cursor = -2
+    var cursor   = -2
     stack.forEach( (message, i)=> {
       var c  = Math.ceil(255/(i+1))
       var fg = 'rgb('+c+','+c+','+c+')'
-      this.display.drawText(0, stack.length+cursor, message, fg, 'black')
+      this.actionDisplay.drawText(0, stack.length+cursor, message, fg, 'black')
       cursor -= 1
     })
   }
@@ -61,7 +61,7 @@ export class View {
         var tile = this.scene.map[coords]
         var x    = parseInt(parts[0])
         var y    = parseInt(parts[1])
-        this.display.draw(
+        this.actionDisplay.draw(
           x+this.camera.x,
           y+this.camera.y,
           tile.char,
@@ -76,7 +76,7 @@ export class View {
     var scene    = this.scene
     var entities = this.scene.entities()
     entities.forEach( (entity)=> {
-      this.display.draw(
+      this.actionDisplay.draw(
         entity.x + this.camera.x,
         entity.y + this.camera.y,
         entity.char,
@@ -87,10 +87,10 @@ export class View {
   }
 
   _drawTile(x, y, char, fg, bg) {
-    this.display.draw(x, y, char, fg, bg)
+    this.actionDisplay.draw(x, y, char, fg, bg)
   }
 
-  _createDisplay() {
+  _createActionDisplay() {
     var window = util.gameWindow()
     return new ROT.Display({
       width:            window.width,
@@ -103,13 +103,13 @@ export class View {
   }
 
   _createCamera() {
-    this.camera = new Camera(this.display, this.scene.player, 'center')
+    this.camera = new Camera(this.actionDisplay, this.scene.player, 'center')
   }
 
   _setupResizeListener() {
     util.setupResizeListener( ()=> {
-      this.display = this._createDisplay()
-      this.camera.setDisplay(this.display)
+      this.actionDisplay = this._createGameDisplay()
+      this.camera.setDisplay(this.actionDisplay)
       this.attachToDOM()
       this.render()
     })
