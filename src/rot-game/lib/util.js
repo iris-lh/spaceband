@@ -3,13 +3,25 @@ import { cfg }    from './../config'
 import _          from 'lodash'
 
 export var util = {
-  gameWindow: function() {
+  gameWindow: function(displayType) {
     var w = remote.getCurrentWindow().getBounds();
+    var factor = 1.0
+    if(displayType == 'message') {
+      factor = 0.665
+    }
+    var tileWidth = cfg[displayType].fontSize * factor
+    var tileHeight = cfg[displayType].fontSize
+    var widthInTiles = Math.floor(w.width / tileWidth)
+    var heightInTiles = Math.floor(w.height / tileHeight - 1)
     return {
-      width:       Math.floor(w.width / cfg.fontSize),
-      height:      Math.floor(w.height / cfg.fontSize - 1),
+      width:       widthInTiles,
+      height:      heightInTiles,
       pixelWidth:  w.width,
-      pixelHeight: w.height
+      pixelHeight: w.height,
+      remainder: {
+        width: w.width - (tileWidth * widthInTiles),
+        height: w.height - (tileHeight * heightInTiles)
+      }
     }
   },
 
