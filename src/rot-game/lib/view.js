@@ -31,7 +31,6 @@ export class View {
   }
 
   render() {
-    console.log('view.render() called')
     this.camera.update()
     this.actionDisplay.clear()
     this.messageDisplay.clear()
@@ -49,19 +48,6 @@ export class View {
       this.drawMessages()
     }
   }
-
-  // drawMessages() {
-  //   var stack    = this._messageStack
-  //   var stackMax = 5
-  //   if (stack.length > 5) {stack.pop()}
-  //   var cursor   = -2
-  //   stack.forEach( (message, i)=> {
-  //     var c  = Math.ceil(255/(i+1))
-  //     var fg = 'rgb('+c+','+c+','+c+')'
-  //     this.messageDisplay.drawText(0, stack.length+cursor, message, fg, 'black')
-  //     cursor -= 1
-  //   })
-  // }
 
   drawMessages() {
     var stack    = this._messageStack
@@ -111,7 +97,6 @@ export class View {
   }
 
   _createActionDisplay() {
-    console.log('_createActionDisplay')
     var win = util.gameWindow('action')
     var display = new ROT.Display({
       width:            win.width,
@@ -121,12 +106,10 @@ export class View {
       fontSize:         cfg.action.fontSize,
       fontFamily:       cfg.action.font,
     })
-    console.log(display)
     return display
   }
 
   _createMessageDisplay() {
-    console.log('_createMessageDisplay')
     var win = util.gameWindow('message')
     var display = new ROT.Display({
       width:            win.width,
@@ -138,7 +121,6 @@ export class View {
       fg:               'white',
       bg:               'rgb(20,20,20)'
     })
-    console.log(display)
     return display
   }
 
